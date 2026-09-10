@@ -20,19 +20,17 @@ The second slide uses a payment-service failure to explain why the service depen
 
 It summarizes the three reviewed approaches:
 
-- MicroRCA is the practical first baseline candidate.
+- CausalRCA is the selected published baseline for root-cause localization.
+- MicroRCA remains useful related work for service-level root-cause localization.
 - Eadro is the closest design reference for combining logs, metrics, traces, and service dependencies.
-- CausalRCA is the main causal-method alternative.
 
-The slide defines Top-1 and Top-3 accuracy and keeps the recommendation conditional on a successful MicroRCA smoke test.
+The slide defines Top-1 and Top-3 accuracy. The selected CausalRCA baseline will be reproduced and evaluated using comparable root-cause localization metrics on the team's chosen benchmark.
 
 ### Speaker notes
 
 A single service failure can create errors in several upstream services. In the example, payment fails first, but checkout and frontend also become abnormal. The root-cause model uses the dependency graph and telemetry to rank payment as the original cause.
 
-We will measure Top-1 accuracy when the correct service is ranked first and Top-3 accuracy when it appears among the first three results. MicroRCA is the most practical first candidate because it uses graph ranking and does not need neural training. Eadro is closer to our final multimodal design, but its released code and preprocessing are harder to reproduce. CausalRCA is useful for a later causal approach.
-
-MicroRCA must pass a smoke test before the team selects it as the published baseline.
+We will measure Top-1 accuracy when the correct service is ranked first and Top-3 accuracy when it appears among the first three results. The team selected CausalRCA as the published baseline. MicroRCA remains relevant background work for service-level root-cause localization, while Eadro is closer to our final multimodal design but has more difficult preprocessing and reproduction requirements.
 
 ## References
 
