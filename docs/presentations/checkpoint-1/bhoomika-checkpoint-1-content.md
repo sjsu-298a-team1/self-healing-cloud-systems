@@ -35,6 +35,14 @@ Identify how prior work decides whether an automated remediation action is safe 
 - Measurable using the fault-injection ground truth we already plan to record.
 - Realistic to implement during 298A.
 
+### Where this section fits
+
+```text
+Detection -> Root-cause analysis -> Remediation proposal -> Risk gate -> Execute or escalate
+```
+
+The first two stages are covered by the anomaly detection and root-cause sections. This section covers the risk gate, which is the step between proposing a repair and running it.
+
 ### Key research observation
 
 Not all repairs carry the same risk. Turning off an injected feature flag is fully reversible and affects one service. Changing a network policy is hard to undo and can affect services we did not intend to touch. A system that treats these as equivalent is unsafe regardless of how accurate its detection is.
@@ -88,18 +96,37 @@ One caution on the table. These numbers are not comparable to each other. They c
 
 ## A Risk-Scored Gate Over an Explicit Action Set
 
+### Recommended direction
+
+Of the three reviewed systems, **the risk-constrained gating approach of Dai et al. is what we recommend adopting**. It is the only one that splits risk into parts we can compute in our own environment, and the only one that makes the safety budget an explicit setting rather than a value hidden inside a model. Narya and Gandalf contribute design patterns, the explicit action set and the stop-gate, but neither transfers to us as a method.
+
+### Risk inputs the gate would use
+
+| Input | Source | Available to us |
+|---|---|---|
+| Blast radius | Dai et al. | Yes, from the service dependency graph in our traces |
+| Reversibility | Dai et al. | Yes, defined per action type |
+| Epistemic uncertainty | Dai et al. | Yes, from ensemble disagreement in the detector |
+| Diagnosis confidence | Dai et al. | Yes, from the root-cause ranking score |
+| Service criticality | Dai et al. | Yes, assigned per service by the team |
+| Rollback availability | Dai et al., trained on rollback logs | Partly, requires us to record rollback outcomes |
+| Telemetry quality | Our addition | Yes, we can check that metrics, logs and traces are all present before acting |
+
+Telemetry quality is our own addition rather than something taken from the papers. If telemetry is incomplete, the evidence behind a proposed repair is weaker. Gandalf offers a precedent through its veto rule, where evidence that does not hold up cancels an action instead of merely failing to support it.
+
 ### Remediation actions in our environment
 
-Our environment evaluation defines the faults we can inject but does not define the repairs our system can attempt. This section proposes that list, scored by the two risk dimensions we can compute today.
+Our environment evaluation defines the faults we can inject but does not define the repairs our system can attempt. This section proposes that list, scored by the risk dimensions above.
 
 | Action | Reversibility | Blast radius | Proposed handling |
 |---|---|---|---|
-| Turn off a feature flag | High | One service | Automatic |
+| Configuration change, such as turning off a feature flag | High | One service | Automatic |
 | Restart a container | High | One service | Automatic |
-| Scale replicas up | High | One service, extra cost | Automatic above a confidence threshold |
-| Roll back a deployment | Medium | Service and its callers | Escalate to a human |
+| Scaling, adding replicas | High | One service, extra resource cost | Automatic above a confidence threshold |
+| Rollback of a deployment | Medium | Service and its callers | Escalate to a human |
 | Evict or drain a pod | Low | Node level | Escalate to a human |
-| Change a network policy | Low | Possibly cluster wide | Not automated at this stage |
+| Routing change, such as a network policy | Low | Possibly cluster wide | Not automated at this stage |
+| Observability-plane change | Not applicable | Removes our ability to verify any repair | Never automated |
 
 ### Hard constraints
 
@@ -121,6 +148,8 @@ The proposed split is deliberately conservative. Only the fully reversible, sing
 The observability exclusion is the constraint I would argue hardest for. If our system restarts Prometheus during an incident, we lose the telemetry we need to understand both the incident and whether our repair helped. This should not be overridable by a confidence score, because a constraint a model can override when confident is not really a constraint.
 
 The circuit breaker exists because our experiments inject one fault at a time. If the system is taking more than three actions in fifteen minutes, it is reacting to its own effects rather than to the injected fault.
+
+On the risk inputs, six of the seven come from the Dai paper. Telemetry quality is ours. We added it because our whole pipeline depends on telemetry being complete, and acting on partial evidence is exactly the situation where an automated repair is most likely to be wrong.
 
 ---
 
