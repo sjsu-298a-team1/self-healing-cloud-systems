@@ -68,8 +68,8 @@ Hallucination is a risk even when citations are present, so we must check whethe
 
 ## Integration notes
 
-Place this section after detection/localization and before the safety gate. Retain CausalRCA as the selected published reproduction baseline. OpenRCA is an LLM pilot candidate. The full team deck requires consolidation to stay within ten slides. Include these notes in the presenter view, not as extra slides.
+Place this section after detection/localization and before the safety gate. Retain CausalRCA as the selected published reproduction baseline. OpenRCA is an LLM pilot candidate. Bhoomika’s review reports that Template 2 specifies eight slides, with 17 minutes of presentation and 3 minutes of Q&A. This conflicts with the ten-slide limit in Linear. Plan for eight slides until the team confirms the current course instructions; keep Nikhil’s section within the agreed allocation. Include these notes in the presenter view, not as extra slides.
 
 ## Evidence coverage
 
-Slide 1 covers the three studies, findings, promising approach, and references. Slide 2 and its notes cover operational inputs and outputs, grounding, hallucination, unsafe recommendations, compute, latency, and pipeline integration. Team review and final deck integration remain outstanding.
+Slide 1 covers the three studies, findings, promising approach, and references. Slide 2 and its notes cover operational inputs and outputs, grounding, hallucination, unsafe recommendations, compute, latency, and pipeline integration. Bhoomika’s PR review reports no changes needed to this LLM section. Final team-deck integration remains outstanding.
