@@ -254,6 +254,489 @@ MicroRCA should be retained as a relevant cloud/microservice AIOps paper and lig
 * [x] Changes committed to GitHub.
 * [x] GitHub commit or pull request linked to the parent Linear issue.
 
+## 2. Eadro: An End-to-End Troubleshooting Framework for Microservices on Multi-Source Data
+
+### Paper citation
+
+Cheryl Lee, Tianyi Yang, Zhuangbin Chen, Yuxin Su, and Michael R. Lyu, “Eadro: An End-to-End Troubleshooting Framework for Microservices on Multi-source Data,” Proceedings of the IEEE/ACM 45th International Conference on Software Engineering, 2023.
+
+Paper: https://doi.org/10.1109/ICSE48619.2023.00150
+Open paper: https://www.cse.cuhk.edu.hk/lyu/_media/conference/clee_icse2023_eadro.pdf
+Code and data: https://github.com/BEbillionaireUSD/Eadro
+Dataset record: https://doi.org/10.5281/zenodo.7615393
+
+### Problem addressed
+
+Eadro addresses automated troubleshooting in large-scale microservice systems. Existing approaches commonly treat anomaly detection and root-cause localization as separate tasks and rely primarily on traces. This can miss anomalies visible in logs or key performance indicators.
+
+Eadro jointly performs anomaly detection and root-cause localization using logs, KPIs, and traces.
+
+### Model and algorithm
+
+Eadro contains three main stages:
+
+1. Modal-wise learning:
+
+   * Hawkes process and fully connected layers model log-event occurrences.
+   * Dilated causal convolution models KPI time-series patterns.
+   * Dilated causal convolution models trace-latency behavior.
+
+2. Dependency-aware status learning:
+
+   * The representations from logs, KPIs, and traces are fused.
+   * A graph attention network models inter-service dependencies derived from historical invocations.
+
+3. Joint detection and localization:
+
+   * An anomaly detector predicts whether an observation window is normal or abnormal.
+   * A root-cause localizer ranks microservices by their probability of being the culprit.
+   * Both tasks share learned representations and a joint objective.
+
+The overall architecture is shown in Figure 5 of the paper.
+
+### Input telemetry and features
+
+Eadro uses three telemetry sources:
+
+* Logs:
+
+  * Chronological log-event occurrences.
+  * Log events parsed using Drain.
+* KPIs:
+
+  * CPU system usage.
+  * CPU total usage.
+  * CPU user usage.
+  * Memory usage.
+  * Working-set memory.
+  * Received bytes.
+  * Transmitted bytes.
+* Traces:
+
+  * Invocation latency.
+  * Request duration.
+  * HTTP response information.
+  * Inter-service invocation relationships.
+
+Each observation window contains the logs, KPI time series, and trace records aggregated for each microservice.
+
+### Dataset and benchmark
+
+The authors collected multi-source telemetry from two open-source microservice benchmarks:
+
+1. TrainTicket:
+
+   * 41 interacting microservices.
+   * 27 business-related services.
+   * Railway-ticketing application.
+
+2. SocialNetwork:
+
+   * 21 interacting microservices.
+   * 14 business-related services.
+   * Social-networking application using Thrift RPCs.
+
+The testbeds used Docker containers and request simulators. Jaeger collected traces, cAdvisor and Prometheus collected KPIs, and Elasticsearch, Fluentd, and Kibana collected logs.
+
+The paper reports 48,296 traces and 162 fault injections for TrainTicket, and 126,384 traces and 72 fault injections for SocialNetwork.
+
+The injected faults included CPU exhaustion, network jam, packet loss, and other performance-degradation scenarios described in the evaluation section.
+
+### Evaluation metrics
+
+For anomaly detection, the paper uses:
+
+* Precision.
+* Recall.
+* F1-score.
+
+For root-cause localization, the paper uses:
+
+* HR@1.
+* HR@3.
+* HR@5.
+* NDCG@3.
+* NDCG@5.
+
+The anomaly-detection task uses binary labels based on whether a fault was injected during the observation window.
+
+### Numerical results
+
+The anomaly-detection results are reported in Table II:
+
+| Dataset       |    F1 | Recall | Precision |
+| ------------- | ----: | -----: | --------: |
+| TrainTicket   | 0.989 |  0.995 |     0.984 |
+| SocialNetwork | 0.986 |  0.996 |     0.977 |
+
+The root-cause-localization results are reported in Table III. Eadro achieves the following average results:
+
+* HR@1: 0.982.
+* HR@5: 0.990.
+* NDCG@5: 0.989.
+
+The ablation results in Table IV show that removing KPIs, trace latency, logs, or the graph-attention component reduces performance. The largest HR@1 reductions occur when KPI or trace information is removed.
+
+### Exact paper tables and figures
+
+* Figure 1: Example of anomaly propagation through microservices.
+* Figure 2: Trace-latency behavior under different fault types.
+* Figure 3: Log-event occurrence behavior during faults.
+* Figure 4: KPI behavior during CPU exhaustion.
+* Figure 5: Overview of Eadro.
+* Figure 6: Visualization of Eadro’s troubleshooting output.
+* Figure 7: t-SNE visualization of learned representations.
+* Table I: Comparison of common anomaly detectors.
+* Table II: Performance comparison for anomaly detection.
+* Table III: Performance comparison for root-cause localization.
+* Table IV: Experimental results of the ablation study.
+
+### Code availability
+
+The official repository is publicly available:
+
+https://github.com/BEbillionaireUSD/Eadro
+
+The repository contains model code, preprocessing code, requirements, and execution instructions. However, the repository uses older dependencies and the setup instructions do not fully explain every preprocessing step.
+
+### Dataset availability
+
+The authors state that the code and data are publicly released. The dataset is linked through Zenodo:
+
+https://doi.org/10.5281/zenodo.7615393
+
+The dataset should be downloaded and inspected to verify that all raw data, labels, preprocessing outputs, and required directory structures are present.
+
+### Compute requirements
+
+The paper reports experiments conducted on:
+
+* Linux.
+* Python 3.7.
+* NVIDIA GeForce GTX 1080 GPU.
+* PyTorch 1.12.1.
+* DGL 0.9.1.
+* tick 0.7.0.1.
+* Adam optimizer.
+* Learning rate of 0.001.
+* Batch size of 256.
+* 50 training epochs.
+
+A modern GPU should be sufficient once the software environment and data pipeline are functioning.
+
+### Reproduction difficulty
+
+Overall reproduction difficulty: High.
+
+Main risks include:
+
+* Older Python and deep-learning dependencies.
+* Incomplete preprocessing instructions.
+* Apparent inconsistencies in the released code.
+* Missing or unclear construction steps for the chunks directory.
+* Need to validate the Zenodo archive.
+* Need to reproduce logs, KPI windows, traces, and fault labels consistently.
+* Need to adapt the framework to a different microservice benchmark if OpenTelemetry Demo is used.
+
+A reasonable reproduction plan is to first validate the dataset and run one anomaly-detection experiment before attempting the full joint troubleshooting pipeline.
+
+### Strengths
+
+* Directly addresses both anomaly detection and root-cause localization.
+* Uses logs, KPIs, and traces together.
+* Models temporal behavior and service dependencies.
+* Uses graph attention to represent anomaly propagation.
+* Provides strong anomaly-detection F1 scores.
+* Includes an ablation study demonstrating the contribution of each telemetry source.
+* Highly relevant to cloud and microservice AIOps.
+
+### Limitations
+
+* Requires labeled fault windows and supervised training.
+* Requires three synchronized telemetry modalities.
+* Reproduction depends on older software libraries.
+* The released repository may require debugging.
+* The reported results come from TrainTicket and SocialNetwork and may not transfer directly to OpenTelemetry Demo.
+* The model is more computationally and operationally complex than a metric-only baseline.
+* The dataset and preprocessing pipeline require independent validation.
+
+### Relevance to the 298A project
+
+Eadro is the strongest conceptual fit for a project involving cloud or microservice telemetry because it combines anomaly detection with root-cause localization and uses logs, metrics, and traces.
+
+It is a promising candidate for the first model if the team can obtain synchronized multi-source telemetry and labeled fault windows. Its complexity makes it less suitable as the first implementation if the team needs a lightweight or quickly reproducible baseline.
+
+### Preliminary recommendation
+
+Eadro should be considered the strongest candidate for the project’s long-term multi-source anomaly-detection and troubleshooting architecture. It should be implemented only after the team confirms data availability, labeling, and the feasibility of reproducing the preprocessing pipeline.
+
+### Completion checklist
+
+* [x] Problem addressed documented.
+* [x] Model and algorithm documented.
+* [x] Input telemetry and features documented.
+* [x] Dataset and benchmarks documented.
+* [x] Evaluation metrics documented.
+* [x] Numerical results documented.
+* [x] Exact paper tables and figures documented.
+* [x] Code link documented.
+* [x] Dataset link documented.
+* [x] Compute requirements documented.
+* [x] Reproduction difficulty assessed.
+* [x] Strengths and limitations documented.
+* [x] Findings added to the GitHub literature-review file.
+* [x] Changes committed to GitHub.
+* [x] GitHub commit or pull request linked to the Linear issue.
+
+
+## 3. CausalRCA: Causal Inference Based Precise Fine-Grained Root Cause Localization for Microservice Applications
+
+### Paper citation
+
+Ruyue Xin, Peng Chen, and Zhiming Zhao, “Causal Inference Based Precise Fine-grained Root Cause Localization for Microservice Applications,” Journal of Systems and Software, vol. 203, article 111724, 2023.
+
+Published paper: https://doi.org/10.1016/j.jss.2023.111724
+Open paper: https://pure.uva.nl/ws/files/166189852/CausalRCA.pdf
+Code and data: https://github.com/AXinx/CausalRCA_code
+
+### Problem addressed
+
+CausalRCA addresses precise and fine-grained root-cause localization in microservice applications. Many existing approaches identify only the faulty service, while operators may also need to know which specific metric or resource caused the problem.
+
+CausalRCA attempts to identify both:
+
+* The faulty microservice.
+* The root-cause metric within the faulty service.
+
+The primary task is root-cause localization rather localization rather than standalone anomaly detection.
+
+### Model and algorithm
+
+CausalRCA consists of three main components:
+
+1. Monitoring metrics:
+
+   * Collect service-level and resource-level time-series metrics.
+
+2. Causal structure learning:
+
+   * Use a gradient-based causal structure-learning method.
+   * Generate a weighted directed acyclic graph.
+   * Represent possible cause-effect relationships between monitoring metrics.
+
+3. Root-cause inference:
+
+   * Reverse the learned graph edges.
+   * Use the absolute edge weights as transition strengths.
+   * Apply PageRank to rank candidate root-cause metrics.
+
+The overall CausalRCA framework is shown in Figure 1. The learned metric graph and PageRank-based ranking process are illustrated in Figure 1 and the methodology section.
+
+### Input telemetry and features
+
+CausalRCA uses:
+
+* Service latency.
+* Container CPU usage.
+* Container memory usage.
+* Disk read.
+* Disk write.
+* Network receive bytes.
+* Network transmit bytes.
+
+The monitoring metrics are time-series data collected at five-second intervals.
+
+The method supports:
+
+* Coarse-grained localization using service latency.
+* Fine-grained localization using resource metrics within a known faulty service.
+* Fine-grained localization using all metrics across all services.
+
+### Dataset and benchmark
+
+The authors evaluate CausalRCA using the Sock Shop microservice benchmark.
+
+The testbed includes:
+
+* 13 microservices.
+* One Kubernetes master node.
+* Three Kubernetes worker nodes.
+* Ubuntu 18.04.
+* 4 vCPUs per VM.
+* 16 GB RAM per VM.
+* 80 GB disk per VM.
+* Prometheus for monitoring.
+* Grafana for visualization.
+* Locust for workload generation.
+
+The injected anomaly types are:
+
+* CPU hog.
+* Memory leak.
+* Network delay.
+
+Each anomaly lasts five minutes, followed by a ten-minute cooldown period. Pumba is used for fault injection.
+
+The testbed configuration is illustrated in Figure 3, and the collected metrics are listed in Table 2.
+
+### Evaluation metrics
+
+CausalRCA uses ranking-based localization metrics:
+
+* AC@1: whether the correct root cause is ranked first.
+* AC@3: whether the correct root cause appears in the top three results.
+* Avg@5: the average localization accuracy across the top five ranks.
+
+The paper evaluates both coarse-grained faulty-service localization and fine-grained root-cause-metric localization.
+
+### Numerical results
+
+For coarse-grained faulty-service localization, the results are reported in Table 3.
+
+CausalRCA achieves:
+
+* Average AC@1: 0.2000.
+* Average AC@3: 0.5749.
+* Average Avg@5: 0.5815.
+
+For fine-grained root-cause-metric localization within a known faulty service, the results are reported in Table 4.
+
+CausalRCA achieves:
+
+* Average AC@1: 0.2476.
+* Average AC@3: 0.7190.
+* Average Avg@5: 0.6681.
+
+For the fine-grained task, CausalRCA improves the average Avg@5 over the compared causal baselines by approximately 9.43%.
+
+The paper also reports statistical testing for the coarse-grained experiment. The ANOVA test produces a p-value of 0.0003. The pairwise comparison results are shown in Figure 4.
+
+### Exact paper tables and figures
+
+* Figure 1: CausalRCA framework overview.
+* Figure 2: Example of anomaly propagation and metric relationships.
+* Figure 3: Sock Shop microservice application deployed on virtual machines with Kubernetes.
+* Figure 4: P-values of root-cause-localization methods.
+* Figure 5: Localization accuracy with different gamma and eta parameters.
+* Figure 6: CausalRCA performance for different anomaly types.
+* Table 1: Classification of metric-based root-cause-localization research.
+* Table 2: Collected monitoring metrics.
+* Table 3: Localization accuracy for faulty-service localization.
+* Table 4: Localization accuracy for root-cause-metric localization within faulty services.
+
+### Code availability
+
+The official repository is publicly available:
+
+https://github.com/AXinx/CausalRCA_code
+
+The repository includes:
+
+* Training scripts.
+* Baseline implementations.
+* Data-collection notebooks.
+* Fault-data files.
+* Experiment configurations.
+* Pinned dependency information.
+
+The repository does not clearly provide a permissive software license, so reuse terms should be reviewed before incorporating code directly into the final project.
+
+### Dataset availability
+
+The paper states that code and data are open-sourced in the GitHub repository:
+
+https://github.com/AXinx/CausalRCA_code
+
+The repository contains fault-data files for CPU, memory, and network experiments across several services. This makes CausalRCA more reproducible than MicroRCA because data and experiment scripts are available together.
+
+The repository contents should still be checked to confirm that all files required for every published experiment are included.
+
+### Compute requirements
+
+The paper reports:
+
+* A Kubernetes cluster with one master and three worker VMs.
+* 4 vCPUs per VM.
+* 16 GB RAM per VM.
+* 80 GB disk per VM.
+* Prometheus and Grafana monitoring.
+* Locust workload generation.
+* CUDA-enabled execution when available.
+* A two-layer MLP encoder and decoder.
+* Learning rate of 0.001.
+* Adam optimizer.
+* 1,000 training epochs.
+* Ten experimental repetitions with averaged results.
+
+The paper estimates that the framework requires tens of seconds for the Sock Shop benchmark. Runtime and memory requirements will increase as the number of metric nodes grows.
+
+### Reproduction difficulty
+
+Overall reproduction difficulty: Medium to High.
+
+The repository is more complete than the MicroRCA repository because it includes data files, notebooks, and training scripts. However, reproduction still requires:
+
+* Installing older Python and machine-learning dependencies.
+* Deploying the Sock Shop benchmark.
+* Recreating Prometheus metric collection.
+* Recreating the fault-injection schedule.
+* Resolving differences between the paper and repository configurations.
+* Confirming whether the paper’s 1,000 epochs match the repository settings.
+* Repeating the experiments ten times for comparable averages.
+
+A practical reproduction plan is to reproduce one coarse-grained experiment first, then reproduce one fine-grained metric-localization experiment.
+
+### Strengths
+
+* Provides causal, metric-level root-cause analysis.
+* Supports both service-level and metric-level localization.
+* Uses only monitoring metrics and does not require logs or traces.
+* Includes public code and fault-data files.
+* Uses a widely recognized Sock Shop benchmark.
+* Provides comparisons with PC, GES, and LiNGAM causal methods.
+* More feasible as a focused baseline than Eadro.
+* Produces interpretable ranked lists of candidate root causes.
+
+### Limitations
+
+* The primary objective is root-cause localization, not general anomaly detection.
+* The method assumes anomalies manifest as increased service response time.
+* The evaluation uses one benchmark application and three injected fault types.
+* Causal discovery can become expensive as the number of metrics increases.
+* The learned graph may not represent true causal relationships in every operational setting.
+* Results depend on parameter choices such as gamma and eta.
+* The repository uses older dependencies.
+* The paper and repository may use different training-epoch configurations.
+* The method does not directly use logs or traces.
+
+### Relevance to the 298A project
+
+CausalRCA is relevant if the project needs interpretable metric-level diagnosis after detecting an anomaly. Its use of service latency and resource metrics aligns well with cloud telemetry and can provide ranked root-cause candidates.
+
+It is less suitable as the primary anomaly-detection model because its main output is a root-cause ranking rather than a normal/abnormal decision.
+
+### Preliminary recommendation
+
+CausalRCA is the strongest candidate among the three papers for a focused published-baseline reproduction. The repository contains both implementation code and experimental data, and the method can be tested using metric telemetry without requiring synchronized logs and traces.
+
+### Completion checklist
+
+* [x] Problem addressed documented.
+* [x] Model and algorithm documented.
+* [x] Input telemetry and features documented.
+* [x] Dataset and benchmark documented.
+* [x] Evaluation metrics documented.
+* [x] Numerical results documented.
+* [x] Exact paper tables and figures documented.
+* [x] Code link documented.
+* [x] Dataset link documented.
+* [x] Compute requirements documented.
+* [x] Reproduction difficulty assessed.
+* [x] Strengths and limitations documented.
+* [x] Findings added to the GitHub literature-review file.
+* [x] Changes committed to GitHub.
+* [x] GitHub commit or pull request linked to the Linear issue.
+
 ## 4. Cross-Paper Comparison
 
 The three papers address related but different AIOps problems. MicroRCA and CausalRCA primarily focus on root-cause localization, while Eadro jointly performs anomaly detection and root-cause localization. Therefore, their numerical results should not be interpreted as a direct leaderboard because they use different benchmarks, fault types, telemetry sources, labels, and evaluation metrics.
@@ -412,8 +895,7 @@ Future evaluation should investigate:
 - [x] Most feasible first-model direction identified.
 - [x] Published-baseline candidate identified.
 - [x] Project-specific recommendation documented.
-- [ ] Final Markdown file committed to GitHub.
-- [ ] Pull request updated.
-- [ ] Pull request link added to the parent Linear issue.
-- [ ] Parent Linear issue moved to Done after team review.
-
+- [x] Final Markdown file committed to GitHub.
+- [x] Pull request updated.
+- [x] Pull request link added to the parent Linear issue.
+- [x] Parent Linear issue moved to Done after team review.
