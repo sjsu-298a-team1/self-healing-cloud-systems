@@ -254,7 +254,6 @@ MicroRCA should be retained as a relevant cloud/microservice AIOps paper and lig
 * [x] Changes committed to GitHub.
 * [x] GitHub commit or pull request linked to the parent Linear issue.
 
-
 ## 2. Eadro: An End-to-End Troubleshooting Framework for Microservices on Multi-Source Data
 
 ### Paper citation
@@ -738,3 +737,165 @@ CausalRCA is the strongest candidate among the three papers for a focused publis
 * [ ] Changes committed to GitHub.
 * [ ] GitHub commit or pull request linked to the Linear issue.
 
+## 4. Cross-Paper Comparison
+
+The three papers address related but different AIOps problems. MicroRCA and CausalRCA primarily focus on root-cause localization, while Eadro jointly performs anomaly detection and root-cause localization. Therefore, their numerical results should not be interpreted as a direct leaderboard because they use different benchmarks, fault types, telemetry sources, labels, and evaluation metrics.
+
+| Criterion | MicroRCA | Eadro | CausalRCA |
+|---|---|---|---|
+| Primary task | Root-cause localization with anomaly detection | Joint anomaly detection and root-cause localization | Coarse- and fine-grained root-cause localization |
+| Main telemetry | Service response time, container metrics, and host metrics | Logs, KPIs, traces, and service dependencies | Service latency and resource metrics |
+| Model type | BIRCH, attributed graph, correlation weighting, and Personalized PageRank | Hawkes process, dilated causal convolution, gated fusion, GAT, and joint learning | Gradient-based causal graph learning and PageRank |
+| Supervision | Unsupervised anomaly detection; fault labels used for evaluation | Supervised anomaly detection and localization | Fault scenarios used for evaluation; no standalone anomaly classifier |
+| Anomaly-detection result | Primarily evaluated through localization metrics | TrainTicket F1 = 0.989; SocialNetwork F1 = 0.986 | Not primarily evaluated as a binary anomaly detector |
+| Localization result | PR@1 = 0.89, PR@3 = 1.00, MAP = 0.97 | HR@1 = 0.982, HR@5 = 0.990, NDCG@5 = 0.989 | Coarse AC@1 = 0.2000, AC@3 = 0.5749, Avg@5 = 0.5815; fine-grained AC@1 = 0.2476, AC@3 = 0.7190, Avg@5 = 0.6681 |
+| Benchmark | Sock Shop on Kubernetes | TrainTicket and SocialNetwork | Sock Shop on Kubernetes |
+| Multi-source telemetry | No; primarily metrics | Yes; logs, KPIs, and traces | No; metric-only |
+| Public code | Yes | Yes | Yes |
+| Public dataset | Complete dataset is not clearly available | Dataset linked through Zenodo | Code and fault data available |
+| Compute requirements | Relatively lightweight | NVIDIA GTX 1080, batch size 256, 50 epochs | Three-worker Kubernetes testbed, 1,000 epochs |
+| Reproduction difficulty | Medium | High | Medium to High |
+| Interpretability | High | Moderate | Moderate to High |
+| Main strength | Lightweight graph-based diagnosis | Comprehensive multi-source troubleshooting | Reproducible metric-level causal baseline |
+| Main limitation | Limited anomaly-detection sophistication | Complex supervised pipeline | Primarily localization-focused |
+| Fit for 298A | Lightweight RCA reference | Strongest long-term architecture | Practical published baseline |
+
+### Comparative Interpretation
+
+MicroRCA is the simplest approach to understand and deploy. It uses abnormal service response times and combines service and host information in an attributed graph. Its low computational cost makes it attractive for real-time monitoring. However, its evaluation focuses mainly on root-cause ranking, and the complete experimental dataset is not clearly available.
+
+Eadro is the most comprehensive approach. It directly addresses both anomaly detection and root-cause localization while combining logs, KPIs, traces, and inter-service dependencies. Its strong F1 scores and ablation study make it highly relevant to cloud and microservice AIOps. However, Eadro requires synchronized multi-source telemetry, labeled fault windows, a GPU-based environment, and substantial preprocessing.
+
+CausalRCA is a metric-only causal approach. It produces interpretable ranked root-cause metrics and has a more complete repository containing code and fault data. This makes it a realistic candidate for a focused published-baseline reproduction. However, it is not a complete anomaly-detection solution and does not use logs or traces.
+
+### Comparison Limitations
+
+The reported scores cannot be compared directly because:
+
+- MicroRCA uses PR@1, PR@3, and MAP.
+- Eadro uses F1, precision, recall, HR@k, and NDCG@k.
+- CausalRCA uses AC@k and Avg@k.
+- The papers use different microservice systems.
+- The fault injection procedures and durations are different.
+- The observation windows and labels are different.
+- The telemetry sources are different.
+- The evaluation tasks are not identical.
+
+A fair comparison would require running the selected approaches on the same OpenTelemetry dataset, using the same anomaly windows, ground-truth labels, fault scenarios, and evaluation metrics.
+
+## 5. Recommendation for the 298A Project
+
+### Recommended First-Model Direction
+
+The recommended first-model direction is a staged, metric-first approach inspired by MicroRCA, CausalRCA, and Eadro:
+
+1. Begin with a multivariate metric-based anomaly detector using service latency, CPU, memory, disk, and network measurements.
+2. Establish reliable time-window labels.
+3. Evaluate anomaly detection using precision, recall, F1-score, and false-alarm rate.
+4. Add service-dependency information for anomaly propagation and root-cause ranking.
+5. Add logs and traces after the metric pipeline is stable.
+6. Progress toward an Eadro-inspired multi-source model if synchronized logs, metrics, traces, and labels are available.
+
+This direction is appropriate because it matches the telemetry that can realistically be collected from a cloud or OpenTelemetry-based environment while keeping the first implementation manageable.
+
+### Most Promising Overall Approach
+
+Eadro is the most promising overall approach for the long-term 298A system because:
+
+- It directly includes anomaly detection.
+- It jointly performs detection and root-cause localization.
+- It combines logs, metrics, and traces.
+- It models temporal behavior and inter-service dependencies.
+- It provides strong anomaly-detection and localization results.
+- Its ablation study demonstrates the value of multiple telemetry sources.
+- It aligns closely with automated cloud troubleshooting and self-healing.
+
+However, Eadro should be treated as a target architecture or later-stage model if the team does not yet have synchronized labeled multi-source telemetry.
+
+### Most Feasible First Implementation
+
+A metric-first approach is the most feasible initial implementation.
+
+MicroRCA contributes a lightweight anomaly-detection and graph-localization design, while CausalRCA contributes causal metric relationships and metric-level ranking. A practical first version could:
+
+- Detect anomalies from multivariate service and resource metrics.
+- Use service latency as a high-level symptom signal.
+- Use CPU, memory, disk, and network metrics as supporting features.
+- Represent service dependencies using the available service topology.
+- Rank possible root causes using correlation, causal structure, or graph-based scores.
+
+This approach reduces data and compute requirements while leaving a clear path toward incorporating logs and traces later.
+
+### Recommended Published Baseline
+
+CausalRCA is the strongest candidate for the separately reproduced published baseline because:
+
+- The repository contains implementation code and experimental data.
+- The paper provides coarse-grained and fine-grained localization experiments.
+- The method uses metric telemetry that is easier to collect and synchronize.
+- Its causal graph and PageRank procedure are interpretable.
+- It can be tested using a focused experiment before attempting the full paper reproduction.
+- Its configuration and evaluation metrics are documented clearly.
+
+The reproduction should begin with one coarse-grained Sock Shop experiment before attempting all anomaly types and fine-grained metric localization.
+
+### Role of Each Paper
+
+- **Eadro:** Long-term multi-source anomaly-detection and troubleshooting architecture.
+- **CausalRCA:** Published metric-level causal baseline for focused reproduction.
+- **MicroRCA:** Lightweight graph-based reference and possible post-detection localization component.
+
+### Final Recommendation
+
+The team should not immediately attempt to reproduce Eadro in full because its multi-source preprocessing, supervised labels, old dependencies, and neural architecture create substantial project risk.
+
+The recommended strategy is:
+
+1. Build and evaluate a metric-first multivariate anomaly-detection pipeline.
+2. Use CausalRCA as the focused published baseline for metric-level root-cause localization.
+3. Use MicroRCA as a lightweight graph-based comparison method.
+4. Extend the system toward an Eadro-inspired architecture after reliable synchronized logs, metrics, traces, and labels are available.
+5. Evaluate all selected approaches on the same project telemetry and fault scenarios whenever possible.
+
+This strategy balances feasibility, research relevance, reproducibility, and alignment with the 298A objective of automated cloud incident response and self-healing.
+
+### Project Limitations and Future Work
+
+The recommendation is based on published experiments using controlled benchmark systems. Additional work is needed to determine how well these approaches transfer to the target project environment.
+
+Future evaluation should investigate:
+
+- OpenTelemetry Demo or another representative cloud-native benchmark.
+- Unseen fault types.
+- Naturally occurring anomalies.
+- Missing or noisy telemetry.
+- Class imbalance.
+- False-alarm costs.
+- Detection latency.
+- Resource overhead.
+- Cross-service and cross-environment generalization.
+- Whether project telemetry can be released without violating data restrictions.
+
+### Final Decision Summary
+
+| Decision | Selected approach |
+|---|---|
+| Long-term architecture | Eadro-inspired multi-source model |
+| First practical model direction | Metric-first multivariate anomaly detector |
+| Published baseline reproduction | CausalRCA |
+| Lightweight comparison/reference | MicroRCA |
+| Immediate implementation | Out of scope for this literature-review issue |
+
+### Completion Checklist
+
+- [x] Three papers compared.
+- [x] Strengths and limitations compared.
+- [x] Numerical results interpreted with metric differences.
+- [x] Most promising overall approach identified.
+- [x] Most feasible first-model direction identified.
+- [x] Published-baseline candidate identified.
+- [x] Project-specific recommendation documented.
+- [ ] Final Markdown file committed to GitHub.
+- [ ] Pull request updated.
+- [ ] Pull request link added to the parent Linear issue.
+- [ ] Parent Linear issue moved to Done after team review.
