@@ -17,7 +17,7 @@ Identify and compare viable datasets and benchmark approaches for the AI-driven 
 ## 1. SMD — Server Machine Dataset
 
 **Source:** NetManAIOps/OmniAnomaly — `ServerMachineDataset`  
-**Source link:** (https://github.com/NetManAIOps/OmniAnomaly/security)
+**Source link:** https://github.com/NetManAIOps/OmniAnomaly/tree/master/ServerMachineDataset
 
 ### Description
 
@@ -77,6 +77,10 @@ As an additional verification step:
 
 This confirms that the recommended dataset is not only publicly listed but can actually be obtained and inspected by the team.
 
+### License / Access Restrictions
+
+SMD is publicly accessible through the OmniAnomaly GitHub repository and is distributed under the MIT License. No registration is required.
+
 ### Strengths
 
 - Direct fit for multivariate time-series anomaly detection
@@ -108,7 +112,7 @@ This confirms that the recommended dataset is not only publicly listed but can a
 ## 2. RCAEval
 
 **Source:** phamquiluan/RCAEval  
-**Source link:** https://github.com/phamquiluan/RCAEval?utm_source=chatgpt.com
+**Source link:** https://github.com/phamquiluan/RCAEval
 
 ### Description
 
@@ -173,6 +177,10 @@ The dataset table also confirmed the availability of metrics, logs, and traces a
 
 The complete multi-GB dataset was intentionally not downloaded because RCAEval is not the primary dataset selected for the first Checkpoint 1 model.
 
+### License / Access Restrictions
+
+RCAEval is publicly accessible. The datasets and code implemented by the RCAEval authors are distributed under the MIT License. Some included baseline implementations use other licenses or have no stated license, so reuse of individual baseline code should be checked separately.
+
 ### Storage / Compute Considerations
 
 The RCAEval project provides a Hugging Face Parquet distribution of approximately 3.4 GB and allows individual suites or cases to be downloaded instead of retrieving the entire dataset.
@@ -213,7 +221,7 @@ This makes RCAEval feasible for later project work but substantially heavier tha
 ## 3. Loghub HDFS_v1
 
 **Source:** logpai/loghub — `HDFS`  
-**Source link:** https://github.com/logpai/loghub/tree/master/HDFS?utm_source=chatgpt.com
+**Source link:** https://github.com/logpai/loghub/tree/master/HDFS
 
 ### Description
 
@@ -259,6 +267,10 @@ The HDFS README was inspected directly and confirmed that HDFS_v1:
 - contains manually assigned anomaly labels,
 - assigns normal/anomaly ground truth to traces, and
 - provides downloadable/preprocessed resources for research.
+
+### License / Access Restrictions
+
+Loghub datasets are freely available for research or academic work. For any usage or distribution, the Loghub repository should be referenced and the Loghub paper cited where applicable. The Loghub license notice should be retained with copies of the dataset.
 
 ### Strengths
 
@@ -388,7 +400,9 @@ Evidence captured:
 - Loghub HDFS_v1 repository and README accessed
 - HDFS normal/anomaly labeling documentation verified
 
-Supporting screenshots will be stored with this evaluation documentation.
+### Supporting Evidence
+
+- [SMD access verification](evidence/smd-access-evidence.pdf) — shows the SMD repository, the `machine-1-1.txt` file accessible on GitHub, and the downloaded telemetry file opened locally.
 
 ---
 
