@@ -484,9 +484,9 @@ Eadro should be considered the strongest candidate for the project’s long-term
 * [x] Compute requirements documented.
 * [x] Reproduction difficulty assessed.
 * [x] Strengths and limitations documented.
-* [ ] Findings added to the GitHub literature-review file.
-* [ ] Changes committed to GitHub.
-* [ ] GitHub commit or pull request linked to the Linear issue.
+* [x] Findings added to the GitHub literature-review file.
+* [x] Changes committed to GitHub.
+* [x] GitHub commit or pull request linked to the Linear issue.
 
 
 ## 3. CausalRCA: Causal Inference Based Precise Fine-Grained Root Cause Localization for Microservice Applications
@@ -733,9 +733,9 @@ CausalRCA is the strongest candidate among the three papers for a focused publis
 * [x] Compute requirements documented.
 * [x] Reproduction difficulty assessed.
 * [x] Strengths and limitations documented.
-* [ ] Findings added to the GitHub literature-review file.
-* [ ] Changes committed to GitHub.
-* [ ] GitHub commit or pull request linked to the Linear issue.
+* [x] Findings added to the GitHub literature-review file.
+* [x] Changes committed to GitHub.
+* [x] GitHub commit or pull request linked to the Linear issue.
 
 ## 4. Cross-Paper Comparison
 
@@ -895,7 +895,7 @@ Future evaluation should investigate:
 - [x] Most feasible first-model direction identified.
 - [x] Published-baseline candidate identified.
 - [x] Project-specific recommendation documented.
-- [ ] Final Markdown file committed to GitHub.
-- [ ] Pull request updated.
-- [ ] Pull request link added to the parent Linear issue.
-- [ ] Parent Linear issue moved to Done after team review.
+- [x] Final Markdown file committed to GitHub.
+- [x] Pull request updated.
+- [x] Pull request link added to the parent Linear issue.
+- [x] Parent Linear issue moved to Done after team review.
