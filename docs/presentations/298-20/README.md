@@ -1,5 +1,9 @@
 # Root-Cause and Microservice Environment Presentation Section
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md).
+
 This is my presentation section for Linear issue **298-20**. It uses the research completed in 298-9 and the environment evaluation completed in 298-12.
 
 ## Slide 1: Microservice environment and telemetry
