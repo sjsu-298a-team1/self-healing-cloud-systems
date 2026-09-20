@@ -1,5 +1,9 @@
 # Published Baseline Selection for Project 298A
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../README.md).
+
 ## 1. Baseline Selection Summary
 
 ### Selected published baseline

@@ -785,6 +785,12 @@ A fair comparison would require running the selected approaches on the same Open
 
 ## 5. Recommendation for the 298A Project
 
+> **Status: superseded.** The team's actual published-baseline decision is BARO, and
+> Model 1's dataset is the BARO original Online Boutique artifact (see
+> [docs/baseline/README.md](../baseline/README.md)) — not SMD/CausalRCA as recommended
+> below. The paper reviews above remain valid reference material; the recommendation
+> and decision summary in this section are no longer the project's current direction.
+
 ### Recommended First-Model Direction
 
 The recommended first-model direction is a staged, metric-first approach inspired by MicroRCA, CausalRCA, and Eadro:

@@ -205,6 +205,11 @@ The accuracy values cannot be compared as if all three papers ran the same test.
 
 ## Decision for our project
 
+> **Status: superseded.** The team's actual published-baseline decision is BARO
+> (see [docs/baseline/README.md](../../baseline/README.md)), not MicroRCA/Eadro/CausalRCA.
+> The paper comparison and analysis above remain valid reference material; only the
+> recommendation and next-steps below are no longer the project's current direction.
+
 Eadro is the best **design reference** because it uses metrics, logs, traces, and a trace-based service graph. That is close to the data we plan to collect. However, after inspecting its repository, I do not recommend selecting Eadro as our first reproduction. The released artifact needs too much debugging before we can trust an exact result.
 
 MicroRCA is still the best **baseline candidate**, but with a condition: we should first perform a small feasibility test. The method is simple, has no neural training, uses service dependencies, and reports PR@1 and PR@3. We need to confirm that we can map OpenTelemetry trace latency and resource metrics into its expected CSV format. We should not claim that the paper is reproduced until we run that test and match at least one provided example.

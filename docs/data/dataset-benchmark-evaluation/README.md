@@ -1,5 +1,9 @@
 # 298-11 — Dataset & Benchmark Evaluation
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md).
+
 ## Objective
 
 Identify and compare viable datasets and benchmark approaches for the AI-driven incident response and self-healing cloud systems project. The evaluation focuses on telemetry coverage, anomaly/root-cause ground truth, accessibility, reproducibility, and suitability for the project’s planned models.
