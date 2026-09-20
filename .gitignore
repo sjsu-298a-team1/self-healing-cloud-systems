@@ -216,3 +216,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# Project-specific: BARO baseline / Model 1 (never commit these)
+# ---------------------------------------------------------------------------
+
+# External baseline clones (each contributor clones these locally, not into the repo)
+code/baro/
+**/baro/
+
+# Raw BARO/telemetry datasets and other downloaded data archives
+data/**/fse-ob/
+data/**/raw/
+*.zip
+*.tar.gz
+
+# Model checkpoints and other large generated model artifacts
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.onnx
+checkpoints/
