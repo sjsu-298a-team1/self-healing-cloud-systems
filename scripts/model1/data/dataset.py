@@ -90,14 +90,14 @@ def _sliding_windows(x, window_length, stride):
     return windows, last_row_idx
 
 
-def build_train_windows(data_root, train_cases, features, scaler,
-                         window_length=WINDOW_LENGTH, stride=TRAIN_STRIDE):
-    """Training windows: pre-fault (time < inject_time) rows of TRAIN-split cases
-    only, scaled with the frozen scaler. Never touches val/test cases, never
-    includes any row with time >= inject_time for any case."""
+def _build_known_normal_windows(data_root, case_ids, features, scaler, window_length, stride):
+    """Shared implementation: sliding windows built ONLY from the known-normal
+    region (time < inject_time) of the given cases, scaled with the frozen
+    scaler. Never includes any row with time >= inject_time for any case,
+    regardless of which case list (train or val) is passed in."""
     all_windows = []
     metadata = []
-    for cid in train_cases:
+    for cid in case_ids:
         df, inject_time = load_case_df(data_root, cid)
         pre = df[df["time"] < inject_time].reset_index(drop=True)
         x = apply_scaler(pre, features, scaler)
@@ -114,6 +114,28 @@ def build_train_windows(data_root, train_cases, features, scaler,
             )
     stacked = np.concatenate(all_windows, axis=0) if all_windows else np.empty((0, window_length, len(features)))
     return stacked, metadata
+
+
+def build_train_windows(data_root, train_cases, features, scaler,
+                         window_length=WINDOW_LENGTH, stride=TRAIN_STRIDE):
+    """Training windows: pre-fault (time < inject_time) rows of TRAIN-split cases
+    only, scaled with the frozen scaler, stride=TRAIN_STRIDE by default. Never
+    touches val/test cases, never includes any row with time >= inject_time."""
+    return _build_known_normal_windows(data_root, train_cases, features, scaler, window_length, stride)
+
+
+def build_model_selection_validation_windows(data_root, val_cases, features, scaler,
+                                              window_length=WINDOW_LENGTH, stride=EVAL_STRIDE):
+    """Model-selection validation windows: pre-fault (time < inject_time) rows of
+    VAL-split cases only, stride=EVAL_STRIDE (finer than the train stride) by
+    default. Used ONLY for val_reconstruction_loss, early stopping, and
+    best-checkpoint selection during Model 1 training -- NEVER for threshold
+    selection or any labeled metric (F1, detection delay, pre-fault FPR), and
+    NEVER includes any post-injection row. This is a deliberately different,
+    more restrictive function from build_eval_windows() (full pre+post
+    timeline), which is reserved for the later, separate threshold-selection/
+    evaluation phase."""
+    return _build_known_normal_windows(data_root, val_cases, features, scaler, window_length, stride)
 
 
 def build_eval_windows(data_root, case_ids, features, scaler,
