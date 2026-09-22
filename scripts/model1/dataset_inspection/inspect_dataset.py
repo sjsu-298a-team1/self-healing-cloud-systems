@@ -75,18 +75,24 @@ def find_cases(data_root):
                     service=service,
                     fault_type=fault_type,
                     run_id=run_id,
-                    path=run_dir,
+                    case_id=f"{combo_name}/{run_id}",
+                    # Absolute path -- used only for internal file I/O below, never
+                    # persisted to a generated artifact (see inspect_case): storing it
+                    # would bake the caller's machine-specific --data-dir into
+                    # committed output. case_id is the portable, dataset-relative
+                    # identifier and is what actually gets written out.
+                    _abs_path=run_dir,
                 )
             )
     return cases
 
 
 def inspect_case(case):
-    path = case["path"]
+    path = case["_abs_path"]
     sd_path = os.path.join(path, "simple_data.csv")
     inject_path = os.path.join(path, "inject_time.txt")
 
-    result = dict(case)
+    result = {k: v for k, v in case.items() if k != "_abs_path"}
     result["simple_data_exists"] = os.path.exists(sd_path)
     result["inject_time_exists"] = os.path.exists(inject_path)
     if not result["simple_data_exists"]:
@@ -216,7 +222,9 @@ def main():
     service_counts = case_df["service"].value_counts().to_dict()
 
     summary = dict(
-        data_root=data_root,
+        # Portable placeholder, not the caller's actual --data-dir value -- see
+        # inspect_case()/find_cases() for why absolute paths are never persisted.
+        data_root="<BARO_DATA_DIR>",
         n_cases_found=len(cases),
         n_cases_expected=100,
         combo_dirs=sorted(set(case_df["combo"])),

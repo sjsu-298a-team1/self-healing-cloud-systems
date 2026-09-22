@@ -70,7 +70,11 @@ def find_cases(data_root):
                     service=service,
                     fault_type=fault_type,
                     run_id=os.path.basename(run_dir),
-                    path=run_dir,
+                    # Absolute path -- internal file I/O only, never written to any
+                    # generated artifact (none of this script's outputs currently
+                    # persist it, but the leading underscore makes that intentional
+                    # rather than incidental if this dict is ever serialized directly).
+                    _abs_path=run_dir,
                 )
             )
     return cases
@@ -90,8 +94,8 @@ def main():
     loaded = {}
     for case in cases:
         cid = f"{case['combo']}/{case['run_id']}"
-        sd_path = os.path.join(case["path"], "simple_data.csv")
-        inj_path = os.path.join(case["path"], "inject_time.txt")
+        sd_path = os.path.join(case["_abs_path"], "simple_data.csv")
+        inj_path = os.path.join(case["_abs_path"], "inject_time.txt")
         if not os.path.exists(sd_path):
             continue
         df = pd.read_csv(sd_path)
