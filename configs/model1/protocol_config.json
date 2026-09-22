@@ -43,7 +43,8 @@
     "fit_on": "pre-fault rows of TRAIN-split cases only (same rows used to train the autoencoder)",
     "applied_to": "train, val, and test rows alike (pre-fault and post-fault), using the frozen train-fit mean/std -- val/test statistics must never influence the scaler",
     "artifact": "configs/scaler.json (per-feature mean, std, n_rows_used, fit source case list)",
-    "zero_std_handling": "if any feature has std == 0 across the fit rows, std is floored to 1e-8 to avoid division by zero; flagged explicitly in scaler.json under 'near_zero_std_features'"
+    "zero_std_handling": "if any feature has std == 0 across the fit rows, std is floored to 1e-8 to avoid division by zero; flagged explicitly in scaler.json under 'near_zero_std_features'",
+    "missing_value_policy": "Missing locked-feature values are imputed with feature means estimated from the training split's known-normal region only; after z-score normalization these imputed values equal zero. No forward-fill, backward-fill, or neighbor interpolation is used; no case, window, or the scaler itself is dropped/refit as a result. The same rule, using the same committed training-only means, applies consistently to train, validation, and test data. This is a preprocessing correction discovered during the first real training attempt (run baseline_seed42_h64_z32 diverged to NaN when raw missing cells reached the network), not a hyperparameter-tuning decision. Implemented in scripts/model1/data/dataset.py (impute_missing_with_training_mean, apply_scaler), which also hard-fails (raises ValueError) if any non-finite value remains after imputation + scaling."
   },
   "windowing": {
     "status": "INITIAL PROTOCOL - chosen from dataset structure only (1 Hz sampling, 720s/case), NOT tuned against val or test performance",

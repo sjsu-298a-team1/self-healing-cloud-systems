@@ -243,7 +243,7 @@ def main():
     # Deliberately never: load_manifest("test", ...) -- the test split is not
     # loaded anywhere in this file, in this phase or any other.
 
-    train_windows_np, _ = build_train_windows(
+    train_windows_np, train_meta = build_train_windows(
         data_dir, train_cases, features, scaler, window_length=WINDOW_LENGTH, stride=TRAIN_STRIDE
     )
     # Model-selection validation windows: known-normal (time < inject_time) rows
@@ -255,17 +255,30 @@ def main():
     # protocol_config.json windowing.eval_windows_source) used later for
     # threshold selection -- that full timeline is a separate, later phase and
     # is never built or touched anywhere in this training path.
-    val_windows_np, _ = build_model_selection_validation_windows(
+    val_windows_np, val_meta = build_model_selection_validation_windows(
         data_dir, val_cases, features, scaler, window_length=WINDOW_LENGTH, stride=EVAL_STRIDE
     )
 
     train_windows = torch.tensor(train_windows_np, dtype=torch.float32)
     val_windows = torch.tensor(val_windows_np, dtype=torch.float32)
 
+    # n_imputed_cells_this_case is repeated across every window from the same
+    # case (imputation happens once on the case's raw rows, before windowing),
+    # so dedupe by case_id before summing to get a true total cell count.
+    def total_imputed_cells(metadata):
+        per_case = {m["case_id"]: m["n_imputed_cells_this_case"] for m in metadata}
+        return sum(per_case.values())
+
     run_dir = os.path.join(args.experiments_dir, args.run_id)
     model, history, checkpoint_tracker = run_training_loop(
         train_windows, val_windows, training_config, run_dir, args.run_id,
-        extra_metadata=dict(n_train_cases=len(train_cases), n_val_cases=len(val_cases)),
+        extra_metadata=dict(
+            n_train_cases=len(train_cases),
+            n_val_cases=len(val_cases),
+            missing_value_policy="committed feature mean estimated from training-split known-normal data",
+            train_imputed_cells=total_imputed_cells(train_meta),
+            val_imputed_cells=total_imputed_cells(val_meta),
+        ),
     )
 
     print(f"Run complete: {len(history)} epochs, best val_loss={checkpoint_tracker.best_val_loss:.6f} "
