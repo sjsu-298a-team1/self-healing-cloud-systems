@@ -1,0 +1,103 @@
+{
+  "model": "M1: multivariate LSTM encoder-decoder autoencoder",
+  "linear_issue": "Define Model 1 preprocessing, split, and evaluation protocol",
+  "dataset": {
+    "root": "<BARO_DATA_DIR> (BARO's data/fse-ob directory; path supplied by the caller via --data-dir, not fixed to any machine)",
+    "n_cases": 100,
+    "sampling_rate_hz": 1,
+    "rows_per_case": 721,
+    "span_sec": 720
+  },
+  "limitations": {
+    "fault_duration": {
+      "statement": "The artifact provides inject_time (fault injection timestamp) but NO verified fault-end time. No fault-duration or fault-removal evidence was found in the BARO paper, its supplementary material, or the artifact source/config (full investigation: ../fault_duration_investigation.md). This limitation must be documented and accounted for BEFORE training, not discovered afterward from confusing results.",
+      "consequences": [
+        "t < inject_time is the ONLY region with a verified ground-truth label (known-normal, since it strictly precedes fault injection) -- it is therefore the ONLY region used to compute pre-fault FPR.",
+        "detection delay is defined purely operationally as time from inject_time to the first post-injection-region detection -- it does NOT assume or require that the fault was still physically active at the moment of detection, only that injection had already occurred.",
+        "t >= inject_time is called the 'post-injection evaluation region' and is scored AS IF anomalous, following the dataset/paper convention (BARO's own utility.py/reproducibility.py use the same t >= inject_time split) -- but this is NOT claimed to represent verified active-fault ground truth at every timestamp in that region. Some tail of that region may reflect a fault that has already self-terminated (plausible for stress-ng-based CPU/mem faults, which commonly run with an explicit timeout) rather than an ongoing active fault.",
+        "DELAY and LOSS faults are injected via `tc`, whose rules do not self-expire on their own -- this makes it PLAUSIBLE they remain active through end-of-case given the paper states the system is only restarted after data collection finishes. This is stated as a plausibility argument from how `tc` behaves generally, NOT as confirmed by direct artifact evidence, and must not be described as 'confirmed persistent' anywhere in this protocol or downstream reporting."
+      ],
+      "required_mitigation": "evaluation must be reported stratified by fault_type (see metrics.stratified_evaluation) so that any systematic difference in post-injection-region behavior between CPU/MEM (stress-ng, possible early self-termination) and DELAY/LOSS (tc, plausibly persistent) can actually be observed rather than averaged away."
+    }
+  },
+  "features": {
+    "file": "features.json",
+    "n_features": 55,
+    "excludes": ["time", "row_index", "the 7 non-universal columns listed in features.json"]
+  },
+  "split": {
+    "unit": "whole case (one run of one service/fault_type combo)",
+    "rule": "REVISED: for each of the 20 (service, fault_type) combos, {1,2,3,4,5} is deterministically shuffled with random.Random(f'{split_seed}-{combo}') (seed recorded in configs/split_seed.json); first 3 shuffled run_ids -> train, next 1 -> val, last 1 -> test. Replaces an earlier version that always assigned run 4 -> val and run 5 -> test for every combo, which risked confounding the split with any run-order effect.",
+    "seed_artifact": "configs/split_seed.json (seed value + the exact permutation used per combo, for audit/reproducibility)",
+    "n_train_cases": 60,
+    "n_val_cases": 20,
+    "n_test_cases": 20,
+    "manifests": ["manifests/train_cases.json", "manifests/val_cases.json", "manifests/test_cases.json"]
+  },
+  "training_data_policy": {
+    "rule": "M1 is trained ONLY on pre-fault (normal) rows from train-split cases: rows where time < inject_time",
+    "rationale": "M1 is an autoencoder learning a 'normal telemetry' manifold; post-fault rows, even in train-split cases, are never used as training targets/inputs for the autoencoder"
+  },
+  "normalization": {
+    "method": "per-feature z-score (StandardScaler): x' = (x - mean) / std",
+    "fit_on": "pre-fault rows of TRAIN-split cases only (same rows used to train the autoencoder)",
+    "applied_to": "train, val, and test rows alike (pre-fault and post-fault), using the frozen train-fit mean/std -- val/test statistics must never influence the scaler",
+    "artifact": "configs/scaler.json (per-feature mean, std, n_rows_used, fit source case list)",
+    "zero_std_handling": "if any feature has std == 0 across the fit rows, std is floored to 1e-8 to avoid division by zero; flagged explicitly in scaler.json under 'near_zero_std_features'"
+  },
+  "windowing": {
+    "status": "INITIAL PROTOCOL - chosen from dataset structure only (1 Hz sampling, 720s/case), NOT tuned against val or test performance",
+    "window_length_sec": 30,
+    "window_length_steps": 30,
+    "stride_train_sec": 5,
+    "stride_train_steps": 5,
+    "stride_eval_sec": 1,
+    "stride_eval_steps": 1,
+    "rationale": "30s window is long enough to capture short-lived CPU/latency spikes while remaining short relative to the 360s pre-fault and 360s post-fault segments; stride=5 for training windows reduces near-duplicate overlap between adjacent windows drawn from the same 360s normal segment; stride=1 for evaluation windows maximizes temporal resolution for detection-delay measurement",
+    "train_windows_source": "sliding windows entirely within the pre-fault segment (time < inject_time) of train-split cases only",
+    "eval_windows_source": "sliding windows across the FULL case (both pre- and post-fault) for val/test-split cases, used only for threshold selection (val) and final protocol validation (test only after model training -- not performed in this phase)",
+    "open_for_human_approval": "window_length_sec and stride values are a reasonable starting point, not empirically justified; flagged in report as needing sign-off or later tuning ON VAL ONLY"
+  },
+  "labeling": {
+    "terminology_revision": "REVISED per fault-duration investigation (see ../fault_duration_investigation.md). Neither the BARO paper, its supplementary material, nor the artifact source code state or confirm that the injected fault (stress-ng for CPU/mem, tc for delay/loss) remains physically active for the entire post-injection segment through end-of-case. The paper only defines an 'anomalous period' mathematically as spanning from t_inject to the end of the recorded window (t_0+T) -- an evaluation-metric convention, not a verified physical claim. Consequently: t < inject_time is still called 'pre-fault / normal region' (this is well-supported -- it precedes injection entirely), but t >= inject_time is now called the 'post-injection evaluation region', NOT a guaranteed anomaly label. Rows/windows in this region are evaluated AS IF anomalous, matching BARO's own convention and the paper's own metric definition, but this is a labeling ASSUMPTION carried over from the baseline paper, not an artifact-confirmed ground truth. Any F1/precision/recall numbers computed under this assumption should be reported with this caveat.",
+    "row_label_rule": "row is treated as belonging to the post-injection evaluation region iff time >= inject_time (matches BARO's own utility.py/reproducibility.py convention); no fault-end marker exists in the artifact, so this region runs through end-of-case by convention, not by confirmed fault duration",
+    "window_label_rule": "a window is treated as belonging to the post-injection evaluation region iff its LAST timestep's row is in that region (time_of_last_step >= inject_time)",
+    "window_prediction_rule": "a window is PREDICTED anomalous iff its reconstruction error (e.g. mean squared error over the window) exceeds a threshold; threshold is selected on the VAL split only (e.g. a percentile of val normal-window reconstruction errors), never on test",
+    "detection_event_rule": "for a given test case, 'detection time' = timestamp of the first evaluation window (by last-timestep time) predicted anomalous at or after inject_time; if no window in the post-injection evaluation region is ever predicted anomalous for that case, the case is counted as a miss (no detection) for detection-delay purposes but still contributes to recall/precision as false negatives under the labeling assumption above"
+  },
+  "metrics": {
+    "unit_of_evaluation": "evaluation window (see windowing.eval_windows_source), pooled across all cases in the split being scored, AND stratified by fault_type (see stratified_evaluation below)",
+    "formulas": {
+      "precision": "TP / (TP + FP)",
+      "recall": "TP / (TP + FN)",
+      "f1": "2 * precision * recall / (precision + recall)",
+      "detection_delay_per_case": "time from inject_time to the first post-injection-evaluation-region window predicted anomalous ('detection'), in seconds; purely operational -- does not assume the fault was still physically active at the moment of detection; computed only for cases with at least one detection",
+      "detection_delay_summary": "median of per-case detection_delay across all cases in the split that had a detection (report also: count of cases with no detection, reported separately, not silently dropped)",
+      "pre_fault_false_positive_rate": "count(windows with time < inject_time predicted anomalous) / count(all windows with time < inject_time). Computed ONLY over the known-normal region (time < inject_time) -- this is the one region with a verified ground-truth label (see limitations.fault_duration) -- and never over any part of the post-injection evaluation region."
+    },
+    "confusion_matrix_definitions": {
+      "note": "'label' below means the window's region per window_label_rule (pre-fault known-normal region vs. post-injection evaluation region), not a confirmed ground-truth anomaly -- see labeling.terminology_revision and limitations.fault_duration",
+      "TP": "window label = post-injection evaluation region AND prediction = anomalous",
+      "FP": "window label = pre-fault known-normal region AND prediction = anomalous",
+      "FN": "window label = post-injection evaluation region AND prediction = normal",
+      "TN": "window label = pre-fault known-normal region AND prediction = normal"
+    },
+    "stratified_evaluation": {
+      "requirement": "In addition to the pooled numbers above, ALL metrics (precision, recall, F1, pre-fault FPR, detection delay) must also be reported separately for each of the 4 fault types: CPU, MEM, DELAY, LOSS.",
+      "rationale": "Directly required by limitations.fault_duration.required_mitigation -- CPU/MEM (stress-ng, possible early self-termination) and DELAY/LOSS (tc, plausibly persistent) may behave differently in the post-injection evaluation region; pooling across all 4 would hide that difference. Stratified numbers let the team see, e.g., detection delay or F1 degrading specifically for CPU/MEM in ways consistent with an early-ending fault, without such a pattern being averaged away by DELAY/LOSS cases.",
+      "grouping_key": "fault_type, parsed from each case_id's combo name (e.g. 'cartservice_cpu/3' -> 'cpu'); implemented and unit-tested in scripts/metrics.py (fault_type_of_case, group_case_ids_by_fault_type) and validated against all 100 real case ids in scripts/validate_protocol.py (fault_type_stratification check)",
+      "caution": "Do not describe DELAY or LOSS results as reflecting a 'confirmed persistent' fault in any report of these stratified numbers -- see limitations.fault_duration.consequences. Persistence for DELAY/LOSS remains a plausibility argument, not artifact-confirmed evidence."
+    }
+  },
+  "success_targets": {
+    "f1_min": 0.82,
+    "median_detection_delay_max_sec": 10,
+    "pre_fault_fpr_max": 0.05
+  },
+  "explicitly_not_done_in_this_phase": [
+    "no LSTM training",
+    "no threshold selection against test data",
+    "no inspection of test-set model performance",
+    "no tuning of window_length/stride against val or test results"
+  ]
+}

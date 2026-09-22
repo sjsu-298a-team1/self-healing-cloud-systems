@@ -1,0 +1,39 @@
+{
+  "split_overlap": {
+    "passed": true,
+    "problems": [],
+    "n_train": 60,
+    "n_val": 20,
+    "n_test": 20
+  },
+  "feature_consistency": {
+    "passed": true,
+    "n_cases_checked": 100,
+    "n_features_expected": 55,
+    "cases_missing_features": {},
+    "cases_with_non_numeric_features": {}
+  },
+  "scaler_train_only": {
+    "passed": true,
+    "problems": [],
+    "max_mean_diff": 0.0,
+    "max_std_diff": 0.0,
+    "negative_control_detected_contamination": true
+  },
+  "no_time_index_leakage": {
+    "passed": true,
+    "problems": [],
+    "leaked_columns": []
+  },
+  "fault_type_stratification": {
+    "passed": true,
+    "problems": [],
+    "counts_per_fault_type": {
+      "cpu": 25,
+      "mem": 25,
+      "delay": 25,
+      "loss": 25
+    }
+  },
+  "all_checks_passed": true
+}
