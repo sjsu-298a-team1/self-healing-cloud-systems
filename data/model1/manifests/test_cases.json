@@ -1,0 +1,26 @@
+{
+  "split": "test",
+  "n_cases": 20,
+  "case_ids": [
+    "cartservice_cpu/4",
+    "cartservice_delay/3",
+    "cartservice_loss/3",
+    "cartservice_mem/1",
+    "checkoutservice_cpu/3",
+    "checkoutservice_delay/2",
+    "checkoutservice_loss/3",
+    "checkoutservice_mem/1",
+    "currencyservice_cpu/2",
+    "currencyservice_delay/1",
+    "currencyservice_loss/4",
+    "currencyservice_mem/5",
+    "paymentservice_cpu/3",
+    "paymentservice_delay/2",
+    "paymentservice_loss/2",
+    "paymentservice_mem/1",
+    "productcatalogservice_cpu/4",
+    "productcatalogservice_delay/4",
+    "productcatalogservice_loss/1",
+    "productcatalogservice_mem/5"
+  ]
+}
