@@ -1,5 +1,13 @@
 # Literature Review: Safe Autonomous Remediation and Action-Risk Gating
 
+> **Note (added after Checkpoint 1):** this review references SMD and CausalRCA as
+> the anomaly-detection dataset and published baseline "other pillars of our
+> project" had at the time of writing. Both are superseded — the current published
+> baseline is BARO on the Online Boutique dataset (see
+> [docs/baseline/README.md](../../baseline/README.md)). The safe-remediation
+> literature analysis below is unaffected by this change and remains current
+> research context for Model 4 (action-risk classifier / autonomous-execution gate).
+
 This review is for Linear issue **298-16**. I wanted to understand how earlier work decides whether an automated repair action is safe enough to run without a person approving it first.
 
 This question sits at the end of our pipeline. Our anomaly detector will flag a problem, and our root-cause model will name a service. At that point the system has to choose what to do about it, and that is where the risk appears. If the root-cause model ranks the wrong service, a repair aimed at that service does not fix the incident, and it adds a second disturbance while the first one is still active.
