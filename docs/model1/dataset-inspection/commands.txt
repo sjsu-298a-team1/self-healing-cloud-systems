@@ -1,0 +1,7 @@
+cd scripts/model1/dataset_inspection
+python3 inspect_dataset.py --data-dir <BARO_DATA_DIR> --out-dir ../../../data/model1/dataset_inspection
+python3 inspect_schema_and_missingness.py --data-dir <BARO_DATA_DIR> --out-dir ../../../data/model1/dataset_inspection
+
+# <BARO_DATA_DIR> is the path to BARO's data/fse-ob directory on your machine
+# (the Online Boutique artifact from Zenodo record 11046533 / github.com/phamquiluan/baro).
+# Use whichever Python environment has pandas/numpy installed.
