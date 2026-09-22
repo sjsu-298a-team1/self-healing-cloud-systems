@@ -1,5 +1,5 @@
 {
-  "data_root": "/Users/khushidonda/298A_project/code/baro/data/fse-ob",
+  "data_root": "<BARO_DATA_DIR>",
   "n_cases_found": 100,
   "n_cases_expected": 100,
   "combo_dirs": [
