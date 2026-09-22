@@ -1,0 +1,16 @@
+{
+  "n_features": 55,
+  "n_train_cases_loaded": 60,
+  "n_train_cases_with_windows": 60,
+  "n_training_windows": 4020,
+  "tensor_shape": [
+    4020,
+    30,
+    55
+  ],
+  "window_length": 30,
+  "train_stride": 5,
+  "windows_per_case_min": 67,
+  "windows_per_case_max": 67,
+  "all_windows_strictly_pre_fault": true
+}
