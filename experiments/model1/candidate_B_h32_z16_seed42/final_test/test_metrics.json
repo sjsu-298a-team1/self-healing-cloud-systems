@@ -1,0 +1,85 @@
+{
+  "threshold": 0.8249893178835667,
+  "pooled": {
+    "tp": 5387,
+    "fp": 1009,
+    "fn": 1833,
+    "tn": 5611,
+    "precision": 0.842245153220763,
+    "recall": 0.7461218836565097,
+    "f1": 0.7912749706227967,
+    "pre_fault_fpr": 0.152416918429003,
+    "median_detection_delay": 12.0,
+    "n_cases_with_detection": 20,
+    "n_cases_missed": 0,
+    "n_cases": 20
+  },
+  "by_fault_type": {
+    "cpu": {
+      "tp": 1705,
+      "fp": 364,
+      "fn": 100,
+      "tn": 1291,
+      "precision": 0.8240695988400193,
+      "recall": 0.9445983379501385,
+      "f1": 0.8802271553949407,
+      "pre_fault_fpr": 0.2199395770392749,
+      "median_detection_delay": 9,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "mem": {
+      "tp": 1768,
+      "fp": 501,
+      "fn": 37,
+      "tn": 1154,
+      "precision": 0.7791978845306302,
+      "recall": 0.9795013850415513,
+      "f1": 0.8679430535100638,
+      "pre_fault_fpr": 0.3027190332326284,
+      "median_detection_delay": 5,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "delay": {
+      "tp": 1614,
+      "fp": 102,
+      "fn": 191,
+      "tn": 1553,
+      "precision": 0.9405594405594405,
+      "recall": 0.8941828254847646,
+      "f1": 0.9167850042601533,
+      "pre_fault_fpr": 0.06163141993957704,
+      "median_detection_delay": 17,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "loss": {
+      "tp": 300,
+      "fp": 42,
+      "fn": 1505,
+      "tn": 1613,
+      "precision": 0.8771929824561403,
+      "recall": 0.16620498614958448,
+      "f1": 0.27945971122496505,
+      "pre_fault_fpr": 0.025377643504531724,
+      "median_detection_delay": 64,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    }
+  },
+  "targets": {
+    "f1_min": 0.82,
+    "median_detection_delay_max_sec": 10,
+    "pre_fault_fpr_max": 0.05
+  },
+  "targets_met": {
+    "f1": false,
+    "median_detection_delay": false,
+    "pre_fault_fpr": false
+  }
+}

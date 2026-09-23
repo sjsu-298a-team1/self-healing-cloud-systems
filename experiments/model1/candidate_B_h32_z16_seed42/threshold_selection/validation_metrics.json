@@ -1,0 +1,75 @@
+{
+  "threshold": 0.5130200869197038,
+  "pooled": {
+    "tp": 5921,
+    "fp": 331,
+    "fn": 1299,
+    "tn": 6289,
+    "precision": 0.9470569417786309,
+    "recall": 0.8200831024930748,
+    "f1": 0.8790083135391924,
+    "pre_fault_fpr": 0.05,
+    "median_detection_delay": 15.0,
+    "n_cases_with_detection": 20,
+    "n_cases_missed": 0,
+    "n_cases": 20
+  },
+  "by_fault_type": {
+    "cpu": {
+      "tp": 1727,
+      "fp": 30,
+      "fn": 78,
+      "tn": 1625,
+      "precision": 0.9829254410927718,
+      "recall": 0.9567867036011081,
+      "f1": 0.9696799550814149,
+      "pre_fault_fpr": 0.01812688821752266,
+      "median_detection_delay": 16,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "mem": {
+      "tp": 1759,
+      "fp": 64,
+      "fn": 46,
+      "tn": 1591,
+      "precision": 0.9648930334613275,
+      "recall": 0.9745152354570638,
+      "f1": 0.9696802646085998,
+      "pre_fault_fpr": 0.03867069486404834,
+      "median_detection_delay": 7,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "delay": {
+      "tp": 1415,
+      "fp": 16,
+      "fn": 390,
+      "tn": 1639,
+      "precision": 0.9888190076869322,
+      "recall": 0.7839335180055401,
+      "f1": 0.8745364647713226,
+      "pre_fault_fpr": 0.009667673716012085,
+      "median_detection_delay": 16,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    },
+    "loss": {
+      "tp": 1020,
+      "fp": 221,
+      "fn": 785,
+      "tn": 1434,
+      "precision": 0.821917808219178,
+      "recall": 0.5650969529085873,
+      "f1": 0.6697307944845698,
+      "pre_fault_fpr": 0.13353474320241693,
+      "median_detection_delay": 36,
+      "n_cases_with_detection": 5,
+      "n_cases_missed": 0,
+      "n_cases": 5
+    }
+  }
+}

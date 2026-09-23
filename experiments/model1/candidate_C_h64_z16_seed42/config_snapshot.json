@@ -1,0 +1,64 @@
+{
+  "training_config": {
+    "status": "Predeclared architecture-capacity candidate C (see configs/model1/candidate_architectures.json). Identical to the approved baseline training_config.json in every respect except model.hidden_size/model.latent_size -- architecture capacity is the sole experimental variable in this comparison.",
+    "model": {
+      "input_size": 55,
+      "sequence_length": 30,
+      "hidden_size": 64,
+      "latent_size": 16,
+      "num_layers": 1,
+      "dropout": 0.0,
+      "note": "Candidate C architecture size from configs/model1/candidate_architectures.json -- num_layers/dropout unchanged from baseline (1 / 0.0)."
+    },
+    "loss": {
+      "name": "mean_squared_error",
+      "note": "Reconstruction MSE between model output and input window, per the locked protocol (M1 is an autoencoder trained on known-normal windows only)."
+    },
+    "optimizer": {
+      "name": "Adam",
+      "learning_rate": 0.001,
+      "note": "Conventional initial value (1e-3) for Adam. UNTUNED -- a reasonable starting point, not chosen through any experiment."
+    },
+    "batch_size": 64,
+    "batch_size_note": "Reasonable starting value given 4,020 training windows (~63 batches/epoch). UNTUNED.",
+    "max_epochs": 100,
+    "max_epochs_note": "Finite upper bound. Actual training will very likely stop earlier via early stopping.",
+    "early_stopping": {
+      "enabled": true,
+      "metric": "val_reconstruction_loss",
+      "mode": "min",
+      "patience_epochs": 10,
+      "note": "Based ONLY on validation reconstruction loss (MSE on known-normal validation windows) -- never on any threshold-derived metric (F1, detection delay, pre-fault FPR), which are explicitly out of scope for this phase."
+    },
+    "checkpoint_selection": {
+      "rule": "save the checkpoint from the epoch with the lowest val_reconstruction_loss seen so far",
+      "note": "Selection uses validation reconstruction loss only -- no anomaly threshold or labeled metric is computed or used anywhere in this phase."
+    },
+    "seed": {
+      "value": 42,
+      "note": "Fixed training seed (Python random, NumPy, PyTorch) controlling model initialization and any training-time shuffling. Intentionally a separate, independent value from configs/model1/split_seed.json's seed (298), which governs the data split and is unrelated to training reproducibility."
+    },
+    "validation_data_usage_this_phase": {
+      "allowed": [
+        "validation reconstruction loss",
+        "early stopping / checkpoint selection"
+      ],
+      "not_yet_done": [
+        "anomaly threshold selection",
+        "validation F1",
+        "validation detection delay",
+        "validation pre-fault FPR"
+      ],
+      "note": "Threshold selection is a separate, later phase after the reconstruction model is frozen, per protocol_config.json's labeling.window_prediction_rule."
+    },
+    "window_regions": {
+      "training_region": "t < 360 (known-normal region), train-split cases only, stride 5 -- scripts/model1/data/dataset.py build_train_windows()",
+      "model_selection_validation_region": "t < 360 (known-normal region), val-split cases only, stride 1 -- scripts/model1/data/dataset.py build_model_selection_validation_windows(). Used ONLY for val_reconstruction_loss, early stopping, and best-checkpoint selection. Because M1 is a one-class normal-behavior reconstruction model, model-selection must never see post-injection windows.",
+      "threshold_selection": "separate later phase, using the FULL pre/post timeline of the validation split (stride 1) via build_eval_windows() -- NOT performed in this phase, and this training path never builds or loads those windows.",
+      "test_region": "not loaded by the training path at all, in this phase or any other."
+    },
+    "test_split_usage_this_phase": "NEVER loaded by the training path.",
+    "missing_value_policy": "See configs/model1/protocol_config.json normalization.missing_value_policy. Summary: raw NaN in a locked feature -> imputed with that feature's training-only committed scaler mean, before scaling, so it becomes 0.0 in standardized space. Discovered necessary after run baseline_seed42_h64_z32 diverged to NaN; this is a preprocessing correction, not a tuning decision."
+  },
+  "n_trainable_parameters": 69959
+}

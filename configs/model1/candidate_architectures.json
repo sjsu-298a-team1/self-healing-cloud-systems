@@ -1,0 +1,77 @@
+{
+  "status": "PREDECLARED before training candidates B/C/D. This is a small, closed, validation-only architecture-capacity comparison -- not an open-ended hyperparameter search. Everything except hidden_size/latent_size is frozen identically to the approved baseline (see frozen_settings below).",
+  "candidates": {
+    "A": {
+      "label": "existing baseline -- already trained, MUST NOT be retrained",
+      "hidden_size": 64,
+      "latent_size": 32,
+      "num_layers": 1,
+      "dropout": 0.0,
+      "run_id": "baseline_seed42_h64_z32_mean_impute",
+      "training_config": "configs/model1/training_config.json"
+    },
+    "B": {
+      "label": "lower-capacity model",
+      "hidden_size": 32,
+      "latent_size": 16,
+      "num_layers": 1,
+      "dropout": 0.0,
+      "run_id": "candidate_B_h32_z16_seed42",
+      "training_config": "configs/model1/training_config_candidate_B.json"
+    },
+    "C": {
+      "label": "stronger bottleneck with same hidden size",
+      "hidden_size": 64,
+      "latent_size": 16,
+      "num_layers": 1,
+      "dropout": 0.0,
+      "run_id": "candidate_C_h64_z16_seed42",
+      "training_config": "configs/model1/training_config_candidate_C.json"
+    },
+    "D": {
+      "label": "higher-capacity model",
+      "hidden_size": 128,
+      "latent_size": 32,
+      "num_layers": 1,
+      "dropout": 0.0,
+      "run_id": "candidate_D_h128_z32_seed42",
+      "training_config": "configs/model1/training_config_candidate_D.json"
+    }
+  },
+  "frozen_settings": {
+    "data_protocol": {
+      "manifests": "same 60/20/20 train/val/test manifests, unchanged",
+      "features": "same 55 locked features",
+      "training_region": "t < inject_time (known-normal region) only",
+      "missing_value_policy": "training-mean imputation, same committed scaler",
+      "scaler": "same committed configs/model1/scaler.json, never refit",
+      "window_length": 30,
+      "train_stride": 5,
+      "eval_stride": 1
+    },
+    "training": {
+      "seed": 42,
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "batch_size": 64,
+      "max_epochs": 100,
+      "patience_epochs": 10,
+      "loss": "reconstruction MSE"
+    },
+    "scoring": {
+      "rule": "window_score = mean((x - reconstruction)^2) across all 30x55 elements",
+      "implemented_in": "scripts/model1/evaluation/scoring.py"
+    },
+    "threshold_rule": {
+      "rule": "validation-only; same deterministic candidate-generation procedure (percentile grid of pre-fault validation scores, 50.0-100.0 step 0.1); selected threshold = smallest candidate whose pooled pre-fault FPR <= 0.05",
+      "note": "The threshold rule itself is NOT altered to chase detection delay for any candidate.",
+      "implemented_in": "scripts/model1/evaluation/threshold_selection.py"
+    },
+    "architecture_variable": "hidden_size and latent_size ONLY. num_layers=1 and dropout=0.0 for all four candidates -- architecture capacity is the sole experimental variable."
+  },
+  "model_selection_rule": {
+    "eligibility": "a candidate is eligible only if validation F1 >= 0.82 AND validation median detection delay <= 10s AND validation pre-fault FPR <= 0.05",
+    "tie_break_order": ["highest validation F1", "lower median detection delay", "fewer trainable parameters"],
+    "note": "Uses validation data only. If no candidate is eligible, stop and report -- do not invent another architecture or inspect test data."
+  }
+}

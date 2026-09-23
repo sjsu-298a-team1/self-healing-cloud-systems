@@ -1,0 +1,7 @@
+{
+  "selected_threshold": 0.6616460090726414,
+  "target_pre_fault_fpr": 0.05,
+  "achieved_pre_fault_fpr": 0.05,
+  "rule": "smallest candidate (percentile-grid-of-pre-fault-validation-scores, 50.0-100.0 step 0.1) whose empirical pre-fault FPR is <= 0.05; ties broken by taking the smallest such candidate",
+  "n_candidates": 501
+}

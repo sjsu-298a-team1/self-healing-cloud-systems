@@ -1,0 +1,18 @@
+{
+  "run_id": "candidate_D_h128_z32_seed42",
+  "n_train_windows": 4020,
+  "n_val_windows": 6620,
+  "best_epoch": 99,
+  "best_val_loss": 0.26492476004820603,
+  "epochs_run": 100,
+  "runtime_sec": 120.61352515220642,
+  "device": "cpu",
+  "python_version": "3.14.4",
+  "torch_version": "2.14.0",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "n_train_cases": 60,
+  "n_val_cases": 20,
+  "missing_value_policy": "committed feature mean estimated from training-split known-normal data",
+  "train_imputed_cells": 41,
+  "val_imputed_cells": 0
+}
