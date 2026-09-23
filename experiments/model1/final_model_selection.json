@@ -1,0 +1,42 @@
+{
+  "status": "FROZEN. No further architecture, preprocessing, scoring-rule, threshold, or training changes are allowed before or after test evaluation.",
+  "selected_architecture": {
+    "candidate": "B",
+    "run_id": "candidate_B_h32_z16_seed42",
+    "hidden_size": 32,
+    "latent_size": 16,
+    "num_layers": 1,
+    "dropout": 0.0,
+    "seed": 42,
+    "n_trainable_parameters": 22727
+  },
+  "checkpoint": {
+    "path": "experiments/model1/candidate_B_h32_z16_seed42/checkpoints/best.pt",
+    "sha256": "52a7f93400995f1166bee9989f210072e32f1842cdb88825b0943c3cb208b847",
+    "note": "SHA-256 used for integrity verification (not MD5, previously recorded only informally in chat)."
+  },
+  "scoring_rule": {
+    "name": "S2 -- final-timestep MSE",
+    "formula": "mean((x[:, -1, :] - reconstruction[:, -1, :])^2) over the 55 reconstructed features at the window's final timestep only",
+    "implemented_in": "scripts/model1/evaluation/scoring_rules.py (score_S2)",
+    "selected_from": "predeclared ablation over exactly S1/S2/S3 -- see experiments/model1/candidate_B_h32_z16_seed42/scoring_rule_ablation/comparison_result.json"
+  },
+  "threshold": {
+    "value": 0.8249893178835667,
+    "note": "Exact full-precision value from experiments/model1/candidate_B_h32_z16_seed42/scoring_rule_ablation/S2/selected_threshold.json. Must never be rounded in code -- load and use this stored value directly.",
+    "source": "experiments/model1/candidate_B_h32_z16_seed42/scoring_rule_ablation/S2/selected_threshold.json",
+    "selected_on": "validation split only"
+  },
+  "decision_timestamp": "window end time (last timestep's time)",
+  "validation_result_at_selection": {
+    "f1": 0.8503349573690622,
+    "pre_fault_fpr": 0.05,
+    "median_detection_delay": 10.0,
+    "precision": 0.9440500338066261,
+    "recall": 0.7735457063711911,
+    "n_cases_with_detection": 20,
+    "n_cases_missed": 0
+  },
+  "reason_selected": "Of the three predeclared scoring rules (S1/S2/S3) evaluated against the frozen Candidate B checkpoint, S2 was the only rule satisfying all three locked validation targets simultaneously (F1 >= 0.82, median detection delay <= 10s, pre-fault FPR <= 0.05). S1 (15.0s) and S3 (14.0s) both failed the detection-delay target.",
+  "freeze_statement": "All model (architecture, checkpoint), scoring-rule, and threshold decisions above are frozen as of this artifact's commit, BEFORE any held-out test-set evaluation has been performed. Phase 7 (test evaluation) must use every value in this file exactly as recorded and must not retrain, refit the scaler, change imputation, recalculate the threshold from test scores, or make any further model/scoring/threshold choice based on test results."
+}
