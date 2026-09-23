@@ -1,0 +1,77 @@
+{
+  "targets": {
+    "f1_min": 0.82,
+    "median_detection_delay_max_sec": 10,
+    "pre_fault_fpr_max": 0.05
+  },
+  "tie_break_order": [
+    "highest F1",
+    "lower median detection delay"
+  ],
+  "eligible_rules": [
+    "S2"
+  ],
+  "selected_rule": "S2",
+  "rows": [
+    {
+      "rule": "S1",
+      "description": "existing control: full-window MSE over all 30x55 elements",
+      "threshold": 0.5130200869197038,
+      "validation_precision": 0.9470569417786309,
+      "validation_recall": 0.8200831024930748,
+      "validation_f1": 0.8790083135391924,
+      "validation_pre_fault_fpr": 0.05,
+      "validation_median_detection_delay": 15.0,
+      "n_cases_missed": 0,
+      "cpu_f1": 0.9696799550814149,
+      "cpu_detection_delay": 16,
+      "mem_f1": 0.9696802646085998,
+      "mem_detection_delay": 7,
+      "delay_f1": 0.8745364647713226,
+      "delay_detection_delay": 16,
+      "loss_f1": 0.6697307944845698,
+      "loss_detection_delay": 36,
+      "eligible": false
+    },
+    {
+      "rule": "S2",
+      "description": "current-timestep score: MSE at the final timestep only (55 features)",
+      "threshold": 0.8249893178835667,
+      "validation_precision": 0.9440500338066261,
+      "validation_recall": 0.7735457063711911,
+      "validation_f1": 0.8503349573690622,
+      "validation_pre_fault_fpr": 0.05,
+      "validation_median_detection_delay": 10.0,
+      "n_cases_missed": 0,
+      "cpu_f1": 0.9537953795379537,
+      "cpu_detection_delay": 14,
+      "mem_f1": 0.9650082012028431,
+      "mem_detection_delay": 5,
+      "delay_f1": 0.8526379624014554,
+      "delay_detection_delay": 12,
+      "loss_f1": 0.5345911949685535,
+      "loss_detection_delay": 9,
+      "eligible": true
+    },
+    {
+      "rule": "S3",
+      "description": "trailing-5-second score: MSE over the final 5 timesteps (5x55 elements)",
+      "threshold": 0.6616460090726414,
+      "validation_precision": 0.9455502549761474,
+      "validation_recall": 0.7961218836565097,
+      "validation_f1": 0.8644258966839611,
+      "validation_pre_fault_fpr": 0.05,
+      "validation_median_detection_delay": 14.0,
+      "n_cases_missed": 0,
+      "cpu_f1": 0.9585864163445609,
+      "cpu_detection_delay": 14,
+      "mem_f1": 0.9641782882143834,
+      "mem_detection_delay": 6,
+      "delay_f1": 0.8555825242718447,
+      "delay_detection_delay": 16,
+      "loss_f1": 0.6160058737151248,
+      "loss_detection_delay": 20,
+      "eligible": false
+    }
+  ]
+}
