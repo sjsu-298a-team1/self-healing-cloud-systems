@@ -1,0 +1,395 @@
+{
+  "phase7_commit": "ece5684",
+  "threshold_used": 0.8249893178835667,
+  "validation_vs_test_summary": [
+    {
+      "split": "validation",
+      "fault_type": "pooled",
+      "precision": 0.9440500338066261,
+      "recall": 0.7735457063711911,
+      "f1": 0.8503349573690622,
+      "pre_fault_fpr": 0.05,
+      "median_detection_delay": 10.0
+    },
+    {
+      "split": "validation",
+      "fault_type": "cpu",
+      "precision": 0.9470234844347352,
+      "recall": 0.9606648199445983,
+      "f1": 0.9537953795379537,
+      "pre_fault_fpr": 0.05861027190332326,
+      "median_detection_delay": 14
+    },
+    {
+      "split": "validation",
+      "fault_type": "mem",
+      "precision": 0.9525094441446303,
+      "recall": 0.9778393351800554,
+      "f1": 0.9650082012028431,
+      "pre_fault_fpr": 0.053172205438066465,
+      "median_detection_delay": 5
+    },
+    {
+      "split": "validation",
+      "fault_type": "delay",
+      "precision": 0.941728064300067,
+      "recall": 0.7789473684210526,
+      "f1": 0.8526379624014554,
+      "pre_fault_fpr": 0.05256797583081571,
+      "median_detection_delay": 12
+    },
+    {
+      "split": "validation",
+      "fault_type": "loss",
+      "precision": 0.9201623815967523,
+      "recall": 0.3767313019390582,
+      "f1": 0.5345911949685535,
+      "pre_fault_fpr": 0.03564954682779456,
+      "median_detection_delay": 9
+    },
+    {
+      "split": "test",
+      "fault_type": "pooled",
+      "precision": 0.842245153220763,
+      "recall": 0.7461218836565097,
+      "f1": 0.7912749706227967,
+      "pre_fault_fpr": 0.152416918429003,
+      "median_detection_delay": 12.0
+    },
+    {
+      "split": "test",
+      "fault_type": "cpu",
+      "precision": 0.8240695988400193,
+      "recall": 0.9445983379501385,
+      "f1": 0.8802271553949407,
+      "pre_fault_fpr": 0.2199395770392749,
+      "median_detection_delay": 9
+    },
+    {
+      "split": "test",
+      "fault_type": "mem",
+      "precision": 0.7791978845306302,
+      "recall": 0.9795013850415513,
+      "f1": 0.8679430535100638,
+      "pre_fault_fpr": 0.3027190332326284,
+      "median_detection_delay": 5
+    },
+    {
+      "split": "test",
+      "fault_type": "delay",
+      "precision": 0.9405594405594405,
+      "recall": 0.8941828254847646,
+      "f1": 0.9167850042601533,
+      "pre_fault_fpr": 0.06163141993957704,
+      "median_detection_delay": 17
+    },
+    {
+      "split": "test",
+      "fault_type": "loss",
+      "precision": 0.8771929824561403,
+      "recall": 0.16620498614958448,
+      "f1": 0.27945971122496505,
+      "pre_fault_fpr": 0.025377643504531724,
+      "median_detection_delay": 64
+    }
+  ],
+  "known_normal_score_quantiles": {
+    "validation_known_normal": {
+      "median": 0.20289474208660657,
+      "p90": 0.5378177774612124,
+      "p95": 0.8249893178834922,
+      "p99": 1.5010401547751493,
+      "max": 4.115957077943037,
+      "n": 6620
+    },
+    "test_known_normal": {
+      "median": 0.23476803752388636,
+      "p90": 1.505296537067512,
+      "p95": 4.177381882209162,
+      "p99": 118.48260699065055,
+      "max": 1779.1911247273551,
+      "n": 6620
+    },
+    "test_known_normal_cpu": {
+      "median": 0.23553672258079403,
+      "p90": 1.7366037815269155,
+      "p95": 5.952978670416701,
+      "p99": 15.363330462276465,
+      "max": 1779.1911247273551,
+      "n": 1655
+    },
+    "test_known_normal_mem": {
+      "median": 0.2756577821212225,
+      "p90": 114.46269879059032,
+      "p95": 117.2715146053114,
+      "p99": 120.78652714461847,
+      "max": 123.87585480006294,
+      "n": 1655
+    },
+    "test_known_normal_delay": {
+      "median": 0.24895277743573885,
+      "p90": 0.5972858616679563,
+      "p95": 0.8985054638193133,
+      "p99": 1.6678574817624638,
+      "max": 5.372865108057566,
+      "n": 1655
+    },
+    "test_known_normal_loss": {
+      "median": 0.18734650607971934,
+      "p90": 0.44922299000163585,
+      "p95": 0.5782901561848905,
+      "p99": 1.1920806653971523,
+      "max": 3.5149670089848986,
+      "n": 1655
+    }
+  },
+  "loss_analysis": {
+    "per_case": [
+      {
+        "case_id": "cartservice_loss/3",
+        "inject_time": 1692641787,
+        "mean_score_pre_injection": 0.17493191466606414,
+        "max_score_pre_injection": 0.8347765399678689,
+        "mean_score_post_injection": 0.5329661850013717,
+        "max_score_post_injection": 1.296573337746275,
+        "time_to_first_threshold_crossing": 64,
+        "fraction_post_injection_above_threshold": 0.0886426592797784
+      },
+      {
+        "case_id": "checkoutservice_loss/3",
+        "inject_time": 1692635905,
+        "mean_score_pre_injection": 0.16271230513174256,
+        "max_score_pre_injection": 0.6735823224092435,
+        "mean_score_post_injection": 0.37537362778496597,
+        "max_score_post_injection": 1.0040049772040123,
+        "time_to_first_threshold_crossing": 128,
+        "fraction_post_injection_above_threshold": 0.008310249307479225
+      },
+      {
+        "case_id": "currencyservice_loss/4",
+        "inject_time": 1692648459,
+        "mean_score_pre_injection": 0.18168545650989518,
+        "max_score_pre_injection": 0.7628898641872681,
+        "mean_score_post_injection": 0.5860948681114527,
+        "max_score_post_injection": 1.351248761202817,
+        "time_to_first_threshold_crossing": 71,
+        "fraction_post_injection_above_threshold": 0.16620498614958448
+      },
+      {
+        "case_id": "paymentservice_loss/2",
+        "inject_time": 1693316537,
+        "mean_score_pre_injection": 0.27578856775598354,
+        "max_score_pre_injection": 1.5166306101577591,
+        "mean_score_post_injection": 0.3438374121434926,
+        "max_score_post_injection": 1.8539757924327787,
+        "time_to_first_threshold_crossing": 18,
+        "fraction_post_injection_above_threshold": 0.11357340720221606
+      },
+      {
+        "case_id": "productcatalogservice_loss/1",
+        "inject_time": 1692665535,
+        "mean_score_pre_injection": 0.46462318283630977,
+        "max_score_pre_injection": 3.5149670089848986,
+        "mean_score_post_injection": 0.9401619322783101,
+        "max_score_post_injection": 10.083505194099239,
+        "time_to_first_threshold_crossing": 13,
+        "fraction_post_injection_above_threshold": 0.45429362880886426
+      }
+    ],
+    "pre_post_mean_comparison": {
+      "validation_loss_pre_injection_mean": 0.28066634981496047,
+      "validation_loss_post_injection_mean": 0.9026121769237492,
+      "test_loss_pre_injection_mean": 0.2519482853799991,
+      "test_loss_post_injection_mean": 0.5556868050639187
+    }
+  },
+  "test_case_metrics": [
+    {
+      "case_id": "cartservice_cpu/4",
+      "fault_type": "cpu",
+      "inject_time": 1692570874,
+      "pre_fault_fpr": 0.0755287009063444,
+      "first_detection_delay": 5,
+      "post_injection_recall": 0.9445983379501385,
+      "detected": true
+    },
+    {
+      "case_id": "cartservice_delay/3",
+      "fault_type": "delay",
+      "inject_time": 1692608348,
+      "pre_fault_fpr": 0.04833836858006042,
+      "first_detection_delay": 11,
+      "post_injection_recall": 0.9695290858725761,
+      "detected": true
+    },
+    {
+      "case_id": "cartservice_loss/3",
+      "fault_type": "loss",
+      "inject_time": 1692641787,
+      "pre_fault_fpr": 0.0030211480362537764,
+      "first_detection_delay": 64,
+      "post_injection_recall": 0.0886426592797784,
+      "detected": true
+    },
+    {
+      "case_id": "cartservice_mem/1",
+      "fault_type": "mem",
+      "inject_time": 1693260465,
+      "pre_fault_fpr": 0.6676737160120846,
+      "first_detection_delay": 1,
+      "post_injection_recall": 0.9889196675900277,
+      "detected": true
+    },
+    {
+      "case_id": "checkoutservice_cpu/3",
+      "fault_type": "cpu",
+      "inject_time": 1692563195,
+      "pre_fault_fpr": 0.07250755287009064,
+      "first_detection_delay": 9,
+      "post_injection_recall": 0.9501385041551247,
+      "detected": true
+    },
+    {
+      "case_id": "checkoutservice_delay/2",
+      "fault_type": "delay",
+      "inject_time": 1692603740,
+      "pre_fault_fpr": 0.03323262839879154,
+      "first_detection_delay": 2,
+      "post_injection_recall": 0.9141274238227147,
+      "detected": true
+    },
+    {
+      "case_id": "checkoutservice_loss/3",
+      "fault_type": "loss",
+      "inject_time": 1692635905,
+      "pre_fault_fpr": 0.0,
+      "first_detection_delay": 128,
+      "post_injection_recall": 0.008310249307479225,
+      "detected": true
+    },
+    {
+      "case_id": "checkoutservice_mem/1",
+      "fault_type": "mem",
+      "inject_time": 1692631135,
+      "pre_fault_fpr": 0.00906344410876133,
+      "first_detection_delay": 11,
+      "post_injection_recall": 0.9695290858725761,
+      "detected": true
+    },
+    {
+      "case_id": "currencyservice_cpu/2",
+      "fault_type": "cpu",
+      "inject_time": 1692535061,
+      "pre_fault_fpr": 0.8670694864048338,
+      "first_detection_delay": 5,
+      "post_injection_recall": 0.9501385041551247,
+      "detected": true
+    },
+    {
+      "case_id": "currencyservice_delay/1",
+      "fault_type": "delay",
+      "inject_time": 1692576250,
+      "pre_fault_fpr": 0.09969788519637462,
+      "first_detection_delay": 18,
+      "post_injection_recall": 0.9501385041551247,
+      "detected": true
+    },
+    {
+      "case_id": "currencyservice_loss/4",
+      "fault_type": "loss",
+      "inject_time": 1692648459,
+      "pre_fault_fpr": 0.0,
+      "first_detection_delay": 71,
+      "post_injection_recall": 0.16620498614958448,
+      "detected": true
+    },
+    {
+      "case_id": "currencyservice_mem/5",
+      "fault_type": "mem",
+      "inject_time": 1693265740,
+      "pre_fault_fpr": 0.6918429003021148,
+      "first_detection_delay": 4,
+      "post_injection_recall": 0.9833795013850416,
+      "detected": true
+    },
+    {
+      "case_id": "paymentservice_cpu/3",
+      "fault_type": "cpu",
+      "inject_time": 1692538922,
+      "pre_fault_fpr": 0.04229607250755287,
+      "first_detection_delay": 20,
+      "post_injection_recall": 0.9445983379501385,
+      "detected": true
+    },
+    {
+      "case_id": "paymentservice_delay/2",
+      "fault_type": "delay",
+      "inject_time": 1692584700,
+      "pre_fault_fpr": 0.05740181268882175,
+      "first_detection_delay": 17,
+      "post_injection_recall": 0.9529085872576177,
+      "detected": true
+    },
+    {
+      "case_id": "paymentservice_loss/2",
+      "fault_type": "loss",
+      "inject_time": 1693316537,
+      "pre_fault_fpr": 0.03323262839879154,
+      "first_detection_delay": 18,
+      "post_injection_recall": 0.11357340720221606,
+      "detected": true
+    },
+    {
+      "case_id": "paymentservice_mem/1",
+      "fault_type": "mem",
+      "inject_time": 1693270376,
+      "pre_fault_fpr": 0.09063444108761329,
+      "first_detection_delay": 7,
+      "post_injection_recall": 0.9722991689750693,
+      "detected": true
+    },
+    {
+      "case_id": "productcatalogservice_cpu/4",
+      "fault_type": "cpu",
+      "inject_time": 1692623252,
+      "pre_fault_fpr": 0.04229607250755287,
+      "first_detection_delay": 24,
+      "post_injection_recall": 0.9335180055401662,
+      "detected": true
+    },
+    {
+      "case_id": "productcatalogservice_delay/4",
+      "fault_type": "delay",
+      "inject_time": 1692706428,
+      "pre_fault_fpr": 0.06948640483383686,
+      "first_detection_delay": 32,
+      "post_injection_recall": 0.6842105263157895,
+      "detected": true
+    },
+    {
+      "case_id": "productcatalogservice_loss/1",
+      "fault_type": "loss",
+      "inject_time": 1692665535,
+      "pre_fault_fpr": 0.09063444108761329,
+      "first_detection_delay": 13,
+      "post_injection_recall": 0.45429362880886426,
+      "detected": true
+    },
+    {
+      "case_id": "productcatalogservice_mem/5",
+      "fault_type": "mem",
+      "inject_time": 1693277480,
+      "pre_fault_fpr": 0.054380664652567974,
+      "first_detection_delay": 5,
+      "post_injection_recall": 0.9833795013850416,
+      "detected": true
+    }
+  ],
+  "safe_conclusions": [
+    "The selected Model 1 configuration (Candidate B + S2 scoring) did not generalize sufficiently to the held-out test cases under the locked success criteria (F1 >= 0.82, median detection delay <= 10s, pre-fault FPR <= 0.05); all three were met on validation and all three failed on test.",
+    "Known-normal S2 score distributions shifted upward on the test split relative to validation, especially for CPU and MEM test cases, which is consistent with the large pre-fault FPR increase observed for those two fault types (0.22 and 0.30 on test vs. the 0.05 validation-calibrated ceiling).",
+    "LOSS-fault test cases showed substantially weaker post-injection sensitivity than LOSS-fault validation cases (test recall 0.166 vs. the validation result that made S2 attractive), with a much longer time-to-first-threshold-crossing on average.",
+    "Within the tested architecture range (Candidates A/B/C/D, 22.7K-242K parameters), architecture capacity alone did not materially resolve the validation detection-delay issue -- all four candidates clustered at 14.5-15.0s under the S1 scoring rule regardless of size."
+  ],
+  "note": "Descriptive analysis only. No new threshold was computed or suggested here; no model or scoring-rule change resulted from this analysis."
+}

@@ -1,0 +1,50 @@
+{
+  "status": "FINAL. This is the closing status artifact for the Model 1 (LSTM autoencoder anomaly detector) work in this repository.",
+  "frozen_architecture": {
+    "candidate": "B",
+    "run_id": "candidate_B_h32_z16_seed42",
+    "hidden_size": 32,
+    "latent_size": 16,
+    "num_layers": 1,
+    "dropout": 0.0,
+    "seed": 42,
+    "n_trainable_parameters": 22727,
+    "checkpoint_path": "experiments/model1/candidate_B_h32_z16_seed42/checkpoints/best.pt",
+    "checkpoint_sha256": "52a7f93400995f1166bee9989f210072e32f1842cdb88825b0943c3cb208b847"
+  },
+  "scoring_rule": {
+    "name": "S2 -- final-timestep MSE",
+    "formula": "mean((x[:, -1, :] - reconstruction[:, -1, :])^2) over the 55 reconstructed features at the window's final timestep only"
+  },
+  "frozen_threshold": 0.8249893178835667,
+  "validation_metrics": {
+    "precision": 0.9440500338066261,
+    "recall": 0.7735457063711911,
+    "f1": 0.8503349573690622,
+    "pre_fault_fpr": 0.05,
+    "median_detection_delay": 10.0,
+    "n_cases_with_detection": 20,
+    "n_cases_missed": 0
+  },
+  "held_out_test_metrics": {
+    "precision": 0.842245153220763,
+    "recall": 0.7461218836565097,
+    "f1": 0.7912749706227967,
+    "pre_fault_fpr": 0.152416918429003,
+    "median_detection_delay": 12.0,
+    "n_cases_with_detection": 20,
+    "n_cases_missed": 0
+  },
+  "success_targets": {
+    "f1_min": 0.82,
+    "median_detection_delay_max_sec": 10,
+    "pre_fault_fpr_max": 0.05
+  },
+  "target_pass_fail": {
+    "validation": { "f1": true, "median_detection_delay": true, "pre_fault_fpr": true },
+    "held_out_test": { "f1": false, "median_detection_delay": false, "pre_fault_fpr": false }
+  },
+  "process_statement": "Held-out test evaluation was performed exactly ONCE, after the architecture (Candidate B), scoring rule (S2), and threshold (0.8249893178835667) were fully frozen via experiments/model1/final_model_selection.json. No retraining, re-scoring, threshold recalibration, or second test evaluation occurred at any point, including after seeing this result.",
+  "final_outcome": "Held-out success criteria were NOT met. All three locked targets (F1 >= 0.82, median detection delay <= 10s, pre-fault FPR <= 0.05) passed on validation and failed on test. Candidate B + S2 remains the frozen final Model 1 configuration per instruction; no further architecture, scoring-rule, or threshold change was made in response to this result.",
+  "see_also": "experiments/model1/failure_study/ for descriptive (non-model-changing) analysis of the validation-to-test generalization gap."
+}
