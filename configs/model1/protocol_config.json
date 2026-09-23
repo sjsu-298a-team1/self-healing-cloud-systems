@@ -90,6 +90,15 @@
       "caution": "Do not describe DELAY or LOSS results as reflecting a 'confirmed persistent' fault in any report of these stratified numbers -- see limitations.fault_duration.consequences. Persistence for DELAY/LOSS remains a plausibility argument, not artifact-confirmed evidence."
     }
   },
+  "anomaly_scoring": {
+    "rule": "window_score = mean((x - reconstruction)^2), reduced over all 30 timesteps x 55 features of the window (a single scalar per window) -- i.e. torch.nn.functional.mse_loss(recon, x, reduction='mean') applied per window, the same reduction already used as the M1 training loss.",
+    "status": "This is the exact formula implied by window_prediction_rule's example ('e.g. mean squared error over the window'), made explicit and locked here BEFORE threshold selection (Phase 5), not a new or conflicting rule.",
+    "implemented_in": "scripts/model1/evaluation/scoring.py (reconstruction_score, score_windows)"
+  },
+  "threshold_selection_rule": {
+    "status": "protocol.md Sec.13 item 2 left the exact percentile an OPEN decision. Resolved deterministically for Phase 5 using the already-locked success_targets.pre_fault_fpr_max = 0.05: selected threshold = the smallest candidate, from a fixed percentile grid (50.0-100.0 step 0.1) of PRE-FAULT validation-window scores, whose empirical pre-fault FPR is <= 0.05. Ties broken by taking the smallest such candidate. Never touches test data.",
+    "implemented_in": "scripts/model1/evaluation/threshold_selection.py (select_threshold, build_candidate_thresholds)"
+  },
   "success_targets": {
     "f1_min": 0.82,
     "median_detection_delay_max_sec": 10,
