@@ -1,6 +1,7 @@
 {
   "status": "FINAL. This is the closing status artifact for the Model 1 (LSTM autoencoder anomaly detector) work in this repository.",
   "frozen_architecture": {
+    "model_type": "LSTM encoder-decoder autoencoder",
     "candidate": "B",
     "run_id": "candidate_B_h32_z16_seed42",
     "hidden_size": 32,
@@ -17,6 +18,7 @@
     "formula": "mean((x[:, -1, :] - reconstruction[:, -1, :])^2) over the 55 reconstructed features at the window's final timestep only"
   },
   "frozen_threshold": 0.8249893178835667,
+  "threshold_selection": "selected using validation data only (percentile-grid-of-pre-fault-validation-scores procedure, see configs/model1/protocol_config.json threshold_selection_rule) -- never recalculated on test",
   "validation_metrics": {
     "precision": 0.9440500338066261,
     "recall": 0.7735457063711911,
@@ -44,7 +46,13 @@
     "validation": { "f1": true, "median_detection_delay": true, "pre_fault_fpr": true },
     "held_out_test": { "f1": false, "median_detection_delay": false, "pre_fault_fpr": false }
   },
-  "process_statement": "Held-out test evaluation was performed exactly ONCE, after the architecture (Candidate B), scoring rule (S2), and threshold (0.8249893178835667) were fully frozen via experiments/model1/final_model_selection.json. No retraining, re-scoring, threshold recalibration, or second test evaluation occurred at any point, including after seeing this result.",
+  "process_statement": "The held-out test set was evaluated only after architecture, preprocessing, scoring rule, and threshold were frozen (experiments/model1/final_model_selection.json); no post-test tuning was performed. Held-out test evaluation was performed exactly ONCE. No retraining, re-scoring, threshold recalibration, or second test evaluation occurred at any point, including after seeing this result.",
   "final_outcome": "Held-out success criteria were NOT met. All three locked targets (F1 >= 0.82, median detection delay <= 10s, pre-fault FPR <= 0.05) passed on validation and failed on test. Candidate B + S2 remains the frozen final Model 1 configuration per instruction; no further architecture, scoring-rule, or threshold change was made in response to this result.",
+  "failure_study_findings": [
+    "Held-out known-normal reconstruction-score distributions shifted relative to validation, especially for CPU and MEM test cases.",
+    "The CPU/MEM false-positive (pre-fault FPR) increase on held-out data was concentrated in a small subset of cases, not spread uniformly across all CPU/MEM cases.",
+    "LOSS-fault held-out post-injection sensitivity was substantially weaker than on validation.",
+    "Within the tested architecture range (22,727-242,263 parameters), capacity changes did not materially improve the validation detection-delay result."
+  ],
   "see_also": "experiments/model1/failure_study/ for descriptive (non-model-changing) analysis of the validation-to-test generalization gap."
 }
