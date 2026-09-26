@@ -1,5 +1,9 @@
 # Microservice, Telemetry, and Fault-Injection Environment Evaluation
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md).
+
 This document is for Linear issue **298-12**. I compared a few microservice environments that we can use for our self-healing cloud project. The environment needs to give us metrics, logs, traces, and service dependency information. It should also allow us to create controlled faults so that we know which service caused the incident.
 
 This is important because our later models need real test data. For example, if the payment service fails, the checkout service may also show errors. Our root-cause model should identify payment as the original problem instead of selecting checkout only because it also reported an error.

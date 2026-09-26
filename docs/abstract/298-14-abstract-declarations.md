@@ -1,5 +1,12 @@
 # DATA 298A Abstract and Declarations Package
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../baseline/README.md). This abstract's references to SMD
+> (anomaly-detection dataset) and CausalRCA (published baseline) reflect the Checkpoint 1
+> decision, since replaced by BARO; Model 1 is now complete (see
+> [docs/model1/README.md](../model1/README.md)).
+
 Project: AI-Driven Incident Response and Self-Healing Cloud Systems
 
 Revision: September 10, 2026. Team review required; submission unverified.
