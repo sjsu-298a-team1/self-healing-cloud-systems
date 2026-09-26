@@ -406,7 +406,7 @@ Evidence captured:
 
 ### Supporting Evidence
 
-- [SMD access verification](evidence/smd-access-evidence.pdf) — shows the SMD repository, the `machine-1-1.txt` file accessible on GitHub, and the downloaded telemetry file opened locally.
+- [SMD access verification](evidence/screenshots.pdf) — shows the SMD repository, the `machine-1-1.txt` file accessible on GitHub, and the downloaded telemetry file opened locally.
 
 ---
 

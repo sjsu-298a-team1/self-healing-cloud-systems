@@ -1,5 +1,9 @@
 # Saketh Checkpoint 1 Presentation Content
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md).
+
 ## Section Overview
 
 This section summarizes:

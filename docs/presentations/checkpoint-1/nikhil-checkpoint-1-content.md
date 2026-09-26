@@ -1,5 +1,11 @@
 # Nikhil Checkpoint 1 LLM Presentation Section
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md). References below to CausalRCA as
+> "our separate selected reproduction baseline" reflect the Checkpoint 1 decision, since
+> replaced by BARO.
+
 Task: 298-21. Two content slides, no cover. Suggested speaking time: approximately 3–4 minutes total. All proposed architecture and evaluation choices remain proposals.
 
 ## Slide 1: LLM diagnosis and remediation research

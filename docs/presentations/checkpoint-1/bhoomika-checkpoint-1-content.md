@@ -1,5 +1,11 @@
 # Bhoomika Checkpoint 1 Presentation Content
 
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md). The safe-remediation literature
+> analysis below remains current research context for Model 4 (action-risk classifier);
+> only its references to SMD/CausalRCA as "our" dataset/baseline are superseded.
+
 ## Section Overview
 
 This section summarizes:

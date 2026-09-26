@@ -1,3 +1,7 @@
+> **Status: Superseded after Checkpoint 1.** Retained as historical project evidence.
+> Current direction: BARO + Online Boutique. See
+> [docs/baseline/README.md](../../baseline/README.md).
+
 298-18 — Khushi Checkpoint 1 Presentation Content
 
 Issue: 298-18 — Prepare Project Setup, Dataset & Benchmark Presentation Section
