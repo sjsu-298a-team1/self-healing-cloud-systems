@@ -1,0 +1,26 @@
+# Single unified environment for this repository (protocol/dataset-inspection
+# scripts need only numpy/pandas; Model 1 architecture/training/evaluation scripts
+# additionally need torch). One environment with all three installed can run
+# every script and test in the repo -- verified directly (see README.md "Local
+# setup" for the Python version this was verified against).
+#
+# Versions below are pinned to what was actually installed in the environment
+# used to produce every committed Model 1 result in this repository, verified by
+# inspecting that environment directly (`pip list`) on 2026-09-26. torch's version
+# is additionally cross-checked against the value recorded in every committed
+# experiments/model1/*/run_metadata.json (torch_version: "2.14.0"), which matched
+# exactly. numpy/pandas versions were verified by direct inspection only -- no
+# committed artifact records them independently.
+#
+# Not independently verified: whether other numpy/pandas/torch versions also
+# work. These are the exact versions confirmed to work, not a claimed minimum.
+numpy==2.5.3
+pandas==3.0.6
+torch==2.14.0
+
+# Optional, historical: matplotlib was used ad hoc (outside any committed script)
+# to generate the loss-curve figures already committed under experiments/model1/
+# (e.g. loss_curve.png). No tracked .py file in this repository imports
+# matplotlib, so it is NOT required to run any script or test here. Install it
+# separately only if you want to regenerate or produce similar figures:
+#   pip install matplotlib==3.11.2
