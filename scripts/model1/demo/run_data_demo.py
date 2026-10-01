@@ -38,6 +38,9 @@ COMMITTED_INSPECTION = os.path.join(REPO_ROOT, "data", "model1", "dataset_inspec
 
 SCRIPTS = os.path.join(REPO_ROOT, "scripts", "model1")
 
+# Reuse the committed Model 1 data library rather than duplicating its logic.
+sys.path.insert(0, os.path.join(SCRIPTS, "data"))
+
 RULE = "=" * 78
 THIN = "-" * 78
 
@@ -195,17 +198,28 @@ def stage_2_quality(data_dir, work_inspection):
     info("2 of 100 cases) and three *_error counters account for the bulk.")
     print()
 
-    schema = os.path.join(work_inspection, "schema_report.json")
-    if os.path.exists(schema):
-        r = load_json(schema)
-        union = r.get("n_union_columns") or r.get("union_size")
-        inter = r.get("n_intersection_columns") or r.get("intersection_size")
-        if union and inter:
-            ok(f"schema inconsistency measured: {union} columns appear somewhere, "
-               f"{inter} appear in every case")
-            info(f"Model 1 therefore uses the {inter}-column intersection and excludes "
-                 f"{union - inter} non-universal columns.")
-            print()
+    schema_path = os.path.join(work_inspection, "schema_report.json")
+    if not os.path.exists(schema_path):
+        bad("schema_report.json not produced -- cannot report schema coverage")
+        return False
+
+    r = load_json(schema_path)
+    union = r.get("telemetry_union_count")
+    inter = r.get("telemetry_intersection_count")
+    if union is None or inter is None:
+        bad("schema coverage unreadable: schema_report.json is missing "
+            "telemetry_union_count and/or telemetry_intersection_count")
+        info(f"keys present: {sorted(r.keys())}")
+        return False
+
+    excluded = union - inter
+    ok(f"schema coverage: {union} union metrics, {inter} common metrics, "
+       f"{excluded} inconsistent/excluded metrics")
+    info(f"{union} distinct telemetry columns appear in at least one case, but only")
+    info(f"{inter} appear in every one of the 100 cases. Model 1 uses that {inter}-column")
+    info(f"intersection as its locked feature set and excludes the {excluded} columns that")
+    info("are absent from some cases' CSV headers (6 istio error counters + istio-init_mem).")
+    print()
 
     ok(f"constant-column behaviour characterised: {n_constant_cases} of 100 cases have "
        f"at least one locally constant column")
@@ -316,8 +330,207 @@ def stage_4_scaler(data_dir, work_configs, work_manifests):
     return passed
 
 
-def stage_5_protocol(data_dir, work_configs, work_manifests, work_dir):
-    header(5, "Automated protocol checks")
+def _structural_check(df, features):
+    """Mirrors the feature_consistency check in validate_protocol.py: every
+    locked feature must be present and numeric. Returns a list of problems
+    (empty list == valid). Used here to show the check rejecting a deliberately
+    corrupted sample, which the scaler negative control does not cover."""
+    import pandas as pd
+    problems = []
+    missing = [f for f in features if f not in df.columns]
+    if missing:
+        problems.append(f"required feature missing: {', '.join(missing)}")
+    non_numeric = [f for f in features
+                   if f in df.columns and not pd.api.types.is_numeric_dtype(df[f])]
+    if non_numeric:
+        problems.append(f"non-numeric feature: {', '.join(non_numeric)}")
+    return problems
+
+
+def stage_5_preprocessing_example(data_dir, work_configs, work_manifests):
+    header(5, "Worked preprocessing example (one real training case)")
+    print("  Raw telemetry through imputation and standardisation, on one real case,")
+    print("  using the existing committed scaler and the existing pipeline functions.")
+    print()
+
+    import numpy as np
+    import dataset as ds
+
+    features = ds.load_features(configs_dir=work_configs)
+    scaler = ds.load_scaler(configs_dir=work_configs)
+    train_cases = ds.load_manifest("train", manifests_dir=work_manifests)
+
+    # Prefer a training case that actually contains a missing cell, so the
+    # imputation step is demonstrated on real data rather than described.
+    chosen = chosen_df = chosen_feat = None
+    chosen_row = 0
+    for case_id in train_cases:
+        df, _ = ds.load_case_df(data_dir, case_id)
+        sub = df[features]
+        if sub.isna().any().any():
+            col = sub.columns[sub.isna().any()][0]
+            chosen, chosen_df, chosen_feat = case_id, df, col
+            chosen_row = int(sub[col].isna().to_numpy().nonzero()[0][0])
+            break
+    if chosen is None:
+        chosen = train_cases[0]
+        chosen_df, _ = ds.load_case_df(data_dir, chosen)
+        chosen_feat = features[0]
+        info("No training case contains a missing cell; showing a non-imputed example.")
+
+    ok(f"case: {chosen}   (training split)")
+    ok(f"feature: {chosen_feat}   row index {chosen_row}")
+    print()
+
+    raw_val = chosen_df[chosen_feat].to_numpy(dtype=float)[chosen_row]
+    mean = scaler["mean"][chosen_feat]
+    std = scaler["std"][chosen_feat]
+
+    # Reuse the committed pipeline rather than reimplementing it.
+    scaled, n_imputed = ds.apply_scaler(chosen_df, features, scaler)
+    col_idx = features.index(chosen_feat)
+    scaled_val = scaled[chosen_row, col_idx]
+    is_missing = bool(np.isnan(raw_val))
+    imputed_raw = mean if is_missing else raw_val
+
+    raw_display = "NaN (missing)" if is_missing else f"{raw_val:.6f}"
+    print(f"    {'step':<36}{'value':>22}")
+    print(f"    {'-' * 58}")
+    print(f"    {'1. raw value from simple_data.csv':<36}{raw_display:>22}")
+    if is_missing:
+        print(f"    {'2. imputed with training mean':<36}{imputed_raw:>22.6f}")
+    else:
+        print(f"    {'2. imputation (not needed)':<36}{imputed_raw:>22.6f}")
+    print(f"    {'3. committed scaler mean':<36}{mean:>22.6f}")
+    print(f"    {'4. committed scaler std':<36}{std:>22.6f}")
+    print(f"    {'5. standardised (x - mean) / std':<36}{scaled_val:>22.6f}")
+    print()
+
+    passed = True
+    if is_missing:
+        info("Policy: constant substitution with the committed train-fit mean.")
+        info("No forward-fill, backward-fill, or interpolation of any kind.")
+        exact_zero = abs(scaled_val) < 1e-12
+        (ok if exact_zero else bad)(
+            "imputed cell standardises to exactly 0.0, as the policy requires")
+        passed = passed and exact_zero
+
+    expected = (imputed_raw - mean) / std
+    consistent = abs(expected - scaled_val) < 1e-9
+    (ok if consistent else bad)(
+        "pipeline output matches the hand-computed (x - mean) / std")
+    passed = passed and consistent
+
+    ok(f"whole case standardised: shape {scaled.shape}, {n_imputed} cell(s) imputed")
+    info("Scaler and policy are read from committed artifacts; nothing is refitted.")
+    return passed
+
+
+def stage_6_structural_validation(data_dir, work_configs, work_manifests):
+    header(6, "Structural validation: valid sample versus corrupted sample")
+    print("  Showing the schema check accepting a real sample and rejecting a")
+    print("  deliberately corrupted copy. The raw dataset is never modified.")
+    print()
+
+    import dataset as ds
+
+    features = ds.load_features(configs_dir=work_configs)
+    train_cases = ds.load_manifest("train", manifests_dir=work_manifests)
+    case_id = train_cases[0]
+
+    df, _ = ds.load_case_df(data_dir, case_id)
+
+    problems = _structural_check(df, features)
+    valid_ok = not problems
+    if valid_ok:
+        ok(f"Valid sample ({case_id}): PASS -- all {len(features)} required "
+           f"features present and numeric")
+    else:
+        bad(f"Valid sample ({case_id}): unexpectedly failed -- {problems}")
+
+    # In-memory copy only. The file on disk is untouched.
+    dropped = features[0]
+    corrupted = df.drop(columns=[dropped])
+    problems = _structural_check(corrupted, features)
+    corrupted_ok = bool(problems)
+    if corrupted_ok:
+        ok(f"Corrupted sample: FAIL -- {problems[0]}")
+    else:
+        bad("Corrupted sample unexpectedly passed -- the structural check is broken")
+
+    print()
+    info(f"The corrupted copy exists only in memory: column '{dropped}' was dropped")
+    info("from an in-memory DataFrame. Nothing under the dataset directory was written.")
+    info("This complements the scaler negative control in the protocol checks, which")
+    info("tests contamination rather than schema validity.")
+
+    return valid_ok and corrupted_ok
+
+
+def stage_7_outlier_evidence(data_dir, work_configs, work_manifests):
+    header(7, "Descriptive outlier summary (training known-normal rows only)")
+    print("  Descriptive only. Nothing is removed, no threshold is tuned, no")
+    print("  preprocessing changes, and no validation or test data is consulted.")
+    print()
+
+    import numpy as np
+    import dataset as ds
+
+    features = ds.load_features(configs_dir=work_configs)
+    scaler = ds.load_scaler(configs_dir=work_configs)
+    train_cases = ds.load_manifest("train", manifests_dir=work_manifests)
+
+    z_rule = 5.0
+    info(f"Rule: standardise each training known-normal row with the committed")
+    info(f"scaler and count cells whose |z| exceeds {z_rule}. The scaler was fit on")
+    info("exactly these rows, so this measures tail heaviness, not model error.")
+    print()
+
+    total_cells = flagged_cells = rows_with_any = total_rows = 0
+    per_feature = {}
+
+    for case_id in train_cases:
+        df, inject_time = ds.load_case_df(data_dir, case_id)
+        pre = df[df["time"] < inject_time]
+        scaled, _ = ds.apply_scaler(pre, features, scaler)
+        mask = np.abs(scaled) > z_rule
+        total_cells += scaled.size
+        total_rows += scaled.shape[0]
+        flagged_cells += int(mask.sum())
+        rows_with_any += int(mask.any(axis=1).sum())
+        for i, c in enumerate(mask.sum(axis=0)):
+            if c:
+                per_feature[features[i]] = per_feature.get(features[i], 0) + int(c)
+
+    pct_cells = 100.0 * flagged_cells / total_cells if total_cells else 0.0
+    pct_rows = 100.0 * rows_with_any / total_rows if total_rows else 0.0
+
+    ok(f"scanned {total_rows:,} known-normal rows from {len(train_cases)} training "
+       f"cases ({total_cells:,} cells)")
+    ok(f"cells with |z| > {z_rule}: {flagged_cells:,} ({pct_cells:.3f}%)")
+    ok(f"rows containing at least one such cell: {rows_with_any:,} ({pct_rows:.2f}%)")
+    print()
+
+    if per_feature:
+        top = sorted(per_feature.items(), key=lambda kv: -kv[1])[:5]
+        print(f"    {'feature':<36}{'flagged cells':>16}")
+        print(f"    {'-' * 52}")
+        for feat, n in top:
+            print(f"    {feat:<36}{n:>16,}")
+        print()
+        info(f"{len(per_feature)} of {len(features)} features contribute at least one")
+        info("flagged cell, so the tail is concentrated rather than uniform.")
+    else:
+        info("No cell exceeded the rule.")
+
+    print()
+    info("No row, case, or feature was removed. This is evidence about the data, not")
+    info("a preprocessing decision, and nothing downstream consumes this result.")
+    return True
+
+
+def stage_8_protocol(data_dir, work_configs, work_manifests, work_dir):
+    header(8, "Automated protocol checks")
     print("  Running the five locked checks that guard against leakage and split errors.")
     print()
 
@@ -362,8 +575,8 @@ def stage_5_protocol(data_dir, work_configs, work_manifests, work_dir):
     return passed
 
 
-def stage_6_windows(data_dir, work_configs, work_manifests, work_dir):
-    header(6, "Windowing: raw telemetry to model-ready tensors")
+def stage_9_windows(data_dir, work_configs, work_manifests, work_dir):
+    header(9, "Windowing: raw telemetry to model-ready tensors")
     print("  The final step of extraction -- turning cases into training windows.")
     print()
 
@@ -460,10 +673,16 @@ def main():
                         stage_3_splits(data_dir, work_inspection, work_configs, work_manifests)))
         results.append(("4. Train-only scaler reproduces",
                         stage_4_scaler(data_dir, work_configs, work_manifests)))
-        results.append(("5. Automated protocol checks",
-                        stage_5_protocol(data_dir, work_configs, work_manifests, work_dir)))
-        results.append(("6. Windowing to model-ready tensors",
-                        stage_6_windows(data_dir, work_configs, work_manifests, work_dir)))
+        results.append(("5. Worked preprocessing example",
+                        stage_5_preprocessing_example(data_dir, work_configs, work_manifests)))
+        results.append(("6. Structural validation (valid vs corrupted)",
+                        stage_6_structural_validation(data_dir, work_configs, work_manifests)))
+        results.append(("7. Descriptive outlier summary",
+                        stage_7_outlier_evidence(data_dir, work_configs, work_manifests)))
+        results.append(("8. Automated protocol checks",
+                        stage_8_protocol(data_dir, work_configs, work_manifests, work_dir)))
+        results.append(("9. Windowing to model-ready tensors",
+                        stage_9_windows(data_dir, work_configs, work_manifests, work_dir)))
     finally:
         elapsed = time.time() - started
 
@@ -475,7 +694,7 @@ def main():
             print(f"  {'PASS' if result else 'FAIL'}   {label}")
         print(THIN)
 
-        all_passed = all(r for _, r in results) and len(results) == 6
+        all_passed = all(r for _, r in results) and len(results) == 9
         print(f"  {'ALL STAGES PASSED' if all_passed else 'ONE OR MORE STAGES FAILED'}"
               f"   ({elapsed:.1f}s)")
         print(RULE)

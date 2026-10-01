@@ -49,7 +49,7 @@ overwrote the artifacts it was demonstrating would be worse than useless.
 It also does not train anything, load a checkpoint, or touch the test split beyond
 confirming the manifest is disjoint from the others.
 
-## The six stages
+## The nine stages
 
 **1. Dataset integrity and structure.** Confirms 100 cases across 20 service/fault
 combinations, every case exactly 721 rows spanning 720 seconds at a uniform 1 Hz, no
@@ -75,7 +75,34 @@ compares all 55 features against the committed `scaler.json`. The scaler is fitt
 pre-fault rows of train-split cases only — 60 cases × 360 rows = 21,600 rows — so
 validation and test data never influence normalisation.
 
-**5. Automated protocol checks.** Runs the five locked checks from `validate_protocol.py`:
+**5. Worked preprocessing example.** Takes one real training case, prefers one that
+actually contains a missing cell, and walks a single value through the pipeline: raw
+value from `simple_data.csv`, imputation with the committed training mean, the scaler
+mean and standard deviation, and the standardised result. It then checks two things —
+that an imputed cell standardises to exactly 0.0, which is what the policy requires,
+and that the pipeline output matches the hand-computed `(x - mean) / std`.
+
+It calls `apply_scaler` and `load_case_df` from `scripts/model1/data/dataset.py` rather
+than reimplementing them, so what is shown is the actual production path.
+
+**6. Structural validation, valid versus corrupted.** Loads one real training case and
+confirms it passes a schema check, then drops one required feature from an **in-memory
+copy** and confirms the same check rejects it, naming the missing feature. The file on
+disk is never touched.
+
+This complements the scaler negative control in stage 8, which tests contamination of
+the fit rather than schema validity. They catch different failures.
+
+**7. Descriptive outlier summary.** Standardises every training known-normal row with
+the committed scaler and counts cells exceeding |z| > 5, reporting totals, the share of
+affected rows, and the top contributing features.
+
+Deliberately descriptive. No row is removed, no threshold is tuned, no preprocessing
+changes, and no validation or test data is consulted. Because the scaler was fit on
+exactly these rows, this measures tail heaviness in the training distribution, not
+model error. Nothing downstream consumes the result.
+
+**8. Automated protocol checks.** Runs the five locked checks from `validate_protocol.py`:
 split overlap, feature consistency, train-only scaler fit, no time or index leakage,
 and fault-type stratification.
 
@@ -84,7 +111,7 @@ piece of evidence in the pipeline. Deliberately adding one validation case to th
 scaler fit measurably shifts the result, which proves the check can actually detect
 contamination rather than passing vacuously. A check that cannot fail proves nothing.
 
-**6. Windowing.** Builds the training windows and reports the result: 4,020 windows,
+**9. Windowing.** Builds the training windows and reports the result: 4,020 windows,
 tensor shape `[4020, 30, 55]`, 67 windows from each of the 60 training cases, and —
 checked rather than assumed — every window lying strictly in the pre-fault region.
 
@@ -104,7 +131,9 @@ The numbers the demo prints, gathered here for reference:
 | Split | 60 train / 20 val / 20 test, case-disjoint, seeded per combo |
 | Scaler fit on | 21,600 pre-fault training rows only |
 | Training windows | 4,020, shape `[4020, 30, 55]`, all strictly pre-fault |
-| Runtime | about 12 seconds |
+| Schema coverage | 62 union metrics, 55 common, 7 inconsistent/excluded |
+| Outlier cells, \|z\| > 5 | 2,596 of 1,188,000 (0.219%), affecting 4.51% of rows |
+| Runtime | about 33 seconds |
 
 ## Mapping to Checkpoint 2
 
@@ -113,9 +142,9 @@ data extraction demonstrated live.
 
 | Requirement | Where it is shown |
 |---|---|
-| Clean dataset | Stages 1 and 2 |
+| Clean dataset | Stages 1, 2, 6 and 7 |
 | Fixed splits | Stage 3, including regeneration against the committed manifests |
-| Justified metrics | Stage 5, protocol checks; formulas and targets in [protocol.md](../protocol/protocol.md) §7 |
+| Justified metrics | Stage 8, protocol checks; formulas and targets in [protocol.md](../protocol/protocol.md) §7 |
 | End-to-end extraction, live | The whole run, raw CSV through to model-ready tensors, in one command |
 
 ## Limitations
