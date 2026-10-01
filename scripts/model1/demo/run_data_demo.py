@@ -415,14 +415,17 @@ def main():
                         help="Keep the work directory instead of deleting it on exit.")
     args = parser.parse_args()
 
-    data_dir = os.path.abspath(args.data_dir)
+    # expanduser first: some shells (PowerShell) pass "~" through literally
+    # rather than expanding it, so relying on the shell alone is not portable.
+    data_dir = os.path.abspath(os.path.expanduser(args.data_dir))
     if not os.path.isdir(data_dir):
         print(f"ERROR: --data-dir not found: {data_dir}")
         print("See docs/data/README.md for how to obtain the BARO Online Boutique artifact.")
         return 2
 
     created_temp = args.work_dir is None
-    work_dir = os.path.abspath(args.work_dir) if args.work_dir else tempfile.mkdtemp(prefix="m1demo_")
+    work_dir = (os.path.abspath(os.path.expanduser(args.work_dir))
+                if args.work_dir else tempfile.mkdtemp(prefix="m1demo_"))
 
     work_inspection = os.path.join(work_dir, "inspection")
     work_configs = os.path.join(work_dir, "configs")
