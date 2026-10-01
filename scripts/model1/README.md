@@ -16,6 +16,19 @@ for how to obtain and set up that directory.
 Exact commands: [docs/model1/dataset-inspection/commands.txt](../../docs/model1/dataset-inspection/commands.txt).
 Findings: [docs/model1/dataset-inspection/findings.md](../../docs/model1/dataset-inspection/findings.md).
 
+## `demo/` -- end-to-end data demo
+
+- `run_data_demo.py` -- runs the whole data chain (inspection, splits, scaler,
+  protocol checks, windowing) in one command, prints evidence at each stage, and
+  re-derives the committed manifests and scaler to confirm they still reproduce.
+  Writes only to a work directory; committed artifacts are read-only.
+
+```bash
+python3 scripts/model1/demo/run_data_demo.py --data-dir <BARO_DATA_DIR>
+```
+
+Documentation: [docs/model1/demo/README.md](../../docs/model1/demo/README.md).
+
 ## `protocol/` -- locked preprocessing/split/evaluation protocol
 
 - `build_manifests.py` -- builds the deterministic 60/20/20 train/val/test case
