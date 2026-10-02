@@ -1,0 +1,7 @@
+case,missing_cells
+paymentservice_cpu/1,9
+currencyservice_cpu/1,32
+cartservice_mem/1,368
+checkoutservice_delay/4,425
+checkoutservice_mem/2,680
+currencyservice_cpu/2,1116

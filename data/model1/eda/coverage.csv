@@ -1,0 +1,6 @@
+service,cpu,mem,delay,loss
+cartservice,5,5,5,5
+checkoutservice,5,5,5,5
+currencyservice,5,5,5,5
+paymentservice,5,5,5,5
+productcatalogservice,5,5,5,5

@@ -1,0 +1,5 @@
+case_id,feature,selection,pre_median_z,post_median_z,post_max_abs_z
+cartservice_cpu/1,cartservice_cpu,first lexicographic training case per fault type,-0.03830953581,21.46170302,21.52635307
+cartservice_mem/2,cartservice_mem,first lexicographic training case per fault type,0.8746085283,43.9190176,43.92167712
+cartservice_delay/2,cartservice_latency-90,first lexicographic training case per fault type,-0.1385438514,21.23443537,30.41267422
+cartservice_loss/1,cartservice_latency-90,first lexicographic training case per fault type,-0.1329310033,7.484676025,15.86184941

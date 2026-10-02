@@ -1,0 +1,11 @@
+column,missing_cells
+shippingservice_cpu,3
+recommendationservice_cpu,4
+adservice_cpu,7
+cartservice_cpu,8
+paymentservice_cpu,8
+productcatalogservice_cpu,11
+adservice_error,368
+frontend_error,425
+cartservice_error,659
+istio-init_mem,1137
