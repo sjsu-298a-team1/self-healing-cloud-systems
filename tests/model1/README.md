@@ -1,21 +1,22 @@
 # Model 1 Tests
 
-Eight test files, one per implementation phase. All use plain `assert`-free
-check-function-returns-failure-list conventions (see any file's `main()`), not a
-test framework -- run each with `python3 <file>.py [args]`; exit code 0 = all
-checks passed.
+Nine test files, one per implementation phase (plus one demo-script regression
+test). All use plain `assert`-free check-function-returns-failure-list
+conventions (see any file's `main()`), not a test framework -- run each with
+`python3 <file>.py [args]`; exit code 0 = all checks passed.
 
 Environment: see root [requirements.txt](../../requirements.txt). Files marked
 "torch" below need it installed; files marked "no torch" only need numpy/pandas
-(or, for `test_metrics.py`, nothing beyond the standard library).
+(or, for `test_metrics.py` and `test_demo_json_comparison.py`, nothing beyond
+the standard library).
 
-**Not all 8 are runnable immediately from a fresh clone.** Checkpoints (`*.pt`) are
+**Not all 9 are runnable immediately from a fresh clone.** Checkpoints (`*.pt`) are
 gitignored and not committed, so:
 
 - **Runnable from a fresh clone** (no checkpoint needed -- just `<BARO_DATA_DIR>`
   where marked): `test_metrics.py`, `test_data_pipeline_leakage.py`,
   `test_lstm_autoencoder_architecture.py`, `test_training_pipeline.py`,
-  `test_missing_value_imputation.py`.
+  `test_missing_value_imputation.py`, `test_demo_json_comparison.py`.
 - **Require a locally trained checkpoint** (marked **checkpoint required** below):
   `test_validation_scoring_and_threshold.py`, `test_scoring_rule_ablation.py`,
   `test_final_test_evaluation.py`. These will fail on a fresh clone until you run
@@ -32,6 +33,7 @@ gitignored and not committed, so:
 | `test_validation_scoring_and_threshold.py` | Validation-only scoring + threshold-selection pipeline: checkpoint loaded in `eval()`/`no_grad`, parameters never change, exactly 20 val cases scored, threshold candidates derived only from validation scores, correct end-time detection timestamp. | Torch. Real data. **Checkpoint required.** | `python3 test_validation_scoring_and_threshold.py --data-dir <BARO_DATA_DIR> --checkpoint <path/to/best.pt>` |
 | `test_scoring_rule_ablation.py` | S1/S2/S3 scoring-rule formulas (hand-computed), eval()/no_grad scoring, frozen checkpoint unchanged, no test manifest loaded, correct end-time detection timestamp. | Torch. Real data. **Checkpoint required** (defaults to Candidate B's path -- override with `--checkpoint` if using a different run). | `python3 test_scoring_rule_ablation.py --data-dir <BARO_DATA_DIR> [--checkpoint <path/to/best.pt>]` |
 | `test_final_test_evaluation.py` | Integrity checks for the one-time held-out test evaluation: checkpoint SHA-256 matches the frozen selection artifact, eval()/no_grad, exact stored threshold used (never recalculated), no threshold-selection function invoked on test scores, structural window counts. | Torch. **Checkpoint required** (reads the path recorded in `experiments/model1/final_model_selection.json`; no `--data-dir` needed since it checks already-generated artifacts). | `python3 test_final_test_evaluation.py` |
+| `test_demo_json_comparison.py` | Regression test for `scripts/model1/demo/run_data_demo.py`'s Stage 4 scaler-comparison helper (`compare_json`/`_approx_equal`): exact match, large-magnitude float64 noise (~2e-14 relative) passes only because of the relative tolerance, tiny absolute noise passes, a deliberately meaningful value change still fails, missing keys/list-length mismatches still fail, and Stage 3's `tolerance=None` exact-equality path is confirmed unaffected. Entirely synthetic. | No torch, no data dir. | `python3 test_demo_json_comparison.py` |
 
 For the full protocol these tests verify, see
 [docs/model1/protocol/protocol.md](../../docs/model1/protocol/protocol.md). For
