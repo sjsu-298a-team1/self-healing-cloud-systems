@@ -73,7 +73,7 @@ def coverage_figure(coverage):
     ax.set_xticks(np.arange(-.5,4,1),minor=True); ax.set_yticks(np.arange(-.5,5,1),minor=True)
     ax.grid(which='minor',color='white',linewidth=4); ax.tick_params(which='minor',length=0)
     for i in range(5):
-        for j in range(4): ax.text(j,i,'5 runs',ha='center',va='center',fontsize=20,color='white',weight='bold')
+        for j in range(4): ax.text(j,i,f'{coverage.iloc[i, j]} runs',ha='center',va='center',fontsize=20,color='white',weight='bold')
     for spine in ax.spines.values(): spine.set_visible(False)
     return fig
 

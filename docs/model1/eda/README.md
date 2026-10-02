@@ -44,7 +44,7 @@ The nine main figures use a consistent 1920 × 1080 layout, descriptive titles, 
 
 ## Verification
 
-- Re-ran with only the 60 training case directories present: no validation or test raw telemetry was available. All 22 generated files matched the original run byte for byte.
+- Re-ran with only the 60 training case directories present: no validation or test raw telemetry was available. Exact reproduction of the 22 generated outputs is expected with the pinned environment, matching input data, and the same font/rendering setup. Other compatible environments may produce minor non-semantic differences in floating-point calculations, `nunique()` results, or PNG rendering due to NumPy/Pandas or font-rendering versions.
 - Confirmed 100 structurally covered cases, 2,630 missing cells, 21,600 known-normal training rows and 55 features.
 - Reproduced the existing demo's 2,596 cells with `|z| > 5`; these affect 4.51% of known-normal training rows. This is a descriptive cutoff, not the model's anomaly threshold.
 - Checked SHA256 hashes before/after processing: every input file read remained unchanged.
