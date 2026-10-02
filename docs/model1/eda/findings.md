@@ -8,11 +8,15 @@
 
 ![Missingness](figures/02_missingness.png)
 
+![Missingness by case](figures/02b_missingness_cases.png)
+
 Exactly 2,630 raw missing cells are concentrated most in istio-init_mem (1,137 cells). See [missing_by_feature.csv](../../../data/model1/eda/missing_by_feature.csv) and [missing_by_case.csv](../../../data/model1/eda/missing_by_case.csv). Missing cells are distinct from columns absent from a case schema; Model 1 keeps its existing 55 common features.
 
 ## Distributions
 
 ![Distributions](figures/03_distributions.png)
+
+![Additional distributions](figures/03b_distributions_additional.png)
 
 Raw units and axis ranges differ across CPU, memory and latency signals. Log count axes retain rare tails. The final example is selected by the most training cases with constant behavior; the other examples are fixed semantic CPU/memory/latency choices. Constant within a case does not mean constant across the pooled dataset. [feature_statistics.csv](../../../data/model1/eda/feature_statistics.csv) records quantiles, skew and constant-case counts for every feature. No missing values are filled for these raw histograms.
 
@@ -31,6 +35,8 @@ Examples are selected before examining behavior: the first lexicographic trainin
 ## Extreme standardized values
 
 ![Extremes](figures/06_extreme_values.png)
+
+![Extremes by service group](figures/06b_extremes_by_service.png)
 
 2,596 of 1,188,000 training known-normal cells exceed |z| > 5 (0.219%), affecting 4.51% of rows. Largest feature contributor: adservice_mem (250 cells). Largest targeted-service group: cartservice (1395 cells). See [extremes_by_feature.csv](../../../data/model1/eda/extremes_by_feature.csv) and [extremes_by_case.csv](../../../data/model1/eda/extremes_by_case.csv). This reuses the demo’s descriptive cutoff, not a model threshold; no records are removed.
 
