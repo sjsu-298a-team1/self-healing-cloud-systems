@@ -27,6 +27,26 @@ The dataset is BARO's own Online Boutique artifact:
 3. Note the local path to the extracted `fse-ob` directory -- this is your
    `<BARO_DATA_DIR>`.
 
+## License / Terms of Use
+
+**Software license does not automatically extend to the dataset.** Three distinct
+licenses are involved, verified separately from authoritative sources on
+2026-10-03:
+
+| Item | License | Source verified |
+|---|---|---|
+| BARO analysis code (`phamquiluan/baro`) | MIT License, Copyright (c) 2024 Luan Pham | Local clone's own `LICENSE` file (`~/298A_project/code/baro/LICENSE`) |
+| Online Boutique application source (`GoogleCloudPlatform/microservices-demo`) | Apache License 2.0 | GitHub REST API license endpoint: `repos/GoogleCloudPlatform/microservices-demo/license` → `license.spdx_id: "Apache-2.0"` |
+| **`fse-ob` telemetry dataset itself** (Zenodo record `10.5281/zenodo.11046533`) | **CC BY 4.0** (Creative Commons Attribution 4.0 International), `access_right: "open"` | Zenodo REST API record metadata: `zenodo.org/api/records/11046533` → `license.id: "cc-by-4.0"` |
+
+The dataset's own CC BY 4.0 license (not BARO's MIT code license, and not Online
+Boutique's Apache 2.0 code license) governs reuse of the telemetry data itself —
+attribution to the BARO paper/artifact is required for any reuse or redistribution.
+
+No separate terms-of-use text beyond the CC BY 4.0 grant was found in the Zenodo
+record. If a more specific terms-of-use statement is later found, this section
+should be updated rather than assumed.
+
 ## Expected directory structure
 
 ```
