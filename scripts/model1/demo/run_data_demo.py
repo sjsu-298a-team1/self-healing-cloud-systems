@@ -22,6 +22,7 @@ Exit code 0 = every stage passed. Non-zero = at least one stage failed.
 """
 import argparse
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -43,6 +44,16 @@ sys.path.insert(0, os.path.join(SCRIPTS, "data"))
 
 RULE = "=" * 78
 THIN = "-" * 78
+
+# Stage 4 scaler comparison only: absolute tolerance catches real differences
+# on small-magnitude features; relative tolerance absorbs float64 summation-
+# order noise on large-magnitude features (e.g. *_mem stats ~1e7, where a
+# ~1e-7 absolute difference is ~2e-14 relative -- machine-epsilon noise, not a
+# real change). Both explicit and named here so the allowed slack is
+# auditable, not a magic number buried in a function call. Not used by any
+# other comparison in this file (see compare_json/_approx_equal).
+SCALER_COMPARISON_ABS_TOL = 1e-9
+SCALER_COMPARISON_REL_TOL = 1e-12
 
 
 # --------------------------------------------------------------------------
@@ -86,8 +97,16 @@ def load_json(path):
         return json.load(f)
 
 
-def compare_json(generated_path, committed_path, label, tolerance=None):
-    """Compare a regenerated artifact against the committed one."""
+def compare_json(generated_path, committed_path, label, tolerance=None, rel_tolerance=0.0):
+    """Compare a regenerated artifact against the committed one.
+
+    tolerance=None (the default, used by Stage 3's manifest comparisons):
+    exact structural equality, no float slack whatsoever.
+
+    tolerance=<abs_tol> (used only by Stage 4's scaler comparison): structural
+    equality with math.isclose(rel_tol=rel_tolerance, abs_tol=tolerance) for
+    numeric leaves.
+    """
     if not os.path.exists(generated_path):
         bad(f"{label}: regenerated file not produced")
         return False
@@ -100,26 +119,39 @@ def compare_json(generated_path, committed_path, label, tolerance=None):
     if tolerance is None:
         same = gen == com
     else:
-        same = _approx_equal(gen, com, tolerance)
+        same = _approx_equal(gen, com, tolerance, rel_tolerance)
 
     if same:
-        ok(f"{label}: regenerated output is identical to the committed artifact")
+        if tolerance is None:
+            ok(f"{label}: regenerated output is identical to the committed artifact")
+        else:
+            ok(f"{label}: regenerated values match the committed artifact "
+               f"within configured numeric tolerance")
     else:
         bad(f"{label}: regenerated output DIFFERS from the committed artifact")
     return same
 
 
-def _approx_equal(a, b, tol):
-    """Structural equality with a float tolerance for numeric leaves."""
+def _approx_equal(a, b, abs_tol, rel_tol=0.0):
+    """Structural equality with a float tolerance for numeric leaves.
+
+    Numeric leaves are compared with math.isclose(rel_tol=rel_tol,
+    abs_tol=abs_tol) rather than a bare absolute difference, so a tiny
+    relative (float64 rounding) difference on a large-magnitude value isn't
+    conflated with an absolute difference of the same raw size on a
+    small-magnitude value -- both tolerances are explicit at the call site
+    rather than one being baked silently into this function.
+    """
     if isinstance(a, dict) and isinstance(b, dict):
         if set(a) != set(b):
             return False
-        return all(_approx_equal(a[k], b[k], tol) for k in a)
+        return all(_approx_equal(a[k], b[k], abs_tol, rel_tol) for k in a)
     if isinstance(a, list) and isinstance(b, list):
-        return len(a) == len(b) and all(_approx_equal(x, y, tol) for x, y in zip(a, b))
+        return len(a) == len(b) and all(
+            _approx_equal(x, y, abs_tol, rel_tol) for x, y in zip(a, b))
     if isinstance(a, (int, float)) and isinstance(b, (int, float)) \
             and not isinstance(a, bool) and not isinstance(b, bool):
-        return abs(float(a) - float(b)) <= tol
+        return math.isclose(a, b, rel_tol=rel_tol, abs_tol=abs_tol)
     return a == b
 
 
@@ -314,7 +346,9 @@ def stage_4_scaler(data_dir, work_configs, work_manifests):
     gen = os.path.join(work_configs, "scaler.json")
     com = os.path.join(COMMITTED_CONFIGS, "scaler.json")
 
-    passed = compare_json(gen, com, "scaler.json", tolerance=1e-9)
+    passed = compare_json(gen, com, "scaler.json",
+                          tolerance=SCALER_COMPARISON_ABS_TOL,
+                          rel_tolerance=SCALER_COMPARISON_REL_TOL)
 
     try:
         s = load_json(gen)
