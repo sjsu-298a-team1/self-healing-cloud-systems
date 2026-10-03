@@ -19,9 +19,9 @@ Created: 2026-10-03, on branch `khushi/project-evidence-cleanup`.
 
 ### Models 2–4: design-only in 298A
 
-- **Model 2 (service-graph RCA):** design/topology inspection only. Where a service
-  topology is used for design purposes, it is an **assumed Online Boutique topology**,
-  reconstructed from a specific, pinned public version of
+- **Model 2 (service-graph RCA):** design only. See `docs/model2/README.md`. Where a
+  service topology is used for design purposes, it is an **assumed Online Boutique
+  topology**, reconstructed from a specific, pinned public version of
   `GoogleCloudPlatform/microservices-demo` and mapped onto BARO's 13 ranking
   candidates — **this is never to be described as BARO's own authoritative topology**,
   since BARO's own artifact contains no topology/version identifier (verified by
@@ -33,9 +33,21 @@ Created: 2026-10-03, on branch `khushi/project-evidence-cleanup`.
 - **Model 4 (action-risk classifier):** design only. See `docs/model4/README.md`
   and `docs/literature/safe-remediation/README.md`. No model selected, no training
   data collected, no implementation code exists.
-- **Model 2 (service-graph RCA):** design discussion has occurred but **no design
-  artifact is yet committed to this repository** under `docs/model2/` — this is a
-  known, currently unresolved gap, not yet closed.
+
+### Intended four-model pipeline (design level only)
+
+```
+Model 1 (anomaly detection) -> Model 2 (ranked root cause) -> Model 3 (diagnosis/remediation) -> Model 4 (risk gate)
+```
+
+Cross-model interface schemas are **not fixed** beyond what each model's own design
+doc states. Known concretely today: Model 1's real output shape (window-level
+anomaly score + threshold flag + detection timestamp, see
+`scripts/model1/evaluation/scoring.py`). Everything else in this chain — Model 2's
+exact ranked-output schema, Model 3's structured-output schema, and Model 4's input
+contract — is **TBD**, documented as such in `docs/model2/README.md`,
+`docs/model3/README.md`, and `docs/model4/README.md` respectively. No schema is
+invented here to fill these gaps.
 
 ## 298B (next semester)
 

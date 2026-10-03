@@ -20,7 +20,7 @@ plan proposal, to be passed to Model 4 for risk gating before any action execute
 | From | Verified shape (as currently implemented/designed) | Source |
 |---|---|---|
 | Model 1 | Per-window anomaly score (MSE-based reconstruction error), a binary detection flag relative to the frozen threshold (`0.8249893178835667`), and a detection timestamp | `experiments/model1/model1_final_summary.json`, `scripts/model1/evaluation/scoring.py` |
-| Model 2 | **Not committed to this repository.** Per its approved role, expected to be a ranked candidate-service list (coarse-grained root-cause localization) — exact output schema is **TBD**, no Model 2 design artifact exists under `docs/model2/` at time of writing | `docs/abstract/298-14-abstract-declarations.md:22`; confirmed absent via repo search |
+| Model 2 | Design-level only (see `docs/model2/README.md`): a ranked list over 13 candidate services (coarse-grained root-cause localization). **Exact output schema is still TBD** — `docs/model2/README.md` documents the design (architecture family, candidate set, metrics) but no implementation or committed output format exists yet | `docs/model2/README.md`; `docs/abstract/298-14-abstract-declarations.md:22` |
 
 ## Expected structured outputs
 
