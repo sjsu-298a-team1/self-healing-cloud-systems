@@ -27,11 +27,15 @@ Created: 2026-10-03, on branch `khushi/project-evidence-cleanup`.
   since BARO's own artifact contains no topology/version identifier (verified by
   exhaustive search of the BARO clone). No Model 2 training code exists in this
   repository.
-- **Model 3 (LLM diagnosis/remediation generator):** design/literature review only
-  (`docs/literature/safe-remediation/README.md`). No model selected, no training
-  data collected, no implementation code exists.
-- **Model 4 (action-risk classifier):** design/literature review only (same doc). No
+- **Model 3 (LLM diagnosis/remediation generator):** design only. See
+  `docs/model3/README.md` and `docs/literature/safe-remediation/README.md`. No
   model selected, no training data collected, no implementation code exists.
+- **Model 4 (action-risk classifier):** design only. See `docs/model4/README.md`
+  and `docs/literature/safe-remediation/README.md`. No model selected, no training
+  data collected, no implementation code exists.
+- **Model 2 (service-graph RCA):** design discussion has occurred but **no design
+  artifact is yet committed to this repository** under `docs/model2/` — this is a
+  known, currently unresolved gap, not yet closed.
 
 ## 298B (next semester)
 
