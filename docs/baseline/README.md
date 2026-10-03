@@ -8,6 +8,8 @@
 - **Dataset:** BARO original Online Boutique artifact. Zenodo record: 10.5281/zenodo.11046533.
 - **Published reproduction target:** Table 3, coarse-grained root-cause service
   localization, Online Boutique column, Avg@5 = 0.86.
+- **Reproduction evidence:** see [baseline_reproduction.md](baseline_reproduction.md) —
+  verified local reproduction, exact match to all 5 published Table 3 values.
 - BARO baseline reproduction is separate from the four project models (multivariate
   time-series anomaly detector; service-graph root-cause localization model; LLM
   diagnosis and remediation-plan generator; action-risk classifier).
