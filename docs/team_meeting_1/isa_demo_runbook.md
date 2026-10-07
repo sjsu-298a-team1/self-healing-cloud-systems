@@ -30,7 +30,10 @@ Run from the repository root:
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
+pip install matplotlib==3.11.2
 ```
+
+`matplotlib` is installed separately because it is not in `requirements.txt`. ISA check 4 runs `scripts/model1/eda/build_eda.py`, which imports it, so without this line that check fails with `ModuleNotFoundError: No module named 'matplotlib'`.
 
 Obtain the official BARO artifact using [`docs/data/README.md`](../data/README.md):
 
@@ -520,5 +523,3 @@ Before moving the Linear issue to Done:
 4. Create a GitHub branch and PR containing `docs/team_meeting_1/isa_demo_runbook.md`.
 5. Link the PR and run-through evidence to the Linear issue.
 6. Obtain review approval before marking the issue Done.
-
-This runbook was created in a local working copy only. It has not been committed or pushed to GitHub.
