@@ -1,0 +1,134 @@
+{
+  "hypothesis_checks": [
+    {
+      "id": "failure_cases",
+      "description": "number of failure cases",
+      "expected": 210,
+      "observed": 210,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "nodes",
+      "description": "number of nodes/instances",
+      "expected": 46,
+      "observed": 46,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "normal_samples",
+      "description": "normal samples (train_samples.pkl)",
+      "expected": 3714,
+      "observed": 3714,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "metric_channels",
+      "description": "metric channels",
+      "expected": 110,
+      "observed": 110,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "log_channels",
+      "description": "log feature channels",
+      "expected": 11,
+      "observed": 11,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "trace_channels",
+      "description": "trace feature channels",
+      "expected": 9,
+      "observed": 9,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "channel_total",
+      "description": "total channels",
+      "expected": 130,
+      "observed": 130,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "categories",
+      "description": "grouped failure categories",
+      "expected": 5,
+      "observed": 5,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "fine_types",
+      "description": "fine-grained failure types",
+      "expected": 15,
+      "observed": 15,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "sampling_seconds",
+      "description": "dominant sampling step (s)",
+      "expected": 60,
+      "observed": 60,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "groups_cover_channels",
+      "description": "modality groups cover all channels exactly once",
+      "expected": true,
+      "observed": true,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "no_nan_inf",
+      "description": "NaN+Inf values in feature tensors",
+      "expected": 0,
+      "observed": 0,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "all_types_mapped",
+      "description": "fine types lacking a category mapping",
+      "expected": 0,
+      "observed": 0,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "splits_disjoint",
+      "description": "train/test timestamp overlap",
+      "expected": 0,
+      "observed": 0,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "samples_pkl_union",
+      "description": "samples.pkl equals train union test",
+      "expected": true,
+      "observed": true,
+      "status": "VERIFIED"
+    },
+    {
+      "id": "ad_events_equal_cases",
+      "description": "ad_cases.pkl timestamps equal cases.csv timestamps",
+      "expected": true,
+      "observed": false,
+      "status": "DISCREPANCY_CONFIRMED"
+    },
+    {
+      "id": "train_scaled_on_train_only",
+      "description": "feature scaling statistics fit on train only (per-node-channel mean0/std1 holds on train alone)",
+      "expected": true,
+      "observed": false,
+      "status": "DISCREPANCY_CONFIRMED"
+    },
+    {
+      "id": "pretraining_set_precedes_ad_split",
+      "description": "pretraining set contains no samples after the AD split time",
+      "expected": true,
+      "observed": false,
+      "status": "DISCREPANCY_CONFIRMED"
+    }
+  ],
+  "inventory_rehash": {
+    "files_checked": 9,
+    "problems": []
+  }
+}

@@ -1,0 +1,695 @@
+{
+  "generated_utc": "2026-10-25T04:42:02+00:00",
+  "cases": {
+    "n_cases": 210,
+    "cases_sorted_by_time": true,
+    "duplicate_case_timestamps": 0,
+    "first_case_utc": "2022-04-30T17:06:40+00:00",
+    "last_case_utc": "2022-05-09T15:37:25+00:00",
+    "failure_level_counts": {
+      "node": 67,
+      "pod": 69,
+      "service": 74
+    },
+    "distinct_fine_failure_types": 15,
+    "distinct_categories": 5,
+    "unmapped_failure_types": [],
+    "distinct_root_cause_ids": 47,
+    "root_cause_vs_graph_nodes": {
+      "exact_node_match": 136,
+      "not_exact": 74,
+      "not_exact_ids": [
+        "adservice",
+        "cartservice",
+        "checkoutservice",
+        "currencyservice",
+        "emailservice",
+        "frontend",
+        "paymentservice",
+        "productcatalogservice",
+        "recommendationservice",
+        "shippingservice"
+      ]
+    },
+    "ad_cases_pkl_count": 224,
+    "ad_cases_not_in_cases_csv": 21,
+    "cases_csv_not_in_ad_cases": 7,
+    "ad_cases_sorted": false,
+    "case_columns": [
+      "timestamp",
+      "level",
+      "cmdb_id",
+      "failure_type"
+    ],
+    "has_end_time_or_duration_column": false
+  },
+  "features": {
+    "tensor_shape_per_sample": [
+      46,
+      130
+    ],
+    "tensor_shapes_seen": [
+      [
+        46,
+        130
+      ]
+    ],
+    "dtype": "float32",
+    "n_nodes": 46,
+    "n_channels": 130,
+    "modality_groups": {
+      "counts": {
+        "metric": 110,
+        "trace": 9,
+        "log": 11
+      },
+      "total_channels": 130,
+      "covers_all_channels_exactly_once": true
+    },
+    "feat_span_config_D1_yaml": {
+      "metric": [
+        [
+          0,
+          52
+        ],
+        [
+          73,
+          129
+        ]
+      ],
+      "trace": [
+        [
+          53,
+          61
+        ]
+      ],
+      "log": [
+        [
+          62,
+          72
+        ]
+      ]
+    },
+    "group_stats_train": {
+      "metric": {
+        "channels": 110,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.806355,
+        "node_sample_rows_all_zero_fraction": 0.0,
+        "all_zero_channels": 36,
+        "mostly_zero_channels_gt_90pct": 47,
+        "min": -13.3791,
+        "max": 13.3791,
+        "mean": 0.0002,
+        "std": 0.4262
+      },
+      "trace": {
+        "channels": 9,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.77917,
+        "node_sample_rows_all_zero_fraction": 0.135352,
+        "all_zero_channels": 0,
+        "mostly_zero_channels_gt_90pct": 7,
+        "min": -12.0159,
+        "max": 13.3791,
+        "mean": 0.0011,
+        "std": 0.4152
+      },
+      "log": {
+        "channels": 11,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.813443,
+        "node_sample_rows_all_zero_fraction": 0.347826,
+        "all_zero_channels": 1,
+        "mostly_zero_channels_gt_90pct": 8,
+        "min": -6.417,
+        "max": 13.3791,
+        "mean": 0.0048,
+        "std": 0.4122
+      }
+    },
+    "group_stats_test": {
+      "metric": {
+        "channels": 110,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.805584,
+        "node_sample_rows_all_zero_fraction": 0.0,
+        "all_zero_channels": 36,
+        "mostly_zero_channels_gt_90pct": 47,
+        "min": -13.3791,
+        "max": 13.3791,
+        "mean": -0.0002,
+        "std": 0.4525
+      },
+      "trace": {
+        "channels": 9,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.778622,
+        "node_sample_rows_all_zero_fraction": 0.136421,
+        "all_zero_channels": 0,
+        "mostly_zero_channels_gt_90pct": 7,
+        "min": -12.8695,
+        "max": 13.3791,
+        "mean": -0.0012,
+        "std": 0.5226
+      },
+      "log": {
+        "channels": 11,
+        "nan": 0,
+        "inf": 0,
+        "zero_fraction": 0.812679,
+        "node_sample_rows_all_zero_fraction": 0.347826,
+        "all_zero_channels": 1,
+        "mostly_zero_channels_gt_90pct": 8,
+        "min": -6.6509,
+        "max": 13.3791,
+        "mean": -0.0052,
+        "std": 0.4529
+      }
+    },
+    "scaling_evidence": {
+      "train_samples": {
+        "n_samples": 3714,
+        "channel_mean_abs_max": 0.06396,
+        "channel_mean_abs_median": 0.0022,
+        "channel_std_median_nonconstant": 0.35414,
+        "channel_std_min_nonconstant": 0.01876,
+        "channel_std_max": 0.94071,
+        "constant_channels": 38
+      },
+      "test_samples": {
+        "n_samples": 3486,
+        "channel_mean_abs_max": 0.06898,
+        "channel_mean_abs_median": 0.00231,
+        "channel_std_median_nonconstant": 0.36765,
+        "channel_std_min_nonconstant": 0.00159,
+        "channel_std_max": 1.04357,
+        "constant_channels": 38
+      },
+      "train_plus_test": {
+        "n_samples": 7200,
+        "channel_mean_abs_max": 0.00041,
+        "channel_mean_abs_median": 0.0,
+        "channel_std_median_nonconstant": 0.36116,
+        "channel_std_min_nonconstant": 0.02331,
+        "channel_std_max": 0.93275,
+        "constant_channels": 38
+      },
+      "train_samples_up_to_ad_split_ts": {
+        "n_samples": 2269,
+        "channel_mean_abs_max": 0.0911,
+        "channel_mean_abs_median": 0.00163,
+        "channel_std_median_nonconstant": 0.35711,
+        "channel_std_min_nonconstant": 0.02298,
+        "channel_std_max": 0.95027,
+        "constant_channels": 38
+      }
+    },
+    "scaling_evidence_per_node_channel": {
+      "train_plus_test": {
+        "n_samples": 7200,
+        "nonconstant_node_channel_series": 1607,
+        "series_with_mean0_std1_tol1e-3": 831,
+        "fraction_of_nonconstant": 0.5171
+      },
+      "train_only": {
+        "n_samples": 3714,
+        "nonconstant_node_channel_series": 1607,
+        "series_with_mean0_std1_tol1e-3": 4,
+        "fraction_of_nonconstant": 0.0025
+      },
+      "test_only": {
+        "n_samples": 3486,
+        "nonconstant_node_channel_series": 1607,
+        "series_with_mean0_std1_tol1e-3": 4,
+        "fraction_of_nonconstant": 0.0025
+      },
+      "samples_pkl_full_timeline": {
+        "n_samples": 7200,
+        "nonconstant_node_channel_series": 1607,
+        "series_with_mean0_std1_tol1e-3": 831,
+        "fraction_of_nonconstant": 0.5171
+      }
+    },
+    "scaling_evidence_180_sample_blocks": {
+      "series_blocks": 239200,
+      "constant": 191718,
+      "mean0_std1": 39543,
+      "other": 7939,
+      "fraction_of_nonconstant_mean0_std1": 0.8328,
+      "block_size_samples": 180,
+      "max_abs_value": 13.379088,
+      "sqrt_179": 13.379088
+    },
+    "structurally_absent_modality_nodes_always_zero": {
+      "trace": [
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4",
+        "node-5",
+        "node-6"
+      ],
+      "log": [
+        "adservice2-0",
+        "cartservice2-0",
+        "checkoutservice2-0",
+        "currencyservice2-0",
+        "emailservice2-0",
+        "frontend2-0",
+        "paymentservice2-0",
+        "productcatalogservice2-0",
+        "recommendationservice2-0",
+        "shippingservice2-0",
+        "node-1",
+        "node-2",
+        "node-3",
+        "node-4",
+        "node-5",
+        "node-6"
+      ]
+    },
+    "partially_zero_modality_nodes": {
+      "trace": {
+        "adservice2-0": 0.025,
+        "cartservice2-0": 0.025,
+        "checkoutservice2-0": 0.025,
+        "currencyservice2-0": 0.025,
+        "emailservice2-0": 0.025,
+        "frontend2-0": 0.025,
+        "paymentservice2-0": 0.025,
+        "productcatalogservice2-0": 0.025,
+        "recommendationservice2-0": 0.025,
+        "shippingservice2-0": 0.025
+      },
+      "log": {}
+    },
+    "nan_total": 0,
+    "inf_total": 0,
+    "graph": {
+      "train_distinct_topologies": 4,
+      "test_distinct_topologies": 11,
+      "shared_topologies_between_train_test": 4,
+      "edges_per_sample_train": [
+        268
+      ],
+      "edges_per_sample_test": [
+        200,
+        202,
+        256,
+        262,
+        266,
+        268
+      ],
+      "edge_dtype": "int64",
+      "directed_edge_arrays": "src,dst (two int64 tensors per graph)"
+    }
+  },
+  "split_and_leakage": {
+    "samples": {
+      "train_samples": {
+        "count": 3714,
+        "min": 1651334400,
+        "max": 1652111940,
+        "sorted_ascending": true,
+        "duplicate_timestamps": 0,
+        "step_seconds_top": [
+          [
+            60,
+            3511
+          ],
+          [
+            960,
+            154
+          ],
+          [
+            1860,
+            8
+          ],
+          [
+            1620,
+            7
+          ],
+          [
+            1020,
+            5
+          ],
+          [
+            1740,
+            4
+          ],
+          [
+            86460,
+            4
+          ],
+          [
+            1800,
+            4
+          ]
+        ],
+        "segments": 203,
+        "segment_len_min": 1,
+        "segment_len_median": 14,
+        "segment_len_max": 131
+      },
+      "test_samples": {
+        "count": 3486,
+        "min": 1651337820,
+        "max": 1652110920,
+        "sorted_ascending": true,
+        "duplicate_timestamps": 0,
+        "step_seconds_top": [
+          [
+            60,
+            3288
+          ],
+          [
+            240,
+            15
+          ],
+          [
+            300,
+            12
+          ],
+          [
+            540,
+            10
+          ],
+          [
+            840,
+            10
+          ],
+          [
+            1140,
+            9
+          ],
+          [
+            120,
+            8
+          ],
+          [
+            1260,
+            8
+          ]
+        ],
+        "segments": 198,
+        "segment_len_min": 15,
+        "segment_len_median": 15,
+        "segment_len_max": 44
+      },
+      "samples_pkl": {
+        "count": 7200,
+        "min": 1651334400,
+        "max": 1652111940,
+        "sorted_ascending": true,
+        "duplicate_timestamps": 0,
+        "step_seconds_top": [
+          [
+            60,
+            7195
+          ],
+          [
+            86460,
+            4
+          ]
+        ],
+        "segments": 5,
+        "segment_len_min": 1440,
+        "segment_len_median": 1440,
+        "segment_len_max": 1440
+      },
+      "train_test_timestamp_overlap": 0,
+      "samples_pkl_is_exact_union_of_train_and_test_by_timestamp_and_values": true,
+      "timestamp_epoch_unit": "seconds (UTC)",
+      "nominal_step_seconds": 60,
+      "train_range_utc": [
+        "2022-04-30T16:00:00+00:00",
+        "2022-05-09T15:59:00+00:00"
+      ],
+      "test_range_utc": [
+        "2022-04-30T16:57:00+00:00",
+        "2022-05-09T15:42:00+00:00"
+      ]
+    },
+    "armor_ad_split_derived_from_code": {
+      "formula": "split_ts = sorted(train+test timestamps)[int(0.6*N)]; init=train<=split_ts; eval=all>split_ts",
+      "split_ts": 1651852800,
+      "split_ts_utc": "2022-05-06T16:00:00+00:00",
+      "eval_samples": 2879,
+      "ad_ground_truth_events_after_split": 98,
+      "ad_ground_truth_events_total": 224
+    },
+    "armor_ft_rcl_split_derived_from_code": {
+      "formula": "cases[:int(0.6*N)] train, cases[int(0.6*N):] test (case order = cases.csv order)",
+      "train_cases": 126,
+      "test_cases": 84,
+      "first_test_case_ts": 1651858208,
+      "first_test_case_utc": "2022-05-06T17:30:08+00:00",
+      "ad_split_ts_minus_first_test_case_ts_seconds": -5408,
+      "cases_after_ad_split_ts": 84
+    },
+    "window_capacity": {
+      "windows_of_6_steps": {
+        "train_samples": {
+          "runs": 203,
+          "runs_shorter_than_window": 47,
+          "windows": 2785
+        },
+        "test_samples": {
+          "runs": 198,
+          "runs_shorter_than_window": 0,
+          "windows": 2496
+        }
+      },
+      "armor_series_of_7_steps": {
+        "train_samples": {
+          "runs": 203,
+          "runs_shorter_than_window": 53,
+          "windows": 2629
+        },
+        "test_samples": {
+          "runs": 198,
+          "runs_shorter_than_window": 0,
+          "windows": 2298
+        }
+      },
+      "note": "windows lie wholly inside runs of consecutive 60 s samples; ARMOR's create_dataloader_AR needs window_size+1 = 7 consecutive samples (6 inputs + next-step target, max_gap 60 s)"
+    },
+    "case_window_coverage": {
+      "window": "[case_ts-59, case_ts+300) seconds",
+      "test_samples_cases_with_zero_samples": 0,
+      "test_samples_per_case_min_median_max": [
+        5,
+        6,
+        6
+      ],
+      "train_samples_cases_with_any_sample": 0,
+      "train_samples_in_any_case_window_total": 0,
+      "train_samples_in_heldout_case_windows": 0
+    },
+    "pretraining_exposure": {
+      "pretrain_set_per_config": "train_samples_num: whole (all of train_samples.pkl)",
+      "train_samples_total": 3714,
+      "train_samples_after_ad_split_ts": 1445,
+      "train_samples_within_300s_of_any_failure_ts": 161,
+      "train_samples_within_300s_of_a_cases_csv_ts": 0,
+      "train_samples_within_300s_of_an_ad_event_absent_from_cases_csv": 161,
+      "test_samples_within_300s_of_any_failure_ts": 2069,
+      "train_samples_in_heldout_case_windows": 0
+    },
+    "ad_ground_truth_vs_cases_csv": {
+      "extra_ad_timestamps_not_in_cases_csv": 21,
+      "extra_nearest_case_delta_seconds": [
+        463,
+        489,
+        584,
+        609,
+        654,
+        666,
+        758,
+        802,
+        848,
+        918,
+        1033,
+        1106,
+        1141,
+        1243,
+        1267,
+        1527,
+        1606,
+        1638,
+        1783,
+        2122,
+        2246
+      ],
+      "cases_missing_from_ad_cases": 7,
+      "missing_case_nearest_ad_delta_seconds": [
+        463,
+        1151,
+        1472,
+        1666,
+        1741,
+        2162,
+        2468
+      ],
+      "extra_ad_timestamps_inside_test_sample_range": 21
+    },
+    "case_to_test_segment": {
+      "test_segments": 198,
+      "cases_not_inside_any_test_segment": 0,
+      "cases_per_segment_max": 3,
+      "seconds_before_case_in_segment_min_median_max": [
+        541,
+        578,
+        2302
+      ],
+      "seconds_after_case_in_segment_min_median_max": [
+        242,
+        280,
+        1985
+      ]
+    },
+    "case_window_overlap": {
+      "case_window_seconds": 359,
+      "min_gap_between_consecutive_cases_seconds": 338,
+      "consecutive_case_pairs_with_overlapping_windows": 1,
+      "train_to_test_boundary_gap_seconds": 95691,
+      "train_to_test_boundary_windows_overlap": false
+    },
+    "label_budget_feasibility_first60pct_train_cases": {
+      "10%": {
+        "train_cases": 13,
+        "expected_per_category": {
+          "Container Hardware": 4.7,
+          "Container Network": 3.8,
+          "Node CPU": 1.3,
+          "Node Disk": 2.3,
+          "Node Memory": 0.5
+        },
+        "min_expected_class_count": 0.5
+      },
+      "25%": {
+        "train_cases": 32,
+        "expected_per_category": {
+          "Container Hardware": 11.8,
+          "Container Network": 9.5,
+          "Node CPU": 3.2,
+          "Node Disk": 5.8,
+          "Node Memory": 1.2
+        },
+        "min_expected_class_count": 1.2
+      },
+      "50%": {
+        "train_cases": 63,
+        "expected_per_category": {
+          "Container Hardware": 23.5,
+          "Container Network": 19.0,
+          "Node CPU": 6.5,
+          "Node Disk": 11.5,
+          "Node Memory": 2.5
+        },
+        "min_expected_class_count": 2.5
+      },
+      "100%": {
+        "train_cases": 126,
+        "expected_per_category": {
+          "Container Hardware": 47.0,
+          "Container Network": 38.0,
+          "Node CPU": 13.0,
+          "Node Disk": 23.0,
+          "Node Memory": 5.0
+        },
+        "min_expected_class_count": 5.0
+      }
+    },
+    "derived_detection_labels_note": "No incident intervals are released: only injection timestamps; any sample-level label is derived (+/-300s tolerance used by ARMOR eval_AD)."
+  },
+  "class_distribution": {
+    "all": {
+      "n": 210,
+      "fine": {
+        "Node CPU Failure": 14,
+        "Kubernetes Container Read I/O Load": 21,
+        "Node Disk Read I/O Consumption": 12,
+        "Kubernetes Container Memory Load": 18,
+        "Kubernetes Container Network Packet Loss": 23,
+        "Kubernetes Container Network Resource Packet Duplication": 6,
+        "Kubernetes Container CPU Load": 20,
+        "Node Memory Consumption": 9,
+        "Node Disk Space Consumption": 14,
+        "Kubernetes Container Network Latency": 13,
+        "Kubernetes Container Process Termination": 10,
+        "Kubernetes Container Write I/O Load": 14,
+        "Kubernetes Container Network Resource Packet Corruption": 18,
+        "Node Disk Write I/O Consumption": 11,
+        "Node CPU Spiking": 7
+      },
+      "category": {
+        "Node CPU": 21,
+        "Container Hardware": 83,
+        "Node Disk": 37,
+        "Container Network": 60,
+        "Node Memory": 9
+      }
+    },
+    "armor_ft_rcl_train_first60pct": {
+      "n": 126,
+      "fine": {
+        "Node CPU Failure": 8,
+        "Kubernetes Container Read I/O Load": 13,
+        "Node Disk Read I/O Consumption": 8,
+        "Kubernetes Container Memory Load": 9,
+        "Kubernetes Container Network Packet Loss": 14,
+        "Kubernetes Container Network Resource Packet Duplication": 5,
+        "Kubernetes Container CPU Load": 12,
+        "Node Memory Consumption": 5,
+        "Node Disk Space Consumption": 7,
+        "Kubernetes Container Network Latency": 8,
+        "Kubernetes Container Process Termination": 7,
+        "Kubernetes Container Write I/O Load": 6,
+        "Kubernetes Container Network Resource Packet Corruption": 11,
+        "Node Disk Write I/O Consumption": 8,
+        "Node CPU Spiking": 5
+      },
+      "category": {
+        "Node CPU": 13,
+        "Container Hardware": 47,
+        "Node Disk": 23,
+        "Container Network": 38,
+        "Node Memory": 5
+      }
+    },
+    "armor_ft_rcl_test_last40pct": {
+      "n": 84,
+      "fine": {
+        "Kubernetes Container Network Resource Packet Corruption": 7,
+        "Kubernetes Container Write I/O Load": 8,
+        "Node Disk Space Consumption": 7,
+        "Kubernetes Container Network Packet Loss": 9,
+        "Node Disk Write I/O Consumption": 3,
+        "Kubernetes Container Network Latency": 5,
+        "Node Memory Consumption": 4,
+        "Kubernetes Container Read I/O Load": 8,
+        "Kubernetes Container CPU Load": 8,
+        "Kubernetes Container Memory Load": 9,
+        "Node CPU Spiking": 2,
+        "Node Disk Read I/O Consumption": 4,
+        "Kubernetes Container Process Termination": 3,
+        "Node CPU Failure": 6,
+        "Kubernetes Container Network Resource Packet Duplication": 1
+      },
+      "category": {
+        "Container Network": 22,
+        "Container Hardware": 36,
+        "Node Disk": 14,
+        "Node Memory": 4,
+        "Node CPU": 8
+      }
+    }
+  }
+}
