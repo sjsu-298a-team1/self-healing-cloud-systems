@@ -1,0 +1,215 @@
+{
+  "generated_utc": "2026-10-25T04:30:42+00:00",
+  "official_archive": {
+    "record_id": "21744694",
+    "doi": "10.5281/zenodo.21744694",
+    "concept_doi": "10.5281/zenodo.19157588",
+    "publication_date": "2026-08-01",
+    "license": "cc-by-4.0",
+    "file_name": "ARMOR.zip",
+    "file_size": 174195955,
+    "file_md5": "b0f1068c2a32d76f30630c6217cbaab0",
+    "whole_archive_md5_recomputed": false,
+    "reason_not_recomputed": "requires downloading D2 bytes, which are excluded by project decision"
+  },
+  "bytes_fetched_from_archive": 62077283,
+  "bytes_not_fetched": 112118672,
+  "fetched_members": [
+    {
+      "member": "ARMOR/README.md",
+      "local_path": "ARMOR/README.md",
+      "compressed_bytes_fetched": 1837,
+      "size": 3959,
+      "crc32": "89a19e1b",
+      "md5": "0a5bdf20c09b1c4c0ae3b2d4b54307ce",
+      "sha256": "9d992078fd00f62be8f394e7269038f0d46b6d3f13a72913a0b64475650ac542"
+    },
+    {
+      "member": "ARMOR/main.py",
+      "local_path": "ARMOR/main.py",
+      "compressed_bytes_fetched": 1924,
+      "size": 6076,
+      "crc32": "2a9e437d",
+      "md5": "bb6ab1b7f07d689e1cd75c1d1f32fe3f",
+      "sha256": "bdcd1828c71123f686dccd8256d206851b0680120896cb44659fc9039b49d555"
+    },
+    {
+      "member": "ARMOR/config/D2.yaml",
+      "local_path": "ARMOR/config/D2.yaml",
+      "compressed_bytes_fetched": 585,
+      "size": 1379,
+      "crc32": "ca63834a",
+      "md5": "fea01731a648740574e9b94780833ce7",
+      "sha256": "bb228c44918746b1591bfd2c73c41352586cb1b5b9cc51bcc1fa7e3838d24eef"
+    },
+    {
+      "member": "ARMOR/config/D1.yaml",
+      "local_path": "ARMOR/config/D1.yaml",
+      "compressed_bytes_fetched": 589,
+      "size": 1384,
+      "crc32": "bb31c309",
+      "md5": "a6e1085b1b63bdaccad3cd4e28510ae9",
+      "sha256": "0b8c3878418c6e766c5e508b03c16302d4eee4db5ade257f17519c50771b6925"
+    },
+    {
+      "member": "ARMOR/utils/loss_Dual.py",
+      "local_path": "ARMOR/utils/loss_Dual.py",
+      "compressed_bytes_fetched": 428,
+      "size": 907,
+      "crc32": "5b560ee0",
+      "md5": "a853ca67192008324ec8de6c6e71215b",
+      "sha256": "977f39d09522f33c5f92a92a8fb446541f84c1295e8ed2937b703e6b3c2df73c"
+    },
+    {
+      "member": "ARMOR/utils/spot.py",
+      "local_path": "ARMOR/utils/spot.py",
+      "compressed_bytes_fetched": 6411,
+      "size": 65220,
+      "crc32": "bf4d5748",
+      "md5": "5bda14b5db9e4f6725bf3e0fcd77b921",
+      "sha256": "164cdad8b4f56fe8155d9b5cd4bfaf8f1495491a0f58497baf407e718fb52cc5"
+    },
+    {
+      "member": "ARMOR/utils/public_functions.py",
+      "local_path": "ARMOR/utils/public_functions.py",
+      "compressed_bytes_fetched": 658,
+      "size": 2230,
+      "crc32": "a22e7fc7",
+      "md5": "eb1b7ffb5dd2fb7de44af6cb614bd50f",
+      "sha256": "88c180af3904573a28b34a56f308ab285e45a58e7d92eb95eee1eb61cde1a363"
+    },
+    {
+      "member": "ARMOR/data/D1.zip",
+      "local_path": "ARMOR/data/D1.zip",
+      "compressed_bytes_fetched": 62039494,
+      "size": 62606253,
+      "crc32": "bd23c9e8",
+      "md5": "b5443fa0e802fccab0e857f04f55e587",
+      "sha256": "ef11fd2aed7588b50d60ddd6417c005df0225d4af5acf15936c5e5725d6c2f11"
+    },
+    {
+      "member": "ARMOR/models/unified_representation/armor_model.py",
+      "local_path": "ARMOR/models/unified_representation/armor_model.py",
+      "compressed_bytes_fetched": 4024,
+      "size": 18683,
+      "crc32": "246af30a",
+      "md5": "0b2b2612a9cea5a420ed4d764c526a90",
+      "sha256": "194ebed6de36614f177bb8f95ac094b4617d05829a2462c592277428239b15ef"
+    },
+    {
+      "member": "ARMOR/models/unified_representation/armor_train.py",
+      "local_path": "ARMOR/models/unified_representation/armor_train.py",
+      "compressed_bytes_fetched": 1981,
+      "size": 6923,
+      "crc32": "df55faf6",
+      "md5": "1b651bb05db0a06d5707b19a0da4418c",
+      "sha256": "2d53e04e0529a472d4e45bca22f538c7e890c623f45ff58878c6a95103c3b8d8"
+    },
+    {
+      "member": "ARMOR/models/unified_representation/deviation.py",
+      "local_path": "ARMOR/models/unified_representation/deviation.py",
+      "compressed_bytes_fetched": 2229,
+      "size": 9985,
+      "crc32": "b33b63eb",
+      "md5": "b2225438d8e1d9bb869d372356c76236",
+      "sha256": "27150245330ed54231d1dace6d7d6dab1bd911e8ceec79dba9fdfce80f7210dd"
+    },
+    {
+      "member": "ARMOR/models/diagnosis_tasks/anomaly_detector.py",
+      "local_path": "ARMOR/models/diagnosis_tasks/anomaly_detector.py",
+      "compressed_bytes_fetched": 1247,
+      "size": 3622,
+      "crc32": "b6c4489d",
+      "md5": "d9434ea92091bbce1c2e2b3f5c1eb264",
+      "sha256": "5166023fd39aad6deb72ff528d2009631fae282373972adbec11adcda32414e3"
+    },
+    {
+      "member": "ARMOR/models/diagnosis_tasks/task_metrics.py",
+      "local_path": "ARMOR/models/diagnosis_tasks/task_metrics.py",
+      "compressed_bytes_fetched": 613,
+      "size": 1623,
+      "crc32": "17b85ca3",
+      "md5": "87d17fb63eda8f84bbb7986b5bb9b60a",
+      "sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6"
+    },
+    {
+      "member": "ARMOR/models/diagnosis_tasks/workflow.py",
+      "local_path": "ARMOR/models/diagnosis_tasks/workflow.py",
+      "compressed_bytes_fetched": 828,
+      "size": 3030,
+      "crc32": "f0072fb9",
+      "md5": "5f5db54e082ea01217c1468749c73c3b",
+      "sha256": "acf9160a447f2c0b6463dcd373f45f13cb2c074d518698abcea5b71a2d15a189"
+    },
+    {
+      "member": "ARMOR/models/diagnosis_tasks/failure_triage_classifier.py",
+      "local_path": "ARMOR/models/diagnosis_tasks/failure_triage_classifier.py",
+      "compressed_bytes_fetched": 1131,
+      "size": 2922,
+      "crc32": "3a2a2374",
+      "md5": "ae52e5e42327fbbd0742370b31cb34d8",
+      "sha256": "8e59dc9d75ef552d2fd7847e1bd61a58ef2ce848761205746f5bbdb1b122a827"
+    },
+    {
+      "member": "ARMOR/models/diagnosis_tasks/root_cause_ranker.py",
+      "local_path": "ARMOR/models/diagnosis_tasks/root_cause_ranker.py",
+      "compressed_bytes_fetched": 849,
+      "size": 2497,
+      "crc32": "97bb9736",
+      "md5": "423e849c4bbf62a5da2f7e70f72c4a6c",
+      "sha256": "fd53ce0b75e784d459c38394d77c8a36120d40d885613d086953048e826dd97c"
+    }
+  ],
+  "nested_d1_extraction": {
+    "count": 9,
+    "skipped": [],
+    "crc_test": "zipfile.testzip() passed",
+    "files": [
+      {
+        "path": "D1/cases/ad_cases.pkl",
+        "size": 1136,
+        "crc32": "defe8c73"
+      },
+      {
+        "path": "D1/cases/cases.csv",
+        "size": 13684,
+        "crc32": "640d8947"
+      },
+      {
+        "path": "D1/hash_info/channel_dict.pkl",
+        "size": 3393,
+        "crc32": "911c6a6a"
+      },
+      {
+        "path": "D1/hash_info/node_hash.pkl",
+        "size": 936,
+        "crc32": "0c1b2655"
+      },
+      {
+        "path": "D1/hash_info/type_dict.pkl",
+        "size": 104,
+        "crc32": "c79bbdcf"
+      },
+      {
+        "path": "D1/hash_info/type_hash.pkl",
+        "size": 591,
+        "crc32": "c853effb"
+      },
+      {
+        "path": "D1/samples/samples.pkl",
+        "size": 212405207,
+        "crc32": "3314d8b3"
+      },
+      {
+        "path": "D1/samples/test_samples.pkl",
+        "size": 102838485,
+        "crc32": "fdcd335f"
+      },
+      {
+        "path": "D1/samples/train_samples.pkl",
+        "size": 109567219,
+        "crc32": "c146fc6f"
+      }
+    ]
+  }
+}

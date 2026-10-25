@@ -1,0 +1,24 @@
+{
+  "cases_csv_count": 210,
+  "ad_cases_pkl_count": 224,
+  "ad_cases_pkl_unique": 224,
+  "ad_cases_pkl_sorted": false,
+  "exact_shared": 203,
+  "ad_only": 21,
+  "case_only": 7,
+  "match_rule": "exact timestamp equality; no tolerance applied",
+  "ad_split_ts": 1651852800,
+  "ad_split_utc": "2022-05-06T16:00:00Z",
+  "pre_split_ad_events": 126,
+  "pre_split_ad_events_equal_cases_csv_first_n": true,
+  "ad_only_post_split": 21,
+  "case_only_post_split": 7,
+  "evaluation_populations_post_split": {
+    "official_ad_labels": 98,
+    "injection_cases": 84,
+    "intersection": 77,
+    "union": 105
+  },
+  "min_abs_delta_ad_only_to_nearest_case_s": 463,
+  "min_abs_delta_case_only_to_nearest_ad_s": 463
+}

@@ -1,0 +1,197 @@
+scope,label_kind,label,count
+all,category,Container Hardware,83
+all,category,Container Network,60
+all,category,Node Disk,37
+all,category,Node CPU,21
+all,category,Node Memory,9
+all,fine,Kubernetes Container Network Packet Loss,23
+all,fine,Kubernetes Container Read I/O Load,21
+all,fine,Kubernetes Container CPU Load,20
+all,fine,Kubernetes Container Memory Load,18
+all,fine,Kubernetes Container Network Resource Packet Corruption,18
+all,fine,Kubernetes Container Write I/O Load,14
+all,fine,Node CPU Failure,14
+all,fine,Node Disk Space Consumption,14
+all,fine,Kubernetes Container Network Latency,13
+all,fine,Node Disk Read I/O Consumption,12
+all,fine,Node Disk Write I/O Consumption,11
+all,fine,Kubernetes Container Process Termination,10
+all,fine,Node Memory Consumption,9
+all,fine,Node CPU Spiking,7
+all,fine,Kubernetes Container Network Resource Packet Duplication,6
+armor_ft_rcl_train_first60pct,category,Container Hardware,47
+armor_ft_rcl_train_first60pct,category,Container Network,38
+armor_ft_rcl_train_first60pct,category,Node Disk,23
+armor_ft_rcl_train_first60pct,category,Node CPU,13
+armor_ft_rcl_train_first60pct,category,Node Memory,5
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Network Packet Loss,14
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Read I/O Load,13
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container CPU Load,12
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Network Resource Packet Corruption,11
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Memory Load,9
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Network Latency,8
+armor_ft_rcl_train_first60pct,fine,Node CPU Failure,8
+armor_ft_rcl_train_first60pct,fine,Node Disk Read I/O Consumption,8
+armor_ft_rcl_train_first60pct,fine,Node Disk Write I/O Consumption,8
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Process Termination,7
+armor_ft_rcl_train_first60pct,fine,Node Disk Space Consumption,7
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Write I/O Load,6
+armor_ft_rcl_train_first60pct,fine,Kubernetes Container Network Resource Packet Duplication,5
+armor_ft_rcl_train_first60pct,fine,Node CPU Spiking,5
+armor_ft_rcl_train_first60pct,fine,Node Memory Consumption,5
+armor_ft_rcl_test_last40pct,category,Container Hardware,36
+armor_ft_rcl_test_last40pct,category,Container Network,22
+armor_ft_rcl_test_last40pct,category,Node Disk,14
+armor_ft_rcl_test_last40pct,category,Node CPU,8
+armor_ft_rcl_test_last40pct,category,Node Memory,4
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Memory Load,9
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Network Packet Loss,9
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container CPU Load,8
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Read I/O Load,8
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Write I/O Load,8
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Network Resource Packet Corruption,7
+armor_ft_rcl_test_last40pct,fine,Node Disk Space Consumption,7
+armor_ft_rcl_test_last40pct,fine,Node CPU Failure,6
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Network Latency,5
+armor_ft_rcl_test_last40pct,fine,Node Disk Read I/O Consumption,4
+armor_ft_rcl_test_last40pct,fine,Node Memory Consumption,4
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Process Termination,3
+armor_ft_rcl_test_last40pct,fine,Node Disk Write I/O Consumption,3
+armor_ft_rcl_test_last40pct,fine,Node CPU Spiking,2
+armor_ft_rcl_test_last40pct,fine,Kubernetes Container Network Resource Packet Duplication,1
+all,root_cause_cmdb_id,node-3,13
+all,root_cause_cmdb_id,node-1,12
+all,root_cause_cmdb_id,node-5,12
+all,root_cause_cmdb_id,node-6,12
+all,root_cause_cmdb_id,recommendationservice,12
+all,root_cause_cmdb_id,node-4,11
+all,root_cause_cmdb_id,emailservice,10
+all,root_cause_cmdb_id,productcatalogservice,10
+all,root_cause_cmdb_id,frontend,9
+all,root_cause_cmdb_id,cartservice,8
+all,root_cause_cmdb_id,adservice,7
+all,root_cause_cmdb_id,checkoutservice,7
+all,root_cause_cmdb_id,node-2,7
+all,root_cause_cmdb_id,currencyservice,5
+all,root_cause_cmdb_id,frontend-2,4
+all,root_cause_cmdb_id,paymentservice,4
+all,root_cause_cmdb_id,adservice2-0,3
+all,root_cause_cmdb_id,currencyservice-2,3
+all,root_cause_cmdb_id,emailservice-1,3
+all,root_cause_cmdb_id,emailservice-2,3
+all,root_cause_cmdb_id,frontend-1,3
+all,root_cause_cmdb_id,productcatalogservice-0,3
+all,root_cause_cmdb_id,productcatalogservice-2,3
+all,root_cause_cmdb_id,recommendationservice-0,3
+all,root_cause_cmdb_id,recommendationservice-1,3
+all,root_cause_cmdb_id,recommendationservice-2,3
+all,root_cause_cmdb_id,shippingservice-1,3
+all,root_cause_cmdb_id,adservice-1,2
+all,root_cause_cmdb_id,cartservice-0,2
+all,root_cause_cmdb_id,cartservice-2,2
+all,root_cause_cmdb_id,checkoutservice-0,2
+all,root_cause_cmdb_id,checkoutservice-2,2
+all,root_cause_cmdb_id,checkoutservice2-0,2
+all,root_cause_cmdb_id,currencyservice-0,2
+all,root_cause_cmdb_id,frontend-0,2
+all,root_cause_cmdb_id,paymentservice-1,2
+all,root_cause_cmdb_id,recommendationservice2-0,2
+all,root_cause_cmdb_id,shippingservice,2
+all,root_cause_cmdb_id,shippingservice-0,2
+all,root_cause_cmdb_id,shippingservice-2,2
+all,root_cause_cmdb_id,shippingservice2-0,2
+all,root_cause_cmdb_id,adservice-0,1
+all,root_cause_cmdb_id,adservice-2,1
+all,root_cause_cmdb_id,emailservice-0,1
+all,root_cause_cmdb_id,paymentservice-0,1
+all,root_cause_cmdb_id,paymentservice-2,1
+all,root_cause_cmdb_id,productcatalogservice2-0,1
+all,failure_level,node,67
+all,failure_level,pod,69
+all,failure_level,service,74
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-3,9
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-1,8
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-4,7
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-6,7
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,recommendationservice,7
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,cartservice,6
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,checkoutservice,6
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,emailservice,6
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-5,6
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,frontend,4
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,node-2,4
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,productcatalogservice,4
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,currencyservice,3
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,paymentservice,3
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,adservice,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,adservice2-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,cartservice-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,checkoutservice-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,checkoutservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,currencyservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,emailservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,frontend-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,frontend-1,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,paymentservice-1,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,productcatalogservice-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,productcatalogservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,recommendationservice-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,recommendationservice-1,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,recommendationservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,shippingservice-2,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,shippingservice2-0,2
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,adservice-2,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,cartservice-2,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,checkoutservice2-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,currencyservice-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,emailservice-1,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,frontend-2,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,paymentservice-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,productcatalogservice2-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,recommendationservice2-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,shippingservice,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,shippingservice-0,1
+armor_ft_rcl_train_first60pct,root_cause_cmdb_id,shippingservice-1,1
+armor_ft_rcl_train_first60pct,failure_level,node,41
+armor_ft_rcl_train_first60pct,failure_level,pod,43
+armor_ft_rcl_train_first60pct,failure_level,service,42
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-5,6
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,productcatalogservice,6
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,adservice,5
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,frontend,5
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-6,5
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,recommendationservice,5
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,emailservice,4
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-1,4
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-3,4
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-4,4
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,frontend-2,3
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,node-2,3
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,adservice-1,2
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,cartservice,2
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,currencyservice,2
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,emailservice-1,2
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,shippingservice-1,2
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,adservice-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,adservice2-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,cartservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,checkoutservice,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,checkoutservice2-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,currencyservice-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,currencyservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,emailservice-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,emailservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,frontend-1,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,paymentservice,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,paymentservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,productcatalogservice-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,productcatalogservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,recommendationservice-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,recommendationservice-1,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,recommendationservice-2,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,recommendationservice2-0,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,shippingservice,1
+armor_ft_rcl_test_last40pct,root_cause_cmdb_id,shippingservice-0,1
+armor_ft_rcl_test_last40pct,failure_level,node,26
+armor_ft_rcl_test_last40pct,failure_level,pod,26
+armor_ft_rcl_test_last40pct,failure_level,service,32
