@@ -124,7 +124,9 @@ def build_evidence(tests, splits_result, prior=None, repro=None):
     docs = [("armor-system/docs/d1_data_preparation_runbook.md", "engineering runbook: environment, pipeline, splits, EDA, validation, dashboard, troubleshooting"),
             ("armor-system/docs/d1_validation_report.md", "298-43 acquisition, labeling decisions and reconciliation"),
             ("armor-system/docs/d1_augmentation_assessment.md", "augmentation assessment generated from calculations"),
-            ("armor-system/data/artifacts/d1/README.md", "index of generated artifacts")]
+            ("armor-system/data/artifacts/d1/README.md", "index of generated artifacts"),
+            ("armor-system/docs/team_handoff_readiness_audit.md", "readiness audit and predicted teammate questions for the next phase"),
+            ("START_HERE.md", "repository onboarding index: what exists, what was run, what does not exist yet")]
     lim = [("WARN", "Model 1 validation contains a single Node Memory case (and 3 Node CPU cases): per-class validation metrics for them are statistically unstable and must not drive tuning on their own.")]
     p34 = next((p for p in prs if p["number"] == 34), None)
     if not p34 or p34["state"] != "MERGED":
@@ -151,11 +153,11 @@ def main():
     last = len(STAGES) - 1 if args.stage == "all" else STAGES.index(args.stage)
     want = lambda s: STAGES.index(s) <= last  # noqa: E731
     paths.ensure_dirs()
+    if not os.path.exists(paths.D1_DIR):
+        sys.exit(f"D1 release not found at {paths.D1_DIR}\nobtain it first with: python3 -I armor-system/data/tools/fetch_d1.py (D1 only; see armor-system/docs/d1_data_preparation_runbook.md)")
     if not os.path.exists(paths.CACHE_FILE) or args.stage == "cache":
         print("building feature cache ...")
         loader.build_cache()
-    if not os.path.exists(paths.D1_DIR):
-        sys.exit(f"D1 release not found at {paths.D1_DIR}; run armor-system/data/tools/fetch_d1.py first")
     labels = loader.read_labels()
     ts, X, is_test = loader.load_arrays()
     state = {}
