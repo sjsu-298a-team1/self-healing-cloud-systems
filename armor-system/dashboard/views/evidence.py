@@ -30,6 +30,23 @@ def render():
         st.dataframe(pd.DataFrame(t["suites"]), hide_index=True, width="stretch")
     else:
         ui.missing("a recorded test run")
+    st.subheader("Reproducibility, environment and browser check")
+    rp, env = ev.get("reproducibility"), ev.get("environment")
+    c1, c2 = st.columns(2)
+    if rp:
+        c1.markdown(f"**Pipeline run twice in fresh processes:** {ui.badge('PASS' if rp.get('identical') else 'FAIL')} identical artifact-set hash "
+                    f"`{str(rp.get('artifact_set_sha256', ''))[:16]}...` over {rp.get('files_hashed', '?')} files ({rp.get('seconds', '?')} s)", unsafe_allow_html=True)
+    else:
+        c1.markdown("No recorded reproducibility run.")
+    if env:
+        c2.markdown("**CPU environment used:** " + ", ".join(f"{k} {v}" for k, v in env.items() if k != "gpu_used") + f"; GPU used: {env.get('gpu_used')}")
+    bc = da.jload("evidence", "dashboard_browser_check.json")
+    if bc:
+        st.markdown(f"**Browser check** ({bc['browser']}, {bc['checked_utc']}, at `{bc['git_head'][:10]}`): {ui.badge('PASS' if bc['all_clear'] else 'FAIL')} "
+                    f"{bc['pages_checked']} pages and {bc['interactive_steps']} interactive steps, console/page errors: {len(bc['console_or_page_errors'])}. "
+                    "Re-run: `.venv/bin/python armor-system/dashboard/browser_check.py` (needs playwright and Chrome).", unsafe_allow_html=True)
+    else:
+        st.markdown("No recorded browser check (run `armor-system/dashboard/browser_check.py`).")
     st.subheader("Generated artifacts")
     a = pd.DataFrame(ev["artifacts"])
     f = st.multiselect("Category", sorted(a.category.unique()), default=sorted(a.category.unique()))

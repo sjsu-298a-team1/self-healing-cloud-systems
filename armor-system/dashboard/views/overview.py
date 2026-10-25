@@ -24,13 +24,19 @@ def work_items():
     items.append(("Inspection evidence", "PASS" if insp else "PENDING", "inspection_summary.json, schema.json, representative records" if insp else "not generated"))
     off = mans.get("official_armor_v1")
     items.append(("Official ARMOR split (126 / 84) preserved", ("PASS" if off and off["usable"] else "FAIL") if off else "PENDING", f"manifest verdict {off['verdict']}" if off else "not generated"))
+    fin = mans.get("model1_split_101_25_84_v1")
+    if fin:
+        ok = fin["status"] == "approved" and fin["usable"]
+        n = [fin["case_ranges"][k]["n_cases"] for k in ("train", "validation", "test")]
+        items.append(("Model 1 case split 101 / 25 / 84 (approved)", "PASS" if ok else "FAIL",
+                      f"cases {n[0]} / {n[1]} / {n[2]}; verdict {fin['verdict']} (hard checks pass; validation has one Node Memory case, so its per-class metrics are unstable)"))
     cand = mans.get("model1_candidate_100_26_84_v1")
     if cand:
         failed = [c["id"].split("_")[0] for c in cand["checks"] if c["status"] == "FAIL"]
-        items.append(("Proposed Model 1 split 100 / 26 / 84", "FAIL" if not cand["usable"] else cand["verdict"], f"failed hard checks: {', '.join(failed) or 'none'}"))
-    alt = mans.get("model1_alternative_v1")
-    if alt:
-        items.append(("Recommended alternative split (needs your approval)", "PENDING", f"manifest verdict {alt['verdict']}; status {alt['status'].replace('_', ' ')}"))
+        items.append(("Rejected candidate 100 / 26 / 84", "INFO", f"rejected; failed hard checks {', '.join(failed) or 'none'}; kept as evidence only"))
+    fo = da.jload("splits", "rolling_origin_folds_v1.json")
+    if fo:
+        items.append(("Forward-chaining folds", "INFO", "optional idea, not approved and not part of the protocol"))
     items.append(("CPU preprocessing (train-only scaler, indicators, windows)", "PASS" if res and not res["schema_issues"] else ("FAIL" if res else "PENDING"),
                   f"config sha256 {res['config_sha256'][:12]}..." if res else "not generated"))
     items.append(("Exploratory data analysis", "PASS" if eda else "PENDING", f"{len(eda['findings'])} computed findings" if eda else "not generated"))

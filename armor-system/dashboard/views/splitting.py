@@ -6,8 +6,8 @@ import streamlit as st
 import data_access as da
 import ui
 
-LABEL = {"official_armor_v1": "Official ARMOR (126 / 84)", "model1_candidate_100_26_84_v1": "Proposed Model 1 (100 / 26 / 84)",
-         "model1_alternative_v1": "Recommended alternative (needs approval)"}
+LABEL = {"model1_split_101_25_84_v1": "APPROVED Model 1 split (101 / 25 / 84)", "official_armor_v1": "Official ARMOR reproduction (126 / 84)",
+         "model1_candidate_100_26_84_v1": "REJECTED candidate (100 / 26 / 84) - fails hard checks"}
 CLASSES = ["Container Hardware", "Container Network", "Node CPU", "Node Disk", "Node Memory"]
 REQUIRED_SPAN = 719
 
@@ -19,15 +19,22 @@ def render():
     if not mans or df is None:
         ui.missing("split manifests")
         return
-    cand = mans.get("model1_candidate_100_26_84_v1")
-    if cand and not cand["usable"]:
-        failed = [c for c in cand["checks"] if c["status"] == "FAIL"]
-        ui.note("<b>The proposed 100 / 26 / 84 split FAILS its hard checks and is marked unusable.</b> " + " ".join(f"{c['id'].split('_')[0]}: {c['detail']}." for c in failed) +
-                " It is shown for transparency; nothing is trained or fitted on it.", "fail")
+    st.markdown("**Three things are kept apart:** (1) the *Model 1 case split* - which injection cases train, validate and test; (2) the *sample-level anomaly-detection timeline* of the unchanged official ARMOR baseline "
+                "(split at 60% of samples); (3) the *official ARMOR FT/RCL protocol* (first 126 / last 84 cases). Counting units are defined at the bottom of this page.")
     name = st.selectbox("Protocol", list(mans), format_func=lambda k: LABEL.get(k, k))
     m = mans[name]
-    st.markdown(f"**Verdict:** {ui.badge(m['verdict'])} &nbsp; **Status:** {ui.badge(m['status'].upper().replace('EVALUATED', 'INFO'))} {m['status'].replace('_', ' ')}", unsafe_allow_html=True)
+    status_badge = {"approved": "PASS", "approved_reproduction": "PASS", "rejected_fails_hard_checks": "FAIL"}.get(m["status"], "PENDING")
+    st.markdown(f"**Verdict:** {ui.badge(m['verdict'])} &nbsp; **Status:** {ui.badge(status_badge)} {m['status'].replace('_', ' ')}", unsafe_allow_html=True)
     st.caption(m["description"])
+    if m["status"] == "approved":
+        ui.note("<b>Approved by the project owner.</b> " + m["approval"]["decision"] + ". " + " ".join(m.get("statistical_limitations", [])[:1]), "warn")
+        with st.expander("Scope: what this manifest is and is not"):
+            for k_, v_ in m["scope"].items():
+                st.markdown(f"- **{k_.replace('_', ' ')}** - {v_}")
+            st.markdown("**Statistical limitations**\n" + "\n".join(f"- {x}" for x in m["statistical_limitations"]))
+    elif m["status"] == "rejected_fails_hard_checks":
+        failed = [c for c in m["checks"] if c["status"] == "FAIL"]
+        ui.note("<b>REJECTED - this split fails its hard checks and is unusable.</b> " + " ".join(f"{c['id'].split('_')[0]}: {c['detail']}." for c in failed) + " Shown as evidence only; nothing is fitted on it.", "fail")
     cr = m["case_ranges"]
     cols = st.columns(len(cr))
     for col, (s, r) in zip(cols, cr.items()):
@@ -45,7 +52,7 @@ def render():
         st.dataframe(t, width="stretch")
         low = [(s, c, n) for s, r in cr.items() for c, n in r["class_counts"].items() if n < 3]
         st.markdown("Split-classes with fewer than 3 cases: " + (", ".join(f"{s}/{c}={n}" for s, c, n in low) if low else "none"))
-    key = {"official_armor_v1": "official_split", "model1_candidate_100_26_84_v1": "candidate_split", "model1_alternative_v1": "alternative_split"}[name]
+    key = {"official_armor_v1": "official_split", "model1_candidate_100_26_84_v1": "rejected_100_26_84_split", "model1_split_101_25_84_v1": "model1_split"}[name]
     st.subheader("Chronological timeline")
     d = df.copy()
     d["t"] = pd.to_datetime(d.timestamp, unit="s", utc=True)
@@ -60,9 +67,9 @@ def render():
     chk = pd.DataFrame(m["checks"])
     st.markdown("\n".join(f"- {ui.badge(r['status'])} **{r['id']}** ({r['severity']}) - {r['detail']}" for _, r in chk.iterrows()), unsafe_allow_html=True)
     st.caption(f"Sample partition (7,200 samples): {m['sample_partition']}. Incident groups: {m['incident_groups']}.")
-    st.subheader("Try a train | validation boundary")
+    st.subheader("Why 101? Try a train | validation boundary")
     scan = da.jload("splits", "boundary_scan.json")
-    k = st.slider("Boundary index k (train = cases 0..k-1, validation = k..125)", 60, 125, 100)
+    k = st.slider("Boundary index k (train = cases 0..k-1, validation = k..125)", 60, 125, 101)
     ts, gid = df.timestamp.tolist(), df.group_id.tolist()
     gap = ts[k] - ts[k - 1]
     safe = gap - REQUIRED_SPAN
@@ -76,11 +83,12 @@ def render():
     if scan:
         s = pd.DataFrame(scan["scan"])
         fig = px.bar(s, x="k", y="safe_gap_seconds", color="boundary_ok", color_discrete_map={True: "#10b981", False: "#dc2626"}, title="Safe gap at each candidate boundary (green = usable)")
-        fig.add_vline(x=100, line_dash="dash", annotation_text="proposed 100")
+        fig.add_vline(x=100, line_dash="dash", annotation_text="rejected 100")
+        fig.add_vline(x=101, line_dash="solid", line_color="#2563eb", annotation_text="approved 101")
         st.plotly_chart(fig, width="stretch")
     folds = da.jload("splits", "rolling_origin_folds_v1.json")
     if folds:
-        st.subheader("Forward-chaining folds (proposed, pending approval)")
+        st.subheader("Forward-chaining folds (optional idea - NOT approved, not part of the protocol)")
         rows = []
         for f in folds["folds"]:
             rows.append({"fold": f["fold"], "train cases": f["train"][1] - f["train"][0], "validation cases": f["validation"][1] - f["validation"][0],
@@ -92,12 +100,20 @@ def render():
     pre = ((da.jload("d1_inspection.json", base=da.M298_43) or {}).get("split_and_leakage", {}) or {}).get("pretraining_exposure", {})
     pre_txt = f"all {pre.get('train_samples_total', '?'):,} normal samples ({pre.get('train_samples_after_ad_split_ts', '?'):,} after the AD boundary)" if pre else "all normal samples (count unavailable)"
     st.markdown(f"""
-| | Official ARMOR (reproduction) | Our Model 1 (proposed, not yet approved) |
+| | Official ARMOR (reproduction) | Our Model 1 (approved 101 / 25 / 84) |
 |---|---|---|
-| Case split | first 126 train / last 84 test, by `cases.csv` order | chronological; test = the same official last 84; train/validation boundary near case 100 |
+| Case split | first 126 train / last 84 test, by `cases.csv` order | chronological and incident-group-aware: 101 train / 25 validation / the same official last 84 test |
 | AD boundary | sample-based: 60% of samples = {ad['utc']} (start of a collection day) | validation/test sample boundary aligned to the same time |
 | FT / RCL boundary | case-based: first held-out case {first_ft} | same test cases |
-| Difference | the AD boundary is {ad['seconds_before_first_heldout_case']:,} s before the first held-out case; FT/RCL never use `ad_cases.pkl` | keeps both rules; reported separately |
-| Pretraining | {pre_txt} | strict chronological primary; whole-pool as a separate sensitivity run |
+| Difference | the AD boundary is {ad['seconds_before_first_heldout_case']:,} s before the first held-out case; FT/RCL never use `ad_cases.pkl` | both rules are kept; the validation/test sample boundary is aligned to the AD boundary |
+| Pretraining | {pre_txt} | strict chronological (before the validation boundary) is primary; whole-pool pretraining is a separate sensitivity run |
 | Labels | published `ad_cases.pkl` (98 post-split events) for AD | `cases.csv` authoritative; 21 AD-only events uncertain |
 """)
+    st.subheader("Counting units")
+    cu = da.jload("preprocessing", "counting_units.json")
+    sc_ = da.cload("preprocessing", "split_counts_by_unit.csv")
+    if cu:
+        st.markdown("\n".join(f"- **{k_}** - {v_}" for k_, v_ in cu.items()))
+    if sc_ is not None:
+        st.dataframe(sc_, hide_index=True, width="stretch")
+        st.caption("Detection evaluation is reported as two separate populations after the AD boundary: official AD events (98) and injection cases (84); they are never averaged.")

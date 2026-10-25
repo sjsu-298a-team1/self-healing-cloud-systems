@@ -84,7 +84,7 @@ def schema():
 
 def split_manifests():
     out = {}
-    for name in ("official_armor_v1", "model1_candidate_100_26_84_v1", "model1_alternative_v1"):
+    for name in ("model1_split_101_25_84_v1", "official_armor_v1", "model1_candidate_100_26_84_v1"):
         m = jload("splits", f"{name}.json")
         if m:
             out[name] = m

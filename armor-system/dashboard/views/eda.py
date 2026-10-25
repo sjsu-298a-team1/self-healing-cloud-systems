@@ -11,7 +11,7 @@ MODS = ["metric", "trace", "log"]
 
 
 def render():
-    ui.hero("Exploratory Data Analysis", "Training-partition statistics drive modelling decisions; full-dataset views are labelled descriptive")
+    ui.hero("Exploratory Data Analysis", "Model-development statistics use only the approved Model 1 train period; full-dataset views are labelled descriptive")
     findings = da.jload("eda", "eda_findings.json")
     if not findings:
         ui.missing("eda/eda_findings.json")
@@ -110,7 +110,7 @@ def render():
             c = st.columns(3)
             cats = c[0].multiselect("Class", sorted(ia.category.unique()), default=sorted(ia.category.unique()))
             m = c[1].radio("Modality", MODS, horizontal=True)
-            part = c[2].radio("Cases", ["train_cases", "heldout_cases"], horizontal=True, help="train_cases = official first 126 (model-development); heldout_cases are descriptive only")
+            part = c[2].radio("Cases", ["train_cases", "heldout_cases"], horizontal=True, help="train_cases = the 101 approved Model 1 training cases (model-development); heldout_cases = validation + test, descriptive only")
             v = ia[ia.category.isin(cats) & (ia.modality == m) & (ia.partition == part)].copy()
             v["ratio"] = v.root_mean_abs / v.other_mean_abs.clip(lower=1e-9)
             fig = px.line(v, x="offset_min", y="ratio", color="category", markers=True, title=f"{m}: mean |value| on the root-cause node / on other nodes", hover_data=["n_cases", "root_mean_abs", "other_mean_abs"])
@@ -130,11 +130,11 @@ def render():
             st.plotly_chart(px.bar(v.iloc[::-1], x="fraction_abs_gt_3", y="name", color="modality", orientation="h", color_discrete_map=ui.PALETTE, title="Share of values beyond |3| (train)", height=100 + 22 * n), width="stretch")
             st.dataframe(vr, hide_index=True, width="stretch", height=300)
     with tabs[8]:
-        kv = da.cload("eda", "train_vs_validation_alt_split.csv")
+        kv = da.cload("eda", "train_vs_validation_model1.csv")
         if kv is None:
-            ui.missing("train_vs_validation_alt_split.csv")
+            ui.missing("train_vs_validation_model1.csv")
         else:
-            ui.note("Exploratory comparison on the recommended alternative split, which is pending your approval. KS on pooled entries is sensitive to the large zero mass.", "warn")
+            ui.note("Diagnostic comparison on the approved Model 1 split (101 / 25 / 84). Nothing is tuned on validation. KS on pooled entries is sensitive to the large zero mass.", "note")
             mods = st.multiselect("Modalities", MODS, default=MODS, key="kv")
             thr = st.slider("Flag threshold (KS)", 0.05, 0.5, float(findings.get("ks_flag_threshold", 0.2)))
             v = kv[kv.modality.isin(mods)]
