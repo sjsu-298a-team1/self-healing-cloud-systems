@@ -94,6 +94,9 @@ def build_evidence(tests, splits_result, prior=None):
     p34 = next((p for p in prs if p["number"] == 34), None)
     if not p34 or p34["state"] != "MERGED":
         lim.append(("PENDING", "PR #34 (acquisition and label decisions) awaits independent review; this work is stacked on it and cannot merge first."))
+    for p in prs:
+        if p["number"] != 34 and p["state"] != "MERGED":
+            lim.append(("PENDING", f"PR #{p['number']} (this work, Linear 298-44) awaits independent review; 298-44 stays open until it is merged."))
     lim += [("WARN", "The 21 AD-only and 7 case-only label discrepancies are unexplained (originated in the ART release)."),
             ("WARN", "No incident end times or durations exist, so no sample-level detection labels were built."),
             ("INFO", "Augmentation was assessed and not adopted; raw telemetry and D2 downloads remain deferred; no model was trained.")]

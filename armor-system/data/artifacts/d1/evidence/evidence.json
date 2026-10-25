@@ -1,0 +1,393 @@
+{
+  "generated_utc": "2026-10-25T06:03:16Z",
+  "git": {
+    "branch": "khushidonda/298-44-complete-armor-d1-data-preparation-eda-validation-and",
+    "head": "43701751ae3a6da2e494bf243f7e11e2aae36e05",
+    "dirty": true
+  },
+  "prs": [
+    {
+      "number": 34,
+      "title": "298-43: ARMOR D1 acquisition, verification and label decisions",
+      "state": "MERGED",
+      "url": "https://github.com/sjsu-298a-team1/self-healing-cloud-systems/pull/34",
+      "reviewDecision": "APPROVED",
+      "headRefOid": "7efe989fbe47319559f3673f2ed99e5f4ed4b320",
+      "baseRefName": "main"
+    },
+    {
+      "number": 35,
+      "title": "298-44: ARMOR D1 data preparation, EDA, validation and Streamlit dashboard",
+      "state": "OPEN",
+      "url": "https://github.com/sjsu-298a-team1/self-healing-cloud-systems/pull/35",
+      "reviewDecision": "REVIEW_REQUIRED",
+      "headRefOid": "0238ee6cc0985d4f344180adefda5056841c4303",
+      "baseRefName": "main"
+    }
+  ],
+  "tests": {
+    "total": 69,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "suite": "D1 acquisition tools (298-43)",
+        "directory": "armor-system/tests/data",
+        "tests": 37,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "result": "OK"
+      },
+      {
+        "suite": "D1 preparation pipeline (298-44)",
+        "directory": "armor-system/tests/prep",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "result": "OK"
+      },
+      {
+        "suite": "Streamlit dashboard smoke tests",
+        "directory": "armor-system/tests/dashboard",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "result": "OK"
+      }
+    ],
+    "ran_utc": "2026-10-25T06:03:14Z",
+    "command": "python -I -m unittest discover -s armor-system/tests/<suite> -p 'test_*.py'"
+  },
+  "linear": [
+    {
+      "title": "298-44 Complete ARMOR D1 Data Preparation, EDA, Validation and Streamlit Dashboard",
+      "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-44/complete-armor-d1-data-preparation-eda-validation-and-streamlit",
+      "note": "this work"
+    },
+    {
+      "title": "298-43 Acquire and validate ARMOR D1 benchmark dataset",
+      "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-43/acquire-and-validate-armor-d1-benchmark-dataset",
+      "note": "dependency"
+    }
+  ],
+  "docs": [
+    {
+      "path": "armor-system/docs/d1_data_preparation_runbook.md",
+      "purpose": "engineering runbook: environment, pipeline, splits, EDA, validation, dashboard, troubleshooting",
+      "exists": true
+    },
+    {
+      "path": "armor-system/docs/d1_validation_report.md",
+      "purpose": "298-43 acquisition, labeling decisions and reconciliation",
+      "exists": true
+    },
+    {
+      "path": "armor-system/docs/d1_augmentation_assessment.md",
+      "purpose": "augmentation assessment generated from calculations",
+      "exists": true
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/README.md",
+      "purpose": "index of generated artifacts",
+      "exists": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "armor-system/data/artifacts/d1/README.md",
+      "category": "root",
+      "bytes": 1517,
+      "sha256": "dd6872c7e8927ab1"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/augmentation/augmentation_assessment.json",
+      "category": "augmentation",
+      "bytes": 3830,
+      "sha256": "912d6b0b5466b7d2"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/correlation_channels_train.csv",
+      "category": "eda",
+      "bytes": 75479,
+      "sha256": "552527ded724116b"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/correlation_modality_summary_train.json",
+      "category": "eda",
+      "bytes": 430,
+      "sha256": "c29f1751d55a1b11"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/descriptive_stats_by_modality_full.csv",
+      "category": "eda",
+      "bytes": 508,
+      "sha256": "06a8895f07f1676e"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/eda_findings.json",
+      "category": "eda",
+      "bytes": 3752,
+      "sha256": "2b89310435156b29"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/fault_distribution.csv",
+      "category": "eda",
+      "bytes": 1244,
+      "sha256": "8df92808c9f6e052"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/feature_histograms_train.json",
+      "category": "eda",
+      "bytes": 6832,
+      "sha256": "5fa2a1c42be64f26"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/highly_correlated_pairs_train.csv",
+      "category": "eda",
+      "bytes": 904,
+      "sha256": "c5ab3990ebb044a7"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/incident_aligned.csv",
+      "category": "eda",
+      "bytes": 20385,
+      "sha256": "915f0214c03f811a"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/incident_aligned_coverage.json",
+      "category": "eda",
+      "bytes": 407,
+      "sha256": "a468126532c5ed46"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/missingness_node_modality_train.csv",
+      "category": "eda",
+      "bytes": 6322,
+      "sha256": "9e97c3cd47310d22"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/split_class_distributions.csv",
+      "category": "eda",
+      "bytes": 2093,
+      "sha256": "c7489a4cc49f55b9"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/temporal_trends_full_10min.csv",
+      "category": "eda",
+      "bytes": 69341,
+      "sha256": "74c583b06394c8a5"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/train_vs_validation_alt_split.csv",
+      "category": "eda",
+      "bytes": 15695,
+      "sha256": "300d2e201f52a574"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/variability_outliers_train.csv",
+      "category": "eda",
+      "bytes": 13050,
+      "sha256": "39dffc0639c16b40"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/zero_fraction_by_channel_train.csv",
+      "category": "eda",
+      "bytes": 6855,
+      "sha256": "9a720be1d05d5242"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/01_fault_distribution.png",
+      "category": "eda",
+      "bytes": 21401,
+      "sha256": "e4bd206435d8ac7b"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/02_split_class_distributions.png",
+      "category": "eda",
+      "bytes": 31218,
+      "sha256": "092a9831afdb6c58"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/03_feature_distributions.png",
+      "category": "eda",
+      "bytes": 28926,
+      "sha256": "b1b53809db9a9890"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/04_zero_fraction_node_modality.png",
+      "category": "eda",
+      "bytes": 60847,
+      "sha256": "8d0fb0a4279719c7"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/05_correlation_heatmap.png",
+      "category": "eda",
+      "bytes": 63279,
+      "sha256": "7633e8a35f110ac9"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/06_temporal_trends.png",
+      "category": "eda",
+      "bytes": 124433,
+      "sha256": "fe3770f15291c25b"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/07_incident_aligned.png",
+      "category": "eda",
+      "bytes": 84705,
+      "sha256": "cdc5984ce6a5dd7c"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/08_outliers.png",
+      "category": "eda",
+      "bytes": 60342,
+      "sha256": "fcd9b568d112bdf7"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/09_train_vs_validation_ks.png",
+      "category": "eda",
+      "bytes": 20476,
+      "sha256": "1af7c3e83d0a7dfe"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/eda/figures/10_split_timeline.png",
+      "category": "eda",
+      "bytes": 29448,
+      "sha256": "5e3214efcf88d7c6"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/quality/nine_stage_validation.json",
+      "category": "quality",
+      "bytes": 8936,
+      "sha256": "b40bc96cf8843b2d"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/inspection/channel_statistics_full_dataset.csv",
+      "category": "inspection",
+      "bytes": 15296,
+      "sha256": "5ca5bfbe755f54dd"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/inspection/inspection_summary.json",
+      "category": "inspection",
+      "bytes": 5756,
+      "sha256": "c7f5e7576bdcf358"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/inspection/representative_records.json",
+      "category": "inspection",
+      "bytes": 17587,
+      "sha256": "19dbf7332b9acd84"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/inspection/schema.json",
+      "category": "inspection",
+      "bytes": 16898,
+      "sha256": "7d386817ec312b30"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/before_after_summary.csv",
+      "category": "preprocessing",
+      "bytes": 3674,
+      "sha256": "3f4bea457a25605c"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/preprocessing_config_v1.json",
+      "category": "preprocessing",
+      "bytes": 1693,
+      "sha256": "83863ff29caf42ff"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/preprocessing_results.json",
+      "category": "preprocessing",
+      "bytes": 2992,
+      "sha256": "c4d49731e4c51e07"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/scaler_model1_alternative_train_period_v1.npz",
+      "category": "preprocessing",
+      "bytes": 13096,
+      "sha256": "ded590428deffb09"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/scaler_official_train_period_v1.npz",
+      "category": "preprocessing",
+      "bytes": 13073,
+      "sha256": "b6b667e93c2eea51"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/structural_masks.csv",
+      "category": "preprocessing",
+      "bytes": 15140,
+      "sha256": "fd04d786e8113ce5"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/preprocessing/window_counts.csv",
+      "category": "preprocessing",
+      "bytes": 306,
+      "sha256": "6f3330f4960dbb6a"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/boundary_scan.json",
+      "category": "splits",
+      "bytes": 8115,
+      "sha256": "7e59534b26ba1fb7"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/case_split_assignments.csv",
+      "category": "splits",
+      "bytes": 26939,
+      "sha256": "5be8936dbcf1e0e3"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/model1_alternative_v1.json",
+      "category": "splits",
+      "bytes": 4633,
+      "sha256": "77f65cadf23bfa83"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/model1_candidate_100_26_84_v1.json",
+      "category": "splits",
+      "bytes": 4538,
+      "sha256": "3fb2eaa25da1415e"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/official_armor_v1.json",
+      "category": "splits",
+      "bytes": 3761,
+      "sha256": "d0b204cd231818d8"
+    },
+    {
+      "path": "armor-system/data/artifacts/d1/splits/rolling_origin_folds_v1.json",
+      "category": "splits",
+      "bytes": 1291,
+      "sha256": "128743920c87352b"
+    }
+  ],
+  "limitations": [
+    [
+      "BLOCKED",
+      "Decision needed: the proposed 100/26/84 Model 1 split fails hard checks. Approve the recommended alternative (or forward-chaining folds) before any Model 1 data use."
+    ],
+    [
+      "PENDING",
+      "PR #35 (this work, Linear 298-44) awaits independent review; 298-44 stays open until it is merged."
+    ],
+    [
+      "WARN",
+      "The 21 AD-only and 7 case-only label discrepancies are unexplained (originated in the ART release)."
+    ],
+    [
+      "WARN",
+      "No incident end times or durations exist, so no sample-level detection labels were built."
+    ],
+    [
+      "INFO",
+      "Augmentation was assessed and not adopted; raw telemetry and D2 downloads remain deferred; no model was trained."
+    ]
+  ]
+}
