@@ -13,7 +13,7 @@ REQUIRED_SPAN = 719
 
 
 def render():
-    ui.hero("Data Splitting", "Chronological, incident-group-aware splits - official ARMOR reproduction kept separate from our Model 1 candidate")
+    ui.hero("Data Splitting", "Chronological, incident-group-aware splits - official ARMOR reproduction kept separate from the approved Model 1 split")
     mans = da.split_manifests()
     df = da.cload("splits", "case_split_assignments.csv")
     if not mans or df is None:
