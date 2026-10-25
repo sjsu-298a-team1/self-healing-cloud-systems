@@ -1,0 +1,211 @@
+{
+  "generated_from": "armor-system/data/raw/armor_zenodo_21744694/extracted/D1 (via data/processed cache)",
+  "provenance_reference": "armor-system/data/manifests/armor_d1/provenance.json and checksums.json (Linear 298-43, PR #34)",
+  "counts": {
+    "cases": 210,
+    "samples": 7200,
+    "train_file_samples": 3714,
+    "test_file_samples": 3486,
+    "nodes": 46,
+    "channels": 130
+  },
+  "modality_channel_counts": {
+    "metric": 110,
+    "trace": 9,
+    "log": 11
+  },
+  "size": {
+    "tensor_bytes_float32": 172224000,
+    "values": 43056000,
+    "d1_files": [
+      {
+        "path": "cases/ad_cases.pkl",
+        "bytes": 1136
+      },
+      {
+        "path": "cases/cases.csv",
+        "bytes": 13684
+      },
+      {
+        "path": "hash_info/channel_dict.pkl",
+        "bytes": 3393
+      },
+      {
+        "path": "hash_info/node_hash.pkl",
+        "bytes": 936
+      },
+      {
+        "path": "hash_info/type_dict.pkl",
+        "bytes": 104
+      },
+      {
+        "path": "hash_info/type_hash.pkl",
+        "bytes": 591
+      },
+      {
+        "path": "samples/samples.pkl",
+        "bytes": 212405207
+      },
+      {
+        "path": "samples/test_samples.pkl",
+        "bytes": 102838485
+      },
+      {
+        "path": "samples/train_samples.pkl",
+        "bytes": 109567219
+      }
+    ]
+  },
+  "dtype": "float32",
+  "sampling": {
+    "count": 7200,
+    "first": "2022-04-30T16:00:00Z",
+    "last": "2022-05-09T15:59:00Z",
+    "first_epoch": 1651334400,
+    "last_epoch": 1652111940,
+    "step_seconds_counts": {
+      "60": 7195,
+      "86460": 4
+    },
+    "nominal_step_seconds": 60,
+    "samples_per_utc_day": {
+      "2022-04-30": 480,
+      "2022-05-01": 960,
+      "2022-05-02": 480,
+      "2022-05-03": 960,
+      "2022-05-04": 480,
+      "2022-05-05": 960,
+      "2022-05-06": 480,
+      "2022-05-07": 960,
+      "2022-05-08": 480,
+      "2022-05-09": 960
+    },
+    "is_sorted": true,
+    "unique": true,
+    "collection_days": [
+      {
+        "start": "2022-04-30T16:00:00Z",
+        "end": "2022-05-01T15:59:00Z",
+        "samples": 1440,
+        "test_file_samples": 646
+      },
+      {
+        "start": "2022-05-02T16:00:00Z",
+        "end": "2022-05-03T15:59:00Z",
+        "samples": 1440,
+        "test_file_samples": 736
+      },
+      {
+        "start": "2022-05-04T16:00:00Z",
+        "end": "2022-05-05T15:59:00Z",
+        "samples": 1440,
+        "test_file_samples": 670
+      },
+      {
+        "start": "2022-05-06T16:00:00Z",
+        "end": "2022-05-07T15:59:00Z",
+        "samples": 1440,
+        "test_file_samples": 699
+      },
+      {
+        "start": "2022-05-08T16:00:00Z",
+        "end": "2022-05-09T15:59:00Z",
+        "samples": 1440,
+        "test_file_samples": 735
+      }
+    ],
+    "collection_day_note": "each run of contiguous 60 s samples starts at 16:00:00Z (= 00:00 at UTC+8, inferred from the timestamps, not documented)"
+  },
+  "cases": {
+    "count": 210,
+    "first": "2022-04-30T17:06:40Z",
+    "last": "2022-05-09T15:37:25Z",
+    "min_gap_s": 338,
+    "median_gap_s": 1687.0
+  },
+  "classes": {
+    "category_counts": {
+      "Container Hardware": 83,
+      "Container Network": 60,
+      "Node CPU": 21,
+      "Node Disk": 37,
+      "Node Memory": 9
+    },
+    "fine_type_counts": {
+      "Kubernetes Container Network Packet Loss": 23,
+      "Kubernetes Container Read I/O Load": 21,
+      "Kubernetes Container CPU Load": 20,
+      "Kubernetes Container Memory Load": 18,
+      "Kubernetes Container Network Resource Packet Corruption": 18,
+      "Node CPU Failure": 14,
+      "Node Disk Space Consumption": 14,
+      "Kubernetes Container Write I/O Load": 14,
+      "Kubernetes Container Network Latency": 13,
+      "Node Disk Read I/O Consumption": 12,
+      "Node Disk Write I/O Consumption": 11,
+      "Kubernetes Container Process Termination": 10,
+      "Node Memory Consumption": 9,
+      "Node CPU Spiking": 7,
+      "Kubernetes Container Network Resource Packet Duplication": 6
+    },
+    "level_counts": {
+      "node": 67,
+      "pod": 69,
+      "service": 74
+    },
+    "n_categories": 5,
+    "n_fine_types": 15
+  },
+  "root_cause_resolution_to_graph_nodes": {
+    "exact": 136,
+    "service_replicas": 74
+  },
+  "numeric_health": {
+    "nan": 0,
+    "inf": 0,
+    "max_abs": 13.379088401794434,
+    "sqrt_179": 13.379088160259652,
+    "zero_fraction": 0.8047070791527313,
+    "constant_channels_over_all_samples": 37
+  },
+  "ground_truth": {
+    "available": [
+      "injection timestamp",
+      "failure level",
+      "root-cause instance (cmdb_id)",
+      "fine failure type"
+    ],
+    "not_available": [
+      "incident end time or duration",
+      "anomaly onset time",
+      "raw telemetry (only precomputed features)"
+    ],
+    "cases_csv_authoritative_for_supervised_labels": true,
+    "ad_cases_pkl": "224 events; 21 AD-only and 7 case-only events are unexplained (originated in the ART release)",
+    "reference": "armor-system/docs/d1_validation_report.md section 9"
+  },
+  "label_reconciliation": {
+    "cases_csv_count": 210,
+    "ad_cases_pkl_count": 224,
+    "ad_cases_pkl_unique": 224,
+    "ad_cases_pkl_sorted": false,
+    "exact_shared": 203,
+    "ad_only": 21,
+    "case_only": 7,
+    "match_rule": "exact timestamp equality; no tolerance applied",
+    "ad_split_ts": 1651852800,
+    "ad_split_utc": "2022-05-06T16:00:00Z",
+    "pre_split_ad_events": 126,
+    "pre_split_ad_events_equal_cases_csv_first_n": true,
+    "ad_only_post_split": 21,
+    "case_only_post_split": 7,
+    "evaluation_populations_post_split": {
+      "official_ad_labels": 98,
+      "injection_cases": 84,
+      "intersection": 77,
+      "union": 105
+    },
+    "min_abs_delta_ad_only_to_nearest_case_s": 463,
+    "min_abs_delta_case_only_to_nearest_ad_s": 463
+  }
+}

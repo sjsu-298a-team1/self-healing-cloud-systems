@@ -1,0 +1,102 @@
+{
+  "config_version": "1.0",
+  "schema_issues": [],
+  "missing_inspection": {
+    "nan": 0,
+    "inf": 0,
+    "per_modality": {
+      "metric": {
+        "channels": 110,
+        "zero_fraction": 0.8059815821256039,
+        "node_blocks_all_zero_in_every_sample": 0
+      },
+      "trace": {
+        "channels": 9,
+        "zero_fraction": 0.7789049919484702,
+        "node_blocks_all_zero_in_every_sample": 6
+      },
+      "log": {
+        "channels": 11,
+        "zero_fraction": 0.8130728480456741,
+        "node_blocks_all_zero_in_every_sample": 16
+      }
+    }
+  },
+  "fits": {
+    "official_train_period": {
+      "status": "approved_reproduction",
+      "definition": "samples with timestamp <= the ARMOR AD split (2022-05-06T16:00:00Z): contains all 126 official train cases and no held-out case",
+      "n_fit_samples": 4321,
+      "fit_first": "2022-04-30T16:00:00Z",
+      "fit_last": "2022-05-06T16:00:00Z",
+      "structural_absent_blocks": {
+        "metric": 0,
+        "trace": 6,
+        "log": 16
+      },
+      "constant_entries_scale_set_to_1": 4196,
+      "observed_all_zero_not_structural_node_modality_rows": 1800,
+      "transformed_finite": true,
+      "scaler_file": "scaler_official_train_period_v1.npz"
+    },
+    "model1_alternative_train_period": {
+      "status": "proposed_pending_approval",
+      "definition": "samples before the alternative train|validation boundary 2022-05-05T01:24:18Z",
+      "n_fit_samples": 3445,
+      "fit_first": "2022-04-30T16:00:00Z",
+      "fit_last": "2022-05-05T01:24:00Z",
+      "structural_absent_blocks": {
+        "metric": 0,
+        "trace": 6,
+        "log": 16
+      },
+      "constant_entries_scale_set_to_1": 4206,
+      "observed_all_zero_not_structural_node_modality_rows": 1800,
+      "transformed_finite": true,
+      "scaler_file": "scaler_model1_alternative_train_period_v1.npz"
+    }
+  },
+  "windows": [
+    {
+      "manifest": "official_armor_v1",
+      "split": "train",
+      "samples": 4320,
+      "windows_7_step": 4302,
+      "kept_inside_period": 4302,
+      "dropped_crossing_boundary": 0
+    },
+    {
+      "manifest": "official_armor_v1",
+      "split": "test",
+      "samples": 2880,
+      "windows_7_step": 2868,
+      "kept_inside_period": 2868,
+      "dropped_crossing_boundary": 0
+    },
+    {
+      "manifest": "model1_alternative_v1",
+      "split": "train",
+      "samples": 3445,
+      "windows_7_step": 3427,
+      "kept_inside_period": 3427,
+      "dropped_crossing_boundary": 0
+    },
+    {
+      "manifest": "model1_alternative_v1",
+      "split": "validation",
+      "samples": 875,
+      "windows_7_step": 869,
+      "kept_inside_period": 869,
+      "dropped_crossing_boundary": 0
+    },
+    {
+      "manifest": "model1_alternative_v1",
+      "split": "test",
+      "samples": 2880,
+      "windows_7_step": 2868,
+      "kept_inside_period": 2868,
+      "dropped_crossing_boundary": 0
+    }
+  ],
+  "config_sha256": "7f24cd99fbd8f4dc5c7918d2c9ee7612ea277cfdceb0dc7da29dbc4f801a9246"
+}

@@ -1,0 +1,12 @@
+channel_a,channel_b,pearson_r,same_modality
+system.mem.pct_usage,system.mem.used,0.9968587481390678,True
+system.fs.inodes.free,system.fs.inodes.total,0.9850280876848585,True
+kpi_container_network_receive_packets,kpi_container_network_transmit_packets,0.9789467383422359,True
+system.disk.free,system.fs.inodes.total,0.9789389919271146,True
+kpi_container_fs_usage_MB,kpi_container_last_seen,0.9706131232735624,True
+system.disk.free,system.fs.inodes.free,0.9705054507485622,True
+kpi_container_cpu_cfs_periods,kpi_container_cpu_usage_seconds,0.9618719947662676,True
+kpi_container_memory_usage_MB,kpi_container_memory_working_set_MB,0.961262725717386,True
+kpi_container_cpu_usage_seconds,kpi_container_cpu_user_seconds,0.959556592000994,True
+system.net.packets_in.count,system.net.packets_out.count,0.957428199228225,True
+system.os.nofile.current,system.os.nofile.used_pct,0.9568892795121122,True

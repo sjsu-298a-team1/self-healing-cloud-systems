@@ -1,0 +1,352 @@
+{
+  "description": "train|validation boundary index k scanned around the proposed 100",
+  "required_case_to_case_seconds": 719,
+  "scan": [
+    {
+      "k": 90,
+      "train_cases": 90,
+      "val_cases": 36,
+      "case_to_case_seconds": 768,
+      "safe_gap_seconds": 49,
+      "boundary_ok": false,
+      "val_class_counts": {
+        "Container Hardware": 13,
+        "Container Network": 9,
+        "Node CPU": 4,
+        "Node Disk": 9,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 91,
+      "train_cases": 91,
+      "val_cases": 35,
+      "case_to_case_seconds": 1274,
+      "safe_gap_seconds": 555,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 12,
+        "Container Network": 9,
+        "Node CPU": 4,
+        "Node Disk": 9,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 92,
+      "train_cases": 92,
+      "val_cases": 34,
+      "case_to_case_seconds": 2373,
+      "safe_gap_seconds": 1654,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 12,
+        "Container Network": 9,
+        "Node CPU": 4,
+        "Node Disk": 8,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 93,
+      "train_cases": 93,
+      "val_cases": 33,
+      "case_to_case_seconds": 2404,
+      "safe_gap_seconds": 1685,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 11,
+        "Container Network": 9,
+        "Node CPU": 4,
+        "Node Disk": 8,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 94,
+      "train_cases": 94,
+      "val_cases": 32,
+      "case_to_case_seconds": 1377,
+      "safe_gap_seconds": 658,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 11,
+        "Container Network": 8,
+        "Node CPU": 4,
+        "Node Disk": 8,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 95,
+      "train_cases": 95,
+      "val_cases": 31,
+      "case_to_case_seconds": 2871,
+      "safe_gap_seconds": 2152,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 11,
+        "Container Network": 8,
+        "Node CPU": 4,
+        "Node Disk": 7,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 96,
+      "train_cases": 96,
+      "val_cases": 30,
+      "case_to_case_seconds": 2345,
+      "safe_gap_seconds": 1626,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 8,
+        "Node CPU": 4,
+        "Node Disk": 7,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 97,
+      "train_cases": 97,
+      "val_cases": 29,
+      "case_to_case_seconds": 1716,
+      "safe_gap_seconds": 997,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 8,
+        "Node CPU": 3,
+        "Node Disk": 7,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 98,
+      "train_cases": 98,
+      "val_cases": 28,
+      "case_to_case_seconds": 7593,
+      "safe_gap_seconds": 6874,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 7,
+        "Node CPU": 3,
+        "Node Disk": 7,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 99,
+      "train_cases": 99,
+      "val_cases": 27,
+      "case_to_case_seconds": 1273,
+      "safe_gap_seconds": 554,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 7,
+        "Node CPU": 3,
+        "Node Disk": 6,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 100,
+      "train_cases": 100,
+      "val_cases": 26,
+      "case_to_case_seconds": 448,
+      "safe_gap_seconds": -271,
+      "boundary_ok": false,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 6,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 101,
+      "train_cases": 101,
+      "val_cases": 25,
+      "case_to_case_seconds": 2669,
+      "safe_gap_seconds": 1950,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 5,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 102,
+      "train_cases": 102,
+      "val_cases": 24,
+      "case_to_case_seconds": 1206,
+      "safe_gap_seconds": 487,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 4,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 103,
+      "train_cases": 103,
+      "val_cases": 23,
+      "case_to_case_seconds": 1043,
+      "safe_gap_seconds": 324,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 9,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 4,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 104,
+      "train_cases": 104,
+      "val_cases": 22,
+      "case_to_case_seconds": 2009,
+      "safe_gap_seconds": 1290,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 9,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 3,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 105,
+      "train_cases": 105,
+      "val_cases": 21,
+      "case_to_case_seconds": 2461,
+      "safe_gap_seconds": 1742,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 9,
+        "Container Network": 6,
+        "Node CPU": 2,
+        "Node Disk": 3,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 106,
+      "train_cases": 106,
+      "val_cases": 20,
+      "case_to_case_seconds": 1687,
+      "safe_gap_seconds": 968,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 9,
+        "Container Network": 6,
+        "Node CPU": 2,
+        "Node Disk": 2,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 107,
+      "train_cases": 107,
+      "val_cases": 19,
+      "case_to_case_seconds": 4619,
+      "safe_gap_seconds": 3900,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 9,
+        "Container Network": 5,
+        "Node CPU": 2,
+        "Node Disk": 2,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 108,
+      "train_cases": 108,
+      "val_cases": 18,
+      "case_to_case_seconds": 995,
+      "safe_gap_seconds": 276,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 8,
+        "Container Network": 5,
+        "Node CPU": 2,
+        "Node Disk": 2,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 109,
+      "train_cases": 109,
+      "val_cases": 17,
+      "case_to_case_seconds": 5410,
+      "safe_gap_seconds": 4691,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 8,
+        "Container Network": 5,
+        "Node CPU": 2,
+        "Node Disk": 1,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 110,
+      "train_cases": 110,
+      "val_cases": 16,
+      "case_to_case_seconds": 1964,
+      "safe_gap_seconds": 1245,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 7,
+        "Container Network": 5,
+        "Node CPU": 2,
+        "Node Disk": 1,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 111,
+      "train_cases": 111,
+      "val_cases": 15,
+      "case_to_case_seconds": 1530,
+      "safe_gap_seconds": 811,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 7,
+        "Container Network": 4,
+        "Node CPU": 2,
+        "Node Disk": 1,
+        "Node Memory": 1
+      }
+    },
+    {
+      "k": 112,
+      "train_cases": 112,
+      "val_cases": 14,
+      "case_to_case_seconds": 1148,
+      "safe_gap_seconds": 429,
+      "boundary_ok": true,
+      "val_class_counts": {
+        "Container Hardware": 6,
+        "Container Network": 4,
+        "Node CPU": 2,
+        "Node Disk": 1,
+        "Node Memory": 1
+      }
+    }
+  ],
+  "nearest_safe_k_to_100": 101
+}

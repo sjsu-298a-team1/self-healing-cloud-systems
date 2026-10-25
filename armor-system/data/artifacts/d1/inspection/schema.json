@@ -1,0 +1,896 @@
+{
+  "schema_version": "1.0",
+  "tensor_shape_per_sample": [
+    46,
+    130
+  ],
+  "dtype": "float32",
+  "node_order": [
+    "adservice-0",
+    "adservice-1",
+    "adservice-2",
+    "adservice2-0",
+    "cartservice-0",
+    "cartservice-1",
+    "cartservice-2",
+    "cartservice2-0",
+    "checkoutservice-0",
+    "checkoutservice-1",
+    "checkoutservice-2",
+    "checkoutservice2-0",
+    "currencyservice-0",
+    "currencyservice-1",
+    "currencyservice-2",
+    "currencyservice2-0",
+    "emailservice-0",
+    "emailservice-1",
+    "emailservice-2",
+    "emailservice2-0",
+    "frontend-0",
+    "frontend-1",
+    "frontend-2",
+    "frontend2-0",
+    "paymentservice-0",
+    "paymentservice-1",
+    "paymentservice-2",
+    "paymentservice2-0",
+    "productcatalogservice-0",
+    "productcatalogservice-1",
+    "productcatalogservice-2",
+    "productcatalogservice2-0",
+    "recommendationservice-0",
+    "recommendationservice-1",
+    "recommendationservice-2",
+    "recommendationservice2-0",
+    "shippingservice-0",
+    "shippingservice-1",
+    "shippingservice-2",
+    "shippingservice2-0",
+    "node-1",
+    "node-2",
+    "node-3",
+    "node-4",
+    "node-5",
+    "node-6"
+  ],
+  "channel_order": [
+    {
+      "index": 0,
+      "name": "kpi_container_cpu_cfs_periods",
+      "modality": "metric"
+    },
+    {
+      "index": 1,
+      "name": "kpi_container_cpu_cfs_throttled_periods",
+      "modality": "metric"
+    },
+    {
+      "index": 2,
+      "name": "kpi_container_cpu_cfs_throttled_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 3,
+      "name": "kpi_container_cpu_load_average_10s",
+      "modality": "metric"
+    },
+    {
+      "index": 4,
+      "name": "kpi_container_cpu_system_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 5,
+      "name": "kpi_container_cpu_usage_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 6,
+      "name": "kpi_container_cpu_user_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 7,
+      "name": "kpi_container_file_descriptors",
+      "modality": "metric"
+    },
+    {
+      "index": 8,
+      "name": "kpi_container_fs_inodes",
+      "modality": "metric"
+    },
+    {
+      "index": 9,
+      "name": "kpi_container_fs_inodes_free",
+      "modality": "metric"
+    },
+    {
+      "index": 10,
+      "name": "kpi_container_fs_io_current",
+      "modality": "metric"
+    },
+    {
+      "index": 11,
+      "name": "kpi_container_fs_io_time_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 12,
+      "name": "kpi_container_fs_io_time_weighted_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 13,
+      "name": "kpi_container_fs_limit_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 14,
+      "name": "kpi_container_fs_read_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 15,
+      "name": "kpi_container_fs_reads",
+      "modality": "metric"
+    },
+    {
+      "index": 16,
+      "name": "kpi_container_fs_reads_merged",
+      "modality": "metric"
+    },
+    {
+      "index": 17,
+      "name": "kpi_container_fs_sector_reads",
+      "modality": "metric"
+    },
+    {
+      "index": 18,
+      "name": "kpi_container_fs_sector_writes",
+      "modality": "metric"
+    },
+    {
+      "index": 19,
+      "name": "kpi_container_fs_usage_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 20,
+      "name": "kpi_container_fs_write_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 21,
+      "name": "kpi_container_fs_writes",
+      "modality": "metric"
+    },
+    {
+      "index": 22,
+      "name": "kpi_container_fs_writes_merged",
+      "modality": "metric"
+    },
+    {
+      "index": 23,
+      "name": "kpi_container_last_seen",
+      "modality": "metric"
+    },
+    {
+      "index": 24,
+      "name": "kpi_container_memory_cache",
+      "modality": "metric"
+    },
+    {
+      "index": 25,
+      "name": "kpi_container_memory_failcnt",
+      "modality": "metric"
+    },
+    {
+      "index": 26,
+      "name": "kpi_container_memory_failures",
+      "modality": "metric"
+    },
+    {
+      "index": 27,
+      "name": "kpi_container_memory_mapped_file",
+      "modality": "metric"
+    },
+    {
+      "index": 28,
+      "name": "kpi_container_memory_max_usage_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 29,
+      "name": "kpi_container_memory_rss",
+      "modality": "metric"
+    },
+    {
+      "index": 30,
+      "name": "kpi_container_memory_swap",
+      "modality": "metric"
+    },
+    {
+      "index": 31,
+      "name": "kpi_container_memory_usage_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 32,
+      "name": "kpi_container_memory_working_set_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 33,
+      "name": "kpi_container_network_receive_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 34,
+      "name": "kpi_container_network_receive_errors",
+      "modality": "metric"
+    },
+    {
+      "index": 35,
+      "name": "kpi_container_network_receive_packets",
+      "modality": "metric"
+    },
+    {
+      "index": 36,
+      "name": "kpi_container_network_receive_packets_dropped",
+      "modality": "metric"
+    },
+    {
+      "index": 37,
+      "name": "kpi_container_network_transmit_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 38,
+      "name": "kpi_container_network_transmit_errors",
+      "modality": "metric"
+    },
+    {
+      "index": 39,
+      "name": "kpi_container_network_transmit_packets",
+      "modality": "metric"
+    },
+    {
+      "index": 40,
+      "name": "kpi_container_network_transmit_packets_dropped",
+      "modality": "metric"
+    },
+    {
+      "index": 41,
+      "name": "kpi_container_sockets",
+      "modality": "metric"
+    },
+    {
+      "index": 42,
+      "name": "kpi_container_spec_cpu_period",
+      "modality": "metric"
+    },
+    {
+      "index": 43,
+      "name": "kpi_container_spec_cpu_quota",
+      "modality": "metric"
+    },
+    {
+      "index": 44,
+      "name": "kpi_container_spec_cpu_shares",
+      "modality": "metric"
+    },
+    {
+      "index": 45,
+      "name": "kpi_container_spec_memory_limit_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 46,
+      "name": "kpi_container_spec_memory_reservation_limit_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 47,
+      "name": "kpi_container_spec_memory_swap_limit_MB",
+      "modality": "metric"
+    },
+    {
+      "index": 48,
+      "name": "kpi_container_start_time_seconds",
+      "modality": "metric"
+    },
+    {
+      "index": 49,
+      "name": "kpi_container_tasks_state",
+      "modality": "metric"
+    },
+    {
+      "index": 50,
+      "name": "kpi_container_threads",
+      "modality": "metric"
+    },
+    {
+      "index": 51,
+      "name": "kpi_container_threads_max",
+      "modality": "metric"
+    },
+    {
+      "index": 52,
+      "name": "kpi_container_ulimits_soft",
+      "modality": "metric"
+    },
+    {
+      "index": 53,
+      "name": "duration",
+      "modality": "trace"
+    },
+    {
+      "index": 54,
+      "name": "request_count",
+      "modality": "trace"
+    },
+    {
+      "index": 55,
+      "name": "rpc_9",
+      "modality": "trace"
+    },
+    {
+      "index": 56,
+      "name": "rpc_1",
+      "modality": "trace"
+    },
+    {
+      "index": 57,
+      "name": "http_13",
+      "modality": "trace"
+    },
+    {
+      "index": 58,
+      "name": "rpc_2",
+      "modality": "trace"
+    },
+    {
+      "index": 59,
+      "name": "rpc_4",
+      "modality": "trace"
+    },
+    {
+      "index": 60,
+      "name": "rpc_14",
+      "modality": "trace"
+    },
+    {
+      "index": 61,
+      "name": "rpc_13",
+      "modality": "trace"
+    },
+    {
+      "index": 62,
+      "name": "severity_info",
+      "modality": "log"
+    },
+    {
+      "index": 63,
+      "name": "severity_debug",
+      "modality": "log"
+    },
+    {
+      "index": 64,
+      "name": "severity_error",
+      "modality": "log"
+    },
+    {
+      "index": 65,
+      "name": "severity_warning",
+      "modality": "log"
+    },
+    {
+      "index": 66,
+      "name": "stack_trace",
+      "modality": "log"
+    },
+    {
+      "index": 67,
+      "name": "transport_closing_warning",
+      "modality": "log"
+    },
+    {
+      "index": 68,
+      "name": "connection_error_warning",
+      "modality": "log"
+    },
+    {
+      "index": 69,
+      "name": "post_get_info",
+      "modality": "log"
+    },
+    {
+      "index": 70,
+      "name": "service_log_other",
+      "modality": "log"
+    },
+    {
+      "index": 71,
+      "name": "envoy_log_other",
+      "modality": "log"
+    },
+    {
+      "index": 72,
+      "name": "at",
+      "modality": "log"
+    },
+    {
+      "index": 73,
+      "name": "system.cpu.iowait",
+      "modality": "metric"
+    },
+    {
+      "index": 74,
+      "name": "system.cpu.pct_usage",
+      "modality": "metric"
+    },
+    {
+      "index": 75,
+      "name": "system.cpu.system",
+      "modality": "metric"
+    },
+    {
+      "index": 76,
+      "name": "system.cpu.user",
+      "modality": "metric"
+    },
+    {
+      "index": 77,
+      "name": "system.disk.free",
+      "modality": "metric"
+    },
+    {
+      "index": 78,
+      "name": "system.disk.pct_usage",
+      "modality": "metric"
+    },
+    {
+      "index": 79,
+      "name": "system.disk.readonly",
+      "modality": "metric"
+    },
+    {
+      "index": 80,
+      "name": "system.disk.total",
+      "modality": "metric"
+    },
+    {
+      "index": 81,
+      "name": "system.disk.used",
+      "modality": "metric"
+    },
+    {
+      "index": 82,
+      "name": "system.fs.inodes.free",
+      "modality": "metric"
+    },
+    {
+      "index": 83,
+      "name": "system.fs.inodes.in_use",
+      "modality": "metric"
+    },
+    {
+      "index": 84,
+      "name": "system.fs.inodes.total",
+      "modality": "metric"
+    },
+    {
+      "index": 85,
+      "name": "system.fs.inodes.used",
+      "modality": "metric"
+    },
+    {
+      "index": 86,
+      "name": "system.io.avg_q_sz",
+      "modality": "metric"
+    },
+    {
+      "index": 87,
+      "name": "system.io.await",
+      "modality": "metric"
+    },
+    {
+      "index": 88,
+      "name": "system.io.r_await",
+      "modality": "metric"
+    },
+    {
+      "index": 89,
+      "name": "system.io.r_s",
+      "modality": "metric"
+    },
+    {
+      "index": 90,
+      "name": "system.io.rkb_s",
+      "modality": "metric"
+    },
+    {
+      "index": 91,
+      "name": "system.io.svctm",
+      "modality": "metric"
+    },
+    {
+      "index": 92,
+      "name": "system.io.util",
+      "modality": "metric"
+    },
+    {
+      "index": 93,
+      "name": "system.io.w_await",
+      "modality": "metric"
+    },
+    {
+      "index": 94,
+      "name": "system.io.w_s",
+      "modality": "metric"
+    },
+    {
+      "index": 95,
+      "name": "system.load.1",
+      "modality": "metric"
+    },
+    {
+      "index": 96,
+      "name": "system.load.15",
+      "modality": "metric"
+    },
+    {
+      "index": 97,
+      "name": "system.load.5",
+      "modality": "metric"
+    },
+    {
+      "index": 98,
+      "name": "system.mem.pct_usage",
+      "modality": "metric"
+    },
+    {
+      "index": 99,
+      "name": "system.mem.real.pct_useage",
+      "modality": "metric"
+    },
+    {
+      "index": 100,
+      "name": "system.mem.real.used",
+      "modality": "metric"
+    },
+    {
+      "index": 101,
+      "name": "system.mem.total",
+      "modality": "metric"
+    },
+    {
+      "index": 102,
+      "name": "system.mem.usable",
+      "modality": "metric"
+    },
+    {
+      "index": 103,
+      "name": "system.mem.used",
+      "modality": "metric"
+    },
+    {
+      "index": 104,
+      "name": "system.net.bytes_rcvd",
+      "modality": "metric"
+    },
+    {
+      "index": 105,
+      "name": "system.net.bytes_sent",
+      "modality": "metric"
+    },
+    {
+      "index": 106,
+      "name": "system.net.packets_in.count",
+      "modality": "metric"
+    },
+    {
+      "index": 107,
+      "name": "system.net.packets_in.error",
+      "modality": "metric"
+    },
+    {
+      "index": 108,
+      "name": "system.net.packets_out.count",
+      "modality": "metric"
+    },
+    {
+      "index": 109,
+      "name": "system.net.packets_out.error",
+      "modality": "metric"
+    },
+    {
+      "index": 110,
+      "name": "system.net.tcp.in_segs",
+      "modality": "metric"
+    },
+    {
+      "index": 111,
+      "name": "system.net.tcp.out_segs",
+      "modality": "metric"
+    },
+    {
+      "index": 112,
+      "name": "system.net.tcp.retrans_segs",
+      "modality": "metric"
+    },
+    {
+      "index": 113,
+      "name": "system.net.udp.in_datagrams",
+      "modality": "metric"
+    },
+    {
+      "index": 114,
+      "name": "system.net.udp.in_errors",
+      "modality": "metric"
+    },
+    {
+      "index": 115,
+      "name": "system.net.udp.out_datagrams",
+      "modality": "metric"
+    },
+    {
+      "index": 116,
+      "name": "system.net.udp.rcv_buf_errors",
+      "modality": "metric"
+    },
+    {
+      "index": 117,
+      "name": "system.net.udp.snd_buf_errors",
+      "modality": "metric"
+    },
+    {
+      "index": 118,
+      "name": "system.os.nofile.current",
+      "modality": "metric"
+    },
+    {
+      "index": 119,
+      "name": "system.os.nofile.max",
+      "modality": "metric"
+    },
+    {
+      "index": 120,
+      "name": "system.os.nofile.used_pct",
+      "modality": "metric"
+    },
+    {
+      "index": 121,
+      "name": "system.process.zombie.num",
+      "modality": "metric"
+    },
+    {
+      "index": 122,
+      "name": "system.swap.free",
+      "modality": "metric"
+    },
+    {
+      "index": 123,
+      "name": "system.swap.si",
+      "modality": "metric"
+    },
+    {
+      "index": 124,
+      "name": "system.swap.so",
+      "modality": "metric"
+    },
+    {
+      "index": 125,
+      "name": "system.swap.total",
+      "modality": "metric"
+    },
+    {
+      "index": 126,
+      "name": "system.swap.used",
+      "modality": "metric"
+    },
+    {
+      "index": 127,
+      "name": "system.swap.used_pct",
+      "modality": "metric"
+    },
+    {
+      "index": 128,
+      "name": "system.tcp.retrans_pct",
+      "modality": "metric"
+    },
+    {
+      "index": 129,
+      "name": "system.udp.connect.num",
+      "modality": "metric"
+    }
+  ],
+  "modality_index_ranges": {
+    "metric": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129
+    ],
+    "trace": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61
+    ],
+    "log": [
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72
+    ]
+  },
+  "feat_span_from_ARMOR_config": {
+    "metric": [
+      [
+        0,
+        52
+      ],
+      [
+        73,
+        129
+      ]
+    ],
+    "trace": [
+      [
+        53,
+        61
+      ]
+    ],
+    "log": [
+      [
+        62,
+        72
+      ]
+    ]
+  },
+  "channel_order_sha256": "f52cdb36af71bdaa83b8b57ac5a645c2d5b07022a6a5582328ee9d8f59b1dd08",
+  "node_order_sha256": "772b8ff641fb446e6f528d880c4cc0066c3f803aa6f82d5e7a8e3f4cf9813ae8",
+  "category_ids": {
+    "0": "Container Hardware",
+    "1": "Container Network",
+    "3": "Node CPU",
+    "4": "Node Disk",
+    "5": "Node Memory"
+  },
+  "fine_type_to_category_id": {
+    "Kubernetes Container CPU Load": 0,
+    "Kubernetes Container Memory Load": 0,
+    "Kubernetes Container Network Latency": 1,
+    "Kubernetes Container Network Packet Loss": 1,
+    "Kubernetes Container Network Resource Packet Corruption": 1,
+    "Kubernetes Container Network Resource Packet Duplication": 1,
+    "Kubernetes Container Process Termination": 0,
+    "Kubernetes Container Read I/O Load": 0,
+    "Kubernetes Container Write I/O Load": 0,
+    "Node CPU Failure": 3,
+    "Node CPU Spiking": 3,
+    "Node Disk Read I/O Consumption": 4,
+    "Node Disk Space Consumption": 4,
+    "Node Disk Write I/O Consumption": 4,
+    "Node Memory Consumption": 5
+  }
+}

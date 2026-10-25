@@ -1,0 +1,157 @@
+{
+  "manifest_version": "1.0",
+  "name": "model1_candidate_100_26_84_v1",
+  "status": "evaluated",
+  "description": "Proposed Model 1 split: first 100 cases train, next 26 validation, last 84 (official test) test.",
+  "verdict": "FAIL",
+  "usable": false,
+  "ordering": "cases.csv file order (strictly ascending timestamp); chronological, no random assignment",
+  "window_parameters": {
+    "before_s": 59,
+    "after_s": 300,
+    "history_s": 360,
+    "required_span_s": 719
+  },
+  "case_ranges": {
+    "train": {
+      "start_index": 0,
+      "end_index_exclusive": 100,
+      "n_cases": 100,
+      "first_case_ts": 1651338400,
+      "last_case_ts": 1651712135,
+      "class_counts": {
+        "Container Hardware": 37,
+        "Container Network": 32,
+        "Node CPU": 10,
+        "Node Disk": 17,
+        "Node Memory": 4
+      }
+    },
+    "validation": {
+      "start_index": 100,
+      "end_index_exclusive": 126,
+      "n_cases": 26,
+      "first_case_ts": 1651712583,
+      "last_case_ts": 1651762517,
+      "class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 6,
+        "Node Memory": 1
+      }
+    },
+    "test": {
+      "start_index": 126,
+      "end_index_exclusive": 210,
+      "n_cases": 84,
+      "first_case_ts": 1651858208,
+      "last_case_ts": 1652110645,
+      "class_counts": {
+        "Container Hardware": 36,
+        "Container Network": 22,
+        "Node CPU": 8,
+        "Node Disk": 14,
+        "Node Memory": 4
+      }
+    }
+  },
+  "ad_split": {
+    "timestamp": 1651852800,
+    "utc": "2022-05-06T16:00:00Z",
+    "first_heldout_case_ts": 1651858208,
+    "seconds_before_first_heldout_case": 5408
+  },
+  "sample_time_boundaries": [
+    {
+      "between": [
+        "train",
+        "validation"
+      ],
+      "boundary_ts": 1651712299,
+      "rule": "midpoint of the safe gap",
+      "last_case_extent_end": 1651712435,
+      "first_case_extent_start": 1651712164,
+      "safe_gap_seconds": -271,
+      "case_to_case_seconds": 448
+    },
+    {
+      "between": [
+        "validation",
+        "test"
+      ],
+      "boundary_ts": 1651852800,
+      "rule": "AD split time (lies inside the safe gap)",
+      "last_case_extent_end": 1651762817,
+      "first_case_extent_start": 1651857789,
+      "safe_gap_seconds": 94972,
+      "case_to_case_seconds": 95691
+    }
+  ],
+  "sample_partition": {
+    "train": 3419,
+    "validation": 901,
+    "test": 2880
+  },
+  "incident_groups": {
+    "n_groups": 175,
+    "groups_with_multiple_cases": 32
+  },
+  "checks": [
+    {
+      "id": "S1_chronological_order",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "case timestamps strictly increase in file order; splits are contiguous index ranges in that order"
+    },
+    {
+      "id": "S2_class_coverage",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "every class appears in every split"
+    },
+    {
+      "id": "S3_minimum_class_support",
+      "severity": "advisory",
+      "status": "WARN",
+      "detail": "split-classes below 3 cases (per-class metrics unstable): {'validation': {'Node Memory': 1}}"
+    },
+    {
+      "id": "S4_incident_group_isolation",
+      "severity": "hard",
+      "status": "FAIL",
+      "detail": "incident groups spanning splits: {85: ['train', 'validation']}"
+    },
+    {
+      "id": "S5_boundary_window_gap",
+      "severity": "hard",
+      "status": "FAIL",
+      "detail": "boundary extents overlap: train|validation cases 448 s apart, needs > 719 s"
+    },
+    {
+      "id": "S6_case_extent_inside_period",
+      "severity": "hard",
+      "status": "FAIL",
+      "detail": "2 cases reach across a split boundary (case indices [99, 100])"
+    },
+    {
+      "id": "S7_sample_partition_complete_disjoint",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "7200 samples assigned once each: {'train': 3419, 'validation': 901, 'test': 2880}"
+    },
+    {
+      "id": "S8_official_test_cases_unchanged",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "held-out set equals ARMOR's last 84 cases; no official test case moved"
+    },
+    {
+      "id": "S9_ad_vs_ft_boundary_difference",
+      "severity": "info",
+      "status": "PASS",
+      "detail": "AD split 1651852800 (sample-based, 60% of samples) vs first held-out case 1651858208 (case-based, 60% of cases): AD boundary is 5408 s earlier; FT/RCL use cases only, AD uses samples"
+    }
+  ],
+  "content_sha256": "f85913a118424ffab542aa7058e74e2e1eccb197b82f3b336e3227741e27cf0b"
+}
