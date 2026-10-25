@@ -98,7 +98,7 @@ def build_evidence(tests, splits_result, prior=None):
             ("WARN", "No incident end times or durations exist, so no sample-level detection labels were built."),
             ("INFO", "Augmentation was assessed and not adopted; raw telemetry and D2 downloads remain deferred; no model was trained.")]
     return {"generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "git": {"branch": branch, "head": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain"))},
+            "git": {"branch": branch, "head": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain", "--", ".", ":!armor-system/data/artifacts/d1/evidence"))},
             "prs": prs, "tests": tests,
             "linear": [{"title": "298-44 Complete ARMOR D1 Data Preparation, EDA, Validation and Streamlit Dashboard", "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-44/complete-armor-d1-data-preparation-eda-validation-and-streamlit", "note": "this work"},
                        {"title": "298-43 Acquire and validate ARMOR D1 benchmark dataset", "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-43/acquire-and-validate-armor-d1-benchmark-dataset", "note": "dependency"}],
