@@ -1,0 +1,277 @@
+{
+  "checked_utc": "2026-10-25T06:32:00Z",
+  "browser": "Google Chrome (headless) 155.0.8059.86",
+  "pages_checked": 7,
+  "interactive_steps": 26,
+  "pages": [
+    {
+      "step": "1 - Project Overview",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 2,
+      "tables": 0,
+      "text_chars": 2891
+    },
+    {
+      "step": "2 - Dataset Explorer",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 4,
+      "tables": 4,
+      "text_chars": 965
+    },
+    {
+      "step": "3 - Data Splitting",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 3,
+      "tables": 3,
+      "text_chars": 5623
+    },
+    {
+      "step": "4 - EDA",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 2718
+    },
+    {
+      "step": "5 - Preprocessing",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 5,
+      "tables": 5,
+      "text_chars": 2622
+    },
+    {
+      "step": "6 - Data Quality",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 1,
+      "tables": 2,
+      "text_chars": 3866
+    },
+    {
+      "step": "7 - Deliverables and Evidence",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 1,
+      "tables": 3,
+      "text_chars": 2935
+    }
+  ],
+  "steps": [
+    {
+      "step": "explorer / Representative records",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 4,
+      "tables": 4,
+      "text_chars": 1377
+    },
+    {
+      "step": "explorer / Case explorer",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 4,
+      "tables": 4,
+      "text_chars": 1061
+    },
+    {
+      "step": "explorer / Timestamps and sampling",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 4,
+      "tables": 4,
+      "text_chars": 1359
+    },
+    {
+      "step": "explorer / Live sample inspector",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 4,
+      "tables": 4,
+      "text_chars": 630
+    },
+    {
+      "step": "explorer / feature cache loaded",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 4,
+      "text_chars": 1067
+    },
+    {
+      "step": "splitting / approved",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 3,
+      "tables": 3,
+      "text_chars": 5623
+    },
+    {
+      "step": "splitting / rejected candidate",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 3,
+      "tables": 3,
+      "text_chars": 5789
+    },
+    {
+      "step": "splitting / official",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 3,
+      "tables": 3,
+      "text_chars": 5313
+    },
+    {
+      "step": "splitting / boundary slider moved",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 3,
+      "tables": 3,
+      "text_chars": 5311
+    },
+    {
+      "step": "eda / Class distribution",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 1521
+    },
+    {
+      "step": "eda / Feature distributions",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 1019
+    },
+    {
+      "step": "eda / Missingness",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 2270
+    },
+    {
+      "step": "eda / Correlation",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 2154
+    },
+    {
+      "step": "eda / Time series",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 933
+    },
+    {
+      "step": "eda / Incident-aligned",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 1093
+    },
+    {
+      "step": "eda / Variability / outliers",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 1444
+    },
+    {
+      "step": "eda / Train vs validation",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 1037
+    },
+    {
+      "step": "eda / Static figures",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 12,
+      "tables": 6,
+      "text_chars": 918
+    },
+    {
+      "step": "preprocessing / Raw to prepared example",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 2147
+    },
+    {
+      "step": "preprocessing / Scaling statistics",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 1393
+    },
+    {
+      "step": "preprocessing / Structural masks and indicators",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 2155
+    },
+    {
+      "step": "preprocessing / Before / after",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 1602
+    },
+    {
+      "step": "preprocessing / Windowing and counts",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 1459
+    },
+    {
+      "step": "preprocessing / Validation evidence",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 6,
+      "tables": 5,
+      "text_chars": 3317
+    },
+    {
+      "step": "quality",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 1,
+      "tables": 2,
+      "text_chars": 3866
+    },
+    {
+      "step": "evidence",
+      "exceptions": 0,
+      "missing_artifact_messages": 0,
+      "charts": 1,
+      "tables": 3,
+      "text_chars": 2935
+    }
+  ],
+  "console_or_page_errors": [],
+  "all_clear": true,
+  "git_head": "7d4d06eca4a392558cb8a6518c709891d8e24a34"
+}
