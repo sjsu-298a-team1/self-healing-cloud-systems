@@ -27,5 +27,11 @@ class DetectorTests(unittest.TestCase):
         self.assertEqual(len(q.detect_scaler_leak(ts, np.ones(10, bool), 4)), 1)
 
 
+    def test_count_mismatch_detector(self):
+        exp = {"train": {"A": 2, "B": 1}, "test": {"A": 3}}
+        self.assertEqual(q.detect_count_mismatch({"train": {"A": 2, "B": 1}, "test": {"A": 3}}, exp), [])
+        self.assertEqual(len(q.detect_count_mismatch({"train": {"A": 2, "B": 2}, "test": {"A": 3}}, exp)), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

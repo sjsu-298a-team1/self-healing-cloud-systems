@@ -120,17 +120,17 @@ def run(splits_result):
     ax.set_title("Channels with the most values beyond |3| (train)")
     save(fig, "08_outliers.png")
 
-    ks = sorted(_csv(os.path.join(e, "train_vs_validation_alt_split.csv")), key=lambda r: int(r["index"]))
+    ks = sorted(_csv(os.path.join(e, "train_vs_validation_model1.csv")), key=lambda r: int(r["index"]))
     fig, ax = plt.subplots(figsize=(11, 3.2))
     ax.bar([int(r["index"]) for r in ks], [float(r["ks"]) for r in ks], color=[COL[r["modality"]] for r in ks])
     ax.axhline(0.2, color="r", ls="--", lw=0.8)
-    ax.set_title("Train vs validation KS statistic per channel (proposed alternative split, exploratory)")
+    ax.set_title("Train vs validation KS statistic per channel (approved Model 1 split; diagnostic only)")
     ax.set_xlabel("channel index")
     save(fig, "09_train_vs_validation_ks.png")
 
     rows = _csv(os.path.join(paths.art("splits"), "case_split_assignments.csv"))
     fig, axes = plt.subplots(3, 1, figsize=(11, 4.2), sharex=True)
-    for ax, key, title in zip(axes, ("official_split", "candidate_split", "alternative_split"), ("official ARMOR", "proposed 100/26/84 (FAILS checks)", "recommended alternative (pending approval)")):
+    for ax, key, title in zip(axes, ("official_split", "rejected_100_26_84_split", "model1_split"), ("official ARMOR 126/84", "rejected 100/26/84 (fails checks)", "approved Model 1 101/25/84")):
         for sp_ in ("train", "validation", "test"):
             xs = [int(r["timestamp"]) for r in rows if r[key] == sp_]
             ax.scatter(xs, [0] * len(xs), s=10, color=SPLIT_COL[sp_], label=sp_)

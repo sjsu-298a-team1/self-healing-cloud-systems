@@ -101,5 +101,22 @@ class WindowTests(unittest.TestCase):
         self.assertGreater(len(dropped), 0)
 
 
+class PrepareWindowTests(unittest.TestCase):
+    def test_prepared_window_shapes_and_gap_protection(self):
+        X = make(n=20)
+        ts = np.arange(20) * 60
+        sc = pp.fit_scaler(X, np.arange(20) < 15, GROUPS)
+        w = pp.prepare_window(X, ts, sc, GROUPS, start=2)
+        self.assertEqual(w["inputs"].shape, (6, 46, 130))
+        self.assertEqual(w["target"].shape, (46, 130))
+        self.assertEqual(w["structural_absent"].shape, (46, 3))
+        self.assertEqual(w["observed_all_zero_not_structural"].shape, (6, 46, 3))
+        self.assertEqual(w["inputs"].dtype, np.float32)
+        np.testing.assert_array_equal(w["timestamps"], ts[2:9])
+        gap_ts = ts.copy(); gap_ts[10:] += 600
+        with self.assertRaises(ValueError):
+            pp.prepare_window(X, gap_ts, sc, GROUPS, start=6)
+
+
 if __name__ == "__main__":
     unittest.main()

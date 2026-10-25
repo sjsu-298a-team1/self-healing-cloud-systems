@@ -1,5 +1,5 @@
 {
-  "description": "train|validation boundary index k scanned around the proposed 100",
+  "description": "train|validation boundary index k scanned around the proposed 100 (justification for the approved 101)",
   "required_case_to_case_seconds": 719,
   "scan": [
     {
@@ -348,5 +348,5 @@
       }
     }
   ],
-  "nearest_safe_k_to_100": 101
+  "approved_k": 101
 }

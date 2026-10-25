@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
-  "status": "proposed_pending_approval",
-  "description": "Forward-chaining validation folds over the first 126 cases (no random assignment); test is always the official last 84 cases.",
+  "status": "proposed_not_approved",
+  "description": "Forward-chaining folds over the first 126 cases. NOT part of the approved protocol; kept as an optional idea only.",
   "folds": [
     {
       "fold": 1,

@@ -1,4 +1,4 @@
-case_index,timestamp,utc,category,failure_type,level,cmdb_id,group_id,official_split,candidate_split,alternative_split
+case_index,timestamp,utc,category,failure_type,level,cmdb_id,group_id,official_split,model1_split,rejected_100_26_84_split
 0,1651338400,2022-04-30T17:06:40Z,Node CPU,Node CPU Failure,node,node-6,0,train,train,train
 1,1651339370,2022-04-30T17:22:50Z,Node CPU,Node CPU Failure,node,node-6,1,train,train,train
 2,1651340937,2022-04-30T17:48:57Z,Container Hardware,Kubernetes Container Read I/O Load,pod,recommendationservice-0,2,train,train,train
@@ -99,7 +99,7 @@ case_index,timestamp,utc,category,failure_type,level,cmdb_id,group_id,official_s
 97,1651703269,2022-05-04T22:27:49Z,Container Network,Kubernetes Container Network Packet Loss,pod,recommendationservice2-0,83,train,train,train
 98,1651710862,2022-05-05T00:34:22Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,84,train,train,train
 99,1651712135,2022-05-05T00:55:35Z,Container Network,Kubernetes Container Network Latency,service,checkoutservice,85,train,train,train
-100,1651712583,2022-05-05T01:03:03Z,Node Disk,Node Disk Space Consumption,node,node-1,85,train,validation,train
+100,1651712583,2022-05-05T01:03:03Z,Node Disk,Node Disk Space Consumption,node,node-1,85,train,train,validation
 101,1651715252,2022-05-05T01:47:32Z,Node Disk,Node Disk Read I/O Consumption,node,node-4,86,train,validation,validation
 102,1651716458,2022-05-05T02:07:38Z,Container Hardware,Kubernetes Container Read I/O Load,pod,recommendationservice-2,87,train,validation,validation
 103,1651717501,2022-05-05T02:25:01Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,88,train,validation,validation

@@ -64,7 +64,45 @@ def pr_info(selector):
         return None
 
 
-def build_evidence(tests, splits_result, prior=None):
+def artifact_set_hash():
+    """sha256 over every committed artifact except the evidence folder (path-sorted)."""
+    import hashlib
+    h, n = hashlib.sha256(), 0
+    for root, _, files in sorted(os.walk(paths.ART)):
+        if os.path.relpath(root, paths.ART).split(os.sep)[0] == "evidence":
+            continue
+        for f in sorted(files):
+            full = os.path.join(root, f)
+            h.update(os.path.relpath(full, paths.ART).encode() + b"\0" + sha256_file(full).encode() + b"\n")
+            n += 1
+    return h.hexdigest(), n
+
+
+def reproducibility_check():
+    """Run the data stages twice in fresh subprocesses and compare the artifact-set hash."""
+    hashes, t0 = [], datetime.datetime.now()
+    for _ in range(2):
+        p = subprocess.run([sys.executable, os.path.join(HERE, "pipeline.py"), "--stage", "quality"], capture_output=True, text=True, cwd=REPO)
+        if p.returncode != 0:
+            return {"runs": len(hashes) + 1, "identical": False, "error": (p.stderr or p.stdout)[-500:]}
+        hashes.append(artifact_set_hash())
+    return {"runs": 2, "command": "python armor-system/data/pipeline.py --stage quality (x2, fresh processes)", "artifact_set_sha256": hashes[0][0],
+            "files_hashed": hashes[0][1], "identical": hashes[0] == hashes[1], "seconds": round((datetime.datetime.now() - t0).total_seconds(), 1)}
+
+
+def environment_info():
+    import importlib
+    import platform
+    info = {"python": platform.python_version(), "platform": f"{platform.system()} {platform.machine()}", "gpu_used": False}
+    for m in ("numpy", "scipy", "matplotlib", "pandas", "streamlit", "plotly"):
+        try:
+            info[m] = getattr(importlib.import_module(m), "__version__", "?")
+        except Exception:
+            info[m] = None
+    return info
+
+
+def build_evidence(tests, splits_result, prior=None, repro=None):
     art = paths.ART
     arts = []
     for root, _, files in os.walk(art):
@@ -87,10 +125,7 @@ def build_evidence(tests, splits_result, prior=None):
             ("armor-system/docs/d1_validation_report.md", "298-43 acquisition, labeling decisions and reconciliation"),
             ("armor-system/docs/d1_augmentation_assessment.md", "augmentation assessment generated from calculations"),
             ("armor-system/data/artifacts/d1/README.md", "index of generated artifacts")]
-    cand = splits_result["candidate"]
-    lim = []
-    if not cand["usable"]:
-        lim.append(("BLOCKED", "Decision needed: the proposed 100/26/84 Model 1 split fails hard checks. Approve the recommended alternative (or forward-chaining folds) before any Model 1 data use."))
+    lim = [("WARN", "Model 1 validation contains a single Node Memory case (and 3 Node CPU cases): per-class validation metrics for them are statistically unstable and must not drive tuning on their own.")]
     p34 = next((p for p in prs if p["number"] == 34), None)
     if not p34 or p34["state"] != "MERGED":
         lim.append(("PENDING", "PR #34 (acquisition and label decisions) awaits independent review; this work is stacked on it and cannot merge first."))
@@ -102,7 +137,7 @@ def build_evidence(tests, splits_result, prior=None):
             ("INFO", "Augmentation was assessed and not adopted; raw telemetry and D2 downloads remain deferred; no model was trained.")]
     return {"generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "git": {"branch": branch, "head": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain", "--", ".", ":!armor-system/data/artifacts/d1/evidence"))},
-            "prs": prs, "tests": tests,
+            "prs": prs, "tests": tests, "reproducibility": repro, "environment": environment_info(),
             "linear": [{"title": "298-44 Complete ARMOR D1 Data Preparation, EDA, Validation and Streamlit Dashboard", "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-44/complete-armor-d1-data-preparation-eda-validation-and-streamlit", "note": "this work"},
                        {"title": "298-43 Acquire and validate ARMOR D1 benchmark dataset", "url": "https://linear.app/298a-team-1-self-healing-cloud/issue/298-43/acquire-and-validate-armor-d1-benchmark-dataset", "note": "dependency"}],
             "docs": [{"path": p, "purpose": d, "exists": os.path.exists(os.path.join(REPO, p))} for p, d in docs],
@@ -129,7 +164,7 @@ def main():
         print("inspect:", s["counts"])
     if want("splits"):
         state["splits"] = split_stage.run(labels, ts, is_test)
-        for k in ("official", "candidate", "alternative"):
+        for k in ("official", "candidate", "final"):
             m = state["splits"][k]
             if m:
                 print(f"splits: {m['name']}: {m['verdict']} usable={m['usable']}")
@@ -157,7 +192,9 @@ def main():
                 prior = json.load(fh)
         if tests is None and prior:
             tests = prior.get("tests")
-        write_json(pe, build_evidence(tests, state["splits"], prior))
+        repro = reproducibility_check()
+        print("reproducibility:", repro)
+        write_json(pe, build_evidence(tests, state["splits"], prior, repro))
         print("evidence written")
 
 

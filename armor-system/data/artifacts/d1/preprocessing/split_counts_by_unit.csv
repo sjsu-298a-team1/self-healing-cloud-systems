@@ -1,0 +1,6 @@
+manifest,split,cases,samples_minutes,windows_7_step_kept,ad_events_in_period_any,ad_events_scored_after_ad_boundary,injection_cases_scored_after_ad_boundary
+official_armor_v1,train,126,4320,4302,126,0,0
+official_armor_v1,test,84,2880,2868,98,98,84
+model1_split_101_25_84_v1,train,101,3445,3427,101,0,0
+model1_split_101_25_84_v1,validation,25,875,869,25,0,0
+model1_split_101_25_84_v1,test,84,2880,2868,98,98,84

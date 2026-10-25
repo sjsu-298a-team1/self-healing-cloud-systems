@@ -2,9 +2,9 @@
 
 Partitions
   full         all 7,200 samples (descriptive only; never used for a modelling decision)
-  train        samples before the approved official AD boundary (<= 2022-05-06T16:00Z): model-development partition
-  alt_train / alt_validation   the proposed Model 1 alternative split (pending approval), used only for the
-                               exploratory training-versus-validation comparison
+  train        the approved Model 1 train period (before the 101|25 boundary): the only partition behind model-development statistics
+  validation   the approved Model 1 validation period: used only for the diagnostic train-vs-validation comparison; nothing is tuned on it
+  test         never read for any statistic except the clearly labelled full-dataset descriptive views
 """
 import os
 from collections import Counter
@@ -29,12 +29,12 @@ def run(labels, ts, X, is_test, splits_result, scalers):
     out = paths.art("eda")
     groups, nodes, channels, cases = labels["groups"], labels["nodes"], labels["channels"], labels["cases"]
     cats = [category_of(c, labels) for c in cases]
-    sc = scalers["official_train_period"]
+    sc = scalers["model1_train_period"]
     live = _live(sc)
     ad_split = splits_result["ad_split"]
-    train = ts <= ad_split
-    alt = splits_result["alternative"] or splits_result["candidate"]
-    per = periods(alt)
+    final = splits_result["final"]
+    per = periods(final)
+    train = (ts >= per["train"][0]) & (ts < per["train"][1])
     a_tr = (ts >= per["train"][0]) & (ts < per["train"][1])
     a_va = (ts >= per["validation"][0]) & (ts < per["validation"][1])
     owner = {i: m for m, idx in groups.items() for i in idx}
@@ -62,7 +62,7 @@ def run(labels, ts, X, is_test, splits_result, scalers):
               [{"level": "category", "name": k, "count": v, "share": v / len(cases)} for k, v in sorted(cc.items(), key=lambda kv: -kv[1])] +
               [{"level": "fine_type", "name": k, "count": v, "share": v / len(cases)} for k, v in sorted(fine.items(), key=lambda kv: -kv[1])])
     srows = []
-    for key in ("official", "candidate", "alternative"):
+    for key in ("official", "candidate", "final"):
         man = splits_result[key]
         if not man:
             continue
@@ -173,9 +173,9 @@ def run(labels, ts, X, is_test, splits_result, scalers):
                     return float((a[rows][:, cm] * msk).sum() / msk.sum()) if msk.sum() else None
                 rec[(k, m)] = (mean_over(ridx), mean_over(others))
         per_case[i] = rec
-    tr_cases = set(range(ck_split(len(cases))))
+    tr_cases = set(range(final["case_ranges"]["train"]["start_index"], final["case_ranges"]["train"]["end_index_exclusive"]))
     for cat in sorted(cc):
-        for part in ("train_cases", "heldout_cases"):
+        for part in ("train_cases", "heldout_cases"):   # heldout = validation + test cases: descriptive only
             idx = [i for i in per_case if cats[i] == cat and ((i in tr_cases) == (part == "train_cases"))]
             for k in OFFSETS:
                 for m in MODALITIES:
@@ -209,7 +209,7 @@ def run(labels, ts, X, is_test, splits_result, scalers):
     add("F5_outliers", f"{sum(1 for r in vrows if r['constant'])} channels are constant in the training partition. Heaviest tails: " +
         ", ".join(f"{r['name']} ({r['fraction_abs_gt_3']:.1%} of values beyond |3|)" for r in top) + ".", {"top": [r["name"] for r in top]})
 
-    # 10 train vs validation (alternative split, exploratory)
+    # 10 train vs validation (approved Model 1 split; diagnostic only, nothing is tuned on validation)
     krows = []
     for i, n in enumerate(channels):
         lv = live[:, i]
@@ -224,18 +224,16 @@ def run(labels, ts, X, is_test, splits_result, scalers):
         krows.append({"index": i, "name": n, "modality": owner[i], "ks": float(r.statistic), "p_value": float(r.pvalue),
                       "std_mean_shift": float((b.mean() - a.mean()) / sdv), "train_mean": float(a.mean()), "val_mean": float(b.mean()),
                       "flag": bool(r.statistic >= KS_FLAG)})
-    write_csv(os.path.join(out, "train_vs_validation_alt_split.csv"), krows)
+    write_csv(os.path.join(out, "train_vs_validation_model1.csv"), krows)
     nf = sum(1 for r in krows if r["flag"])
     worst = max(krows, key=lambda r: r["ks"])
-    add("F6_train_vs_validation", f"Under the proposed alternative split, {nf} of {len(channels)} channels differ between training and validation by KS >= {KS_FLAG} "
-        f"(largest: {worst['name']}, KS {worst['ks']:.2f}). Exploratory: the split is pending approval and KS on pooled entries is sensitive to the zero mass.",
+    add("F6_train_vs_validation", f"On the approved Model 1 split, {nf} of {len(channels)} channels differ between training and validation by KS >= {KS_FLAG} "
+        f"(largest: {worst['name']}, KS {worst['ks']:.2f}). Diagnostic only: nothing is tuned on validation, and KS on pooled entries is sensitive to the large zero mass.",
         {"flagged": nf, "max_ks": worst["ks"], "max_channel": worst["name"], "train_samples": int(a_tr.sum()), "validation_samples": int(a_va.sum())})
 
-    findings.append({"id": "F7_scope", "finding": "Model-development statistics (scaler, structural masks, histograms, correlations, outliers, incident ratios on train cases) use only samples at or before "
-                     "the official AD boundary; temporal trends, descriptive stats and held-out-case rows are descriptive and labelled as such.", "evidence": {}})
+    findings.append({"id": "F7_scope", "finding": "Model-development statistics (scaler, structural masks, histograms, correlations, outliers, incident ratios on train cases) use only the approved Model 1 train period; "
+                     "the validation period appears only in the diagnostic train-vs-validation comparison; temporal trends, descriptive stats and held-out-case rows are full-dataset descriptive views and are labelled as such.", "evidence": {}})
     write_json(os.path.join(out, "eda_findings.json"), {"findings": findings, "ks_flag_threshold": KS_FLAG})
     return findings
 
 
-def ck_split(n):
-    return int(n * 0.6)

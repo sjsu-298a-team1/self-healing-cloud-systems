@@ -1,0 +1,7 @@
+{
+  "case": "one fault injection record in cases.csv (210 in total)",
+  "sample": "one minute of precomputed features for all 46 nodes: a 46 x 130 tensor with one timestamp (7,200 in total)",
+  "window": "7 consecutive one-minute samples (6 inputs + the next step as target) lying wholly inside one split period; counted on the contiguous 7,200-sample timeline",
+  "ad_event": "one timestamp in ad_cases.pkl (224; 98 after the AD boundary are scored by ARMOR)",
+  "note": "cases, samples, windows and events are different units and are never added together"
+}

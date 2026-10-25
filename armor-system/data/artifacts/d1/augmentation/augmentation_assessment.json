@@ -3,33 +3,33 @@
   "decision": "not_adopted",
   "utility_implemented": false,
   "calculations": {
-    "median_series_std_live_nonconstant_train": 0.9998058080673218,
+    "median_series_std_live_nonconstant_train": 0.9995836019515991,
     "jitter_sigmas_considered": [
       0.01,
       0.05,
       0.1
     ],
     "jitter_relative_to_median_std": {
-      "0.01": 0.010001942296505095,
-      "0.05": 0.050009711482525476,
-      "0.1": 0.10001942296505095
+      "0.01": 0.010004165715079638,
+      "0.05": 0.05002082857539819,
+      "0.1": 0.10004165715079638
     },
-    "zero_fraction_train_all_entries": 0.8056021421400812,
+    "zero_fraction_train_all_entries": 0.8047516394755619,
     "structural_zero_entries": 230,
-    "constant_entries_train": 4196,
-    "lag1_autocorrelation_median": 0.6336036242097246,
-    "lag1_autocorrelation_p10": 0.20979638804795364,
+    "constant_entries_train": 4206,
+    "lag1_autocorrelation_median": 0.6394116247544368,
+    "lag1_autocorrelation_p10": 0.23147280476396645,
     "channels_in_lag1_estimate": 92,
-    "metric_root_node_mean_abs_before": 0.1593624509032477,
-    "metric_root_node_mean_abs_after": 0.42038748912312274,
-    "train_case_class_counts_official": {
-      "Container Hardware": 47,
-      "Container Network": 38,
-      "Node CPU": 13,
-      "Node Disk": 23,
-      "Node Memory": 5
+    "metric_root_node_mean_abs_before": 0.16112987727493253,
+    "metric_root_node_mean_abs_after": 0.4359374475264432,
+    "train_case_class_counts_model1": {
+      "Container Hardware": 37,
+      "Container Network": 32,
+      "Node CPU": 10,
+      "Node Disk": 18,
+      "Node Memory": 4
     },
-    "min_train_class_cases": 5,
+    "min_train_class_cases": 4,
     "armor_existing_augmentation_config": {
       "noise_rate": 0.2,
       "missing_loss_scale": 0.2,
@@ -42,13 +42,13 @@
     {
       "method": "Gaussian jitter on live, non-constant entries",
       "advantage": "cheap; mild regulariser for the 130-d numeric vectors",
-      "risk": "81% of entries are exact zeros that carry meaning (series mean / absent block); adding noise to them invents signal. Incident deviations are brief spikes, so noise comparable to them can erase or fake a fault signature.",
+      "risk": "80% of entries are exact zeros that carry meaning (series mean / absent block); adding noise to them invents signal. Incident deviations are brief spikes, so noise comparable to them can erase or fake a fault signature.",
       "verdict": "possible later, train-only, never on zero/absent entries"
     },
     {
       "method": "Time warping / window slicing",
       "advantage": "more window variety",
-      "risk": "features are one-minute aggregates with lag-1 autocorrelation median 0.63; warping changes the onset timing that defines the injection response, and windows crossing a split boundary would leak.",
+      "risk": "features are one-minute aggregates with lag-1 autocorrelation median 0.64; warping changes the onset timing that defines the injection response, and windows crossing a split boundary would leak.",
       "verdict": "not recommended"
     },
     {
@@ -60,7 +60,7 @@
     {
       "method": "Synthetic incident generation (SMOTE-like, generative)",
       "advantage": "addresses the minority class",
-      "risk": "the rarest class has 5 training cases; synthetic incidents would be fabricated ground truth and are prohibited in the benchmark.",
+      "risk": "the rarest class has 4 training cases; synthetic incidents would be fabricated ground truth and are prohibited in the benchmark.",
       "verdict": "rejected"
     },
     {

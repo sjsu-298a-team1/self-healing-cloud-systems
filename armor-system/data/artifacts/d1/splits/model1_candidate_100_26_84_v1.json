@@ -1,8 +1,8 @@
 {
   "manifest_version": "1.0",
   "name": "model1_candidate_100_26_84_v1",
-  "status": "evaluated",
-  "description": "Proposed Model 1 split: first 100 cases train, next 26 validation, last 84 (official test) test.",
+  "status": "rejected_fails_hard_checks",
+  "description": "Proposed Model 1 split: first 100 cases train, next 26 validation, last 84 (official test) test. Rejected: fails hard checks; kept as evidence.",
   "verdict": "FAIL",
   "usable": false,
   "ordering": "cases.csv file order (strictly ascending timestamp); chronological, no random assignment",
@@ -153,5 +153,5 @@
       "detail": "AD split 1651852800 (sample-based, 60% of samples) vs first held-out case 1651858208 (case-based, 60% of cases): AD boundary is 5408 s earlier; FT/RCL use cases only, AD uses samples"
     }
   ],
-  "content_sha256": "f85913a118424ffab542aa7058e74e2e1eccb197b82f3b336e3227741e27cf0b"
+  "content_sha256": "120afadbf54b7f4b1d1a3ad436c72a8f00f8c156d77a790abe3ee85746165253"
 }

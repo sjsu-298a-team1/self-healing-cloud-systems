@@ -140,3 +140,19 @@ def protect_boundaries(ts, starts, period_lo, period_hi, window=6, horizon=1, st
 
 def config_hash(cfg):
     return hashlib.sha256(json.dumps(cfg, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def prepare_window(X, ts, scaler, groups, start, window=6):
+    """Model-ready example: `window` input steps and the next step as target, transformed with a fitted scaler.
+
+    `start` is the global index of the first sample. Raises if the 7 samples are not consecutive minutes,
+    so a window can never bridge a gap. Returns float32 arrays plus the missing-modality indicators.
+    """
+    sl = slice(start, start + window + 1)
+    t = np.asarray(ts)[sl]
+    if len(t) != window + 1 or not (np.diff(t) == 60).all():
+        raise ValueError("window is not made of consecutive one-minute samples")
+    Xt, ind = transform(X[sl], scaler, groups)
+    return {"inputs": Xt[:window], "target": Xt[window], "timestamps": t.astype(np.int64),
+            "structural_absent": ind["structural_absent"][0],                       # (46, 3), constant over the window
+            "observed_all_zero_not_structural": ind["observed_all_zero_not_structural"][:window]}   # (window, 46, 3)

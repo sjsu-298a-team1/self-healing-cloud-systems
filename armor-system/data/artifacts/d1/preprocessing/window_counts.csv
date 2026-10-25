@@ -1,6 +1,6 @@
 manifest,split,samples,windows_7_step,kept_inside_period,dropped_crossing_boundary
 official_armor_v1,train,4320,4302,4302,0
 official_armor_v1,test,2880,2868,2868,0
-model1_alternative_v1,train,3445,3427,3427,0
-model1_alternative_v1,validation,875,869,869,0
-model1_alternative_v1,test,2880,2868,2868,0
+model1_split_101_25_84_v1,train,3445,3427,3427,0
+model1_split_101_25_84_v1,validation,875,869,869,0
+model1_split_101_25_84_v1,test,2880,2868,2868,0

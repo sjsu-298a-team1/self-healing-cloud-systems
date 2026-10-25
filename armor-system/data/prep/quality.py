@@ -53,6 +53,10 @@ def detect_scaler_leak(ts, fit_mask, boundary_ts):
     return [f"scaler fit set contains {n} samples after the training boundary"] if n else []
 
 
+def detect_count_mismatch(got, expected):
+    return [f"{s}/{c}: {got.get(s, {}).get(c)} != approved {n}" for s, cs in expected.items() for c, n in cs.items() if got.get(s, {}).get(c) != n]
+
+
 def run(labels, ts, X, is_test, splits_result, scalers, d1_dir=paths.D1_DIR):
     schema = read_json(paths.art("inspection", "schema.json"))
     groups, nodes, channels, cases = labels["groups"], labels["nodes"], labels["channels"], labels["cases"]
@@ -107,43 +111,57 @@ def run(labels, ts, X, is_test, splits_result, scalers, d1_dir=paths.D1_DIR):
     k_off = ck.case_split_index(len(cases), 0.6)
     rebuilt = [sp.build(ss.OFFICIAL, "approved_reproduction", splits_result["official"]["description"], cases, cats_l, {"train": [0, k_off], "test": [k_off, len(cases)]}, ts_list, segs, ad_split, ad_aligned=False)[0]]
     committed = [read_json(paths.art("splits", f"{splits_result['official']['name']}.json"))]
-    for key in ("candidate", "alternative"):
+    for key in ("candidate", "final"):
         m = splits_result[key]
-        if not m:
-            continue
         r = {s: [x["start_index"], x["end_index_exclusive"]] for s, x in m["case_ranges"].items()}
-        rebuilt.append(sp.build(m["name"], m["status"], m["description"], cases, cats_l, r, ts_list, segs, ad_split)[0])
+        extra = ss.FINAL_EXTRA if m["name"] == ss.FINAL else None
+        rebuilt.append(sp.build(m["name"], m["status"], m["description"], cases, cats_l, r, ts_list, segs, ad_split, extra=extra)[0])
         committed.append(read_json(paths.art("splits", f"{m['name']}.json")))
     stages.append(_stage(5, "Split reproducibility", [
         _chk(f"rebuild_identical_{a['name']}", a["content_sha256"] == b["content_sha256"], f"rebuilt sha256 {a['content_sha256'][:12]}... == committed {b['content_sha256'][:12]}...")
         for a, b in zip(rebuilt, committed)] + [
         _chk("official_split_is_126_84", splits_result["official"]["case_ranges"]["train"]["n_cases"] == 126 and splits_result["official"]["case_ranges"]["test"]["n_cases"] == 84, "ARMOR reproduction split preserved")]))
 
-    # 6 train-only scaler
-    sc = scalers["official_train_period"]
-    fit = ts <= ad_split
+    # 6 train-only scaler (Model 1 fit set = approved train period; official fit set kept for the unchanged protocol)
+    from .preprocess_stage import periods
+    final = splits_result["final"]
+    p1_lo, p1_hi = periods(final)["train"]
+    sc = scalers["model1_train_period"]
+    fit = (ts >= p1_lo) & (ts < p1_hi)
     again = pp.fit_scaler(X, fit, groups)
     Xp = X.copy()
-    Xp[~fit] = Xp[~fit] * 7 + 1.5                       # perturb everything outside the fit set
+    Xp[~fit] = Xp[~fit] * 7 + 1.5                       # perturb every sample outside the fit set (validation and test included)
     pert = pp.fit_scaler(Xp, fit, groups)
     leaky = pp.fit_scaler(X, np.ones(len(ts), bool), groups)
-    stored = np.load(paths.art("preprocessing", "scaler_official_train_period_v1.npz"))
+    stored = np.load(paths.art("preprocessing", "scaler_model1_train_period_v1.npz"))
+    off_fit = ts <= ad_split
+    off_again = pp.fit_scaler(X, off_fit, groups)
+    off_stored = np.load(paths.art("preprocessing", "scaler_official_train_period_v1.npz"))
+    first_val = cases[final["case_ranges"]["validation"]["start_index"]]["timestamp"]
     stages.append(_stage(6, "Training-only scaler fitting", [
-        _chk("refit_matches_stored_scaler", np.allclose(again["mean"], stored["mean"]) and np.allclose(again["scale"], stored["scale"]), "refit on the official train period equals scaler_official_train_period_v1.npz"),
-        _chk("scaler_ignores_non_fit_samples", np.array_equal(again["mean"], pert["mean"]) and np.array_equal(again["scale"], pert["scale"]), f"perturbing {int((~fit).sum())} held-out samples leaves every fitted parameter unchanged"),
-        _chk("fit_set_has_no_heldout_case", not detect_scaler_leak(ts, fit, ad_split) and ts[fit].max() < cases[k_off]["timestamp"], f"latest fit sample {int(ts[fit].max())} < first held-out case {cases[k_off]['timestamp']}"),
+        _chk("model1_refit_matches_stored_scaler", np.allclose(again["mean"], stored["mean"]) and np.allclose(again["scale"], stored["scale"]), "refit on the approved Model 1 train period equals scaler_model1_train_period_v1.npz"),
+        _chk("model1_scaler_ignores_validation_and_test", np.array_equal(again["mean"], pert["mean"]) and np.array_equal(again["scale"], pert["scale"]), f"perturbing {int((~fit).sum())} validation/test/other samples leaves every fitted parameter unchanged"),
+        _chk("model1_fit_set_excludes_validation_and_test", not detect_scaler_leak(ts, fit, p1_hi - 1) and int(ts[fit].max()) < first_val, f"latest fit sample {int(ts[fit].max())} < first validation case {first_val}; {int(fit.sum())} fit samples"),
+        _chk("official_refit_matches_stored_scaler", np.allclose(off_again["mean"], off_stored["mean"]) and np.allclose(off_again["scale"], off_stored["scale"]), "official-protocol reference scaler (samples <= AD boundary) reproduces"),
+        _chk("official_fit_set_has_no_heldout_case", not detect_scaler_leak(ts, off_fit, ad_split) and int(ts[off_fit].max()) < cases[k_off]["timestamp"], f"latest official fit sample {int(ts[off_fit].max())} < first official test case {cases[k_off]['timestamp']}"),
         _chk("control_scaler_fit_on_all_differs", not np.allclose(leaky["mean"], again["mean"]), "a scaler fit on all samples differs, so the check can detect leakage")]))
 
     # 7 leakage
     man = splits_result["official"]
-    alt = splits_result["alternative"]
     checks7 = []
-    for m in [man] + ([alt] if alt else []):
+    for m in (man, final):
         hard = [c for c in m["checks"] if c["severity"] == "hard"]
         checks7.append(_chk(f"hard_split_checks_{m['name']}", all(c["status"] == "PASS" for c in hard), "; ".join(f"{c['id'].split('_')[0]} {c['status']}" for c in hard)))
+    got_counts = {sp_: r["class_counts"] for sp_, r in final["case_ranges"].items()}
+    checks7.append(_chk("approved_split_status_and_sizes", final["status"] == "approved" and [final["case_ranges"][k]["n_cases"] for k in ("train", "validation", "test")] == [101, 25, 84], f"status {final['status']}; cases per split {[final['case_ranges'][k]['n_cases'] for k in ('train', 'validation', 'test')]}"))
+    checks7.append(_chk("approved_class_counts_match_decision", not detect_count_mismatch(got_counts, ss.APPROVED_COUNTS), "class counts per split equal the approved table"))
+    lim = " ".join(final.get("statistical_limitations", []))
+    checks7.append(_chk("validation_node_memory_instability_documented", final["case_ranges"]["validation"]["class_counts"]["Node Memory"] == 1 and "single Node Memory case" in lim, "validation holds one Node Memory case and the manifest says its metrics are unstable"))
+    off_test = [i for i in range(k_off, len(cases))]
+    checks7.append(_chk("official_test_cases_preserved", final["case_ranges"]["test"]["start_index"] == k_off and man["case_ranges"]["test"]["first_case_ts"] == final["case_ranges"]["test"]["first_case_ts"] and len(off_test) == 84, "the 84 test cases are identical in the official and Model 1 protocols"))
     cand = splits_result["candidate"]
     failed = [c["id"].split("_")[0] for c in cand["checks"] if c["severity"] == "hard" and c["status"] == "FAIL"]
-    checks7.append(_chk("proposed_100_26_84_failure_detected", bool(failed) and not cand["usable"], f"detector flags the proposed split as unusable (failed: {failed})"))
+    checks7.append(_chk("rejected_100_26_84_failure_detected", bool(failed) and not cand["usable"] and cand["status"] == "rejected_fails_hard_checks", f"detector flags the rejected split as unusable (failed: {failed})"))
     checks7.append(_chk("ad_vs_ft_boundary_documented", True, f"AD split {ad_split} is {cases[k_off]['timestamp'] - ad_split} s before the first held-out case"))
     stages.append(_stage(7, "Temporal leakage", checks7))
 
@@ -190,6 +208,10 @@ def run(labels, ts, X, is_test, splits_result, scalers, d1_dir=paths.D1_DIR):
     case("scaler fit on all data (leak)", lambda: detect_scaler_leak(ts, np.ones(len(ts), bool), ad_split))
     case("train/validation sample overlap", lambda: detect_partition_overlap({"train": {1, 2, 3}, "validation": {3, 4}}))
     case("cases cut by a boundary inside an incident group", lambda: [c_["id"] for c_ in sp.build("x", "x", "x", cases, cats_l, {"train": [0, 100], "validation": [100, k_off], "test": [k_off, len(cases)]}, ts_list, segs, ad_split)[0]["checks"] if c_["id"].startswith("S4") and c_["status"] == "FAIL"])
+    case("scaler fit set includes validation samples (leak)", lambda: detect_scaler_leak(ts, ts < periods(final)["validation"][1], p1_hi - 1))
+    bad_counts = {k: dict(v) for k, v in got_counts.items()}
+    bad_counts["validation"]["Node Memory"] += 1
+    case("approved class counts altered", lambda: detect_count_mismatch(bad_counts, ss.APPROVED_COUNTS))
     all_ok = all(t["detected"] for t in tests)
     stages.append(_stage(9, "Deliberately corrupted inputs", [_chk(t["corruption"], t["detected"], f"{'detected' if t['evidence'] != 'clean' else 'no false alarm'}: {t['evidence']}") for t in tests]))
 

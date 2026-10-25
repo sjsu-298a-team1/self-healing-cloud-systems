@@ -253,7 +253,7 @@ Post-split evaluation populations (AD split rule): official AD labels 98 (= 77 s
 - **Two protocols, not to be confused.** *Protocol A (published ARMOR reproduction):* the released files, splits, scoring
   and whole-pool pretraining, unchanged. *Protocol B (our future supervised Model 1):* `cases.csv` labels, uncertain
   AD-only events masked from training negatives, strict chronological pretraining as primary and whole-pool as a
-  sensitivity run, and the two-population evaluation of 9.1. Protocol B has not been implemented.
+  sensitivity run, and the two-population evaluation of 9.1. Protocol B has not been implemented as a model; its approved case split (101 / 25 / 84) and train-only preprocessing are implemented and documented in `d1_data_preparation_runbook.md` (Linear 298-44).
 
 ### 9.5 Published scores under each label population (computed, not re-run)
 

@@ -1,8 +1,8 @@
 {
   "manifest_version": "1.0",
-  "name": "model1_alternative_v1",
-  "status": "proposed_pending_approval",
-  "description": "Recommended alternative: train/validation boundary moved from 100 to 101 (nearest index with a positive safe gap and no split incident group); same official 84-case test set.",
+  "name": "model1_split_101_25_84_v1",
+  "status": "approved",
+  "description": "Approved Model 1 case split: first 101 cases train, next 25 validation, last 84 (official test) test. Chronological and incident-group-aware.",
   "verdict": "PASS_WITH_WARNINGS",
   "usable": true,
   "ordering": "cases.csv file order (strictly ascending timestamp); chronological, no random assignment",
@@ -153,5 +153,23 @@
       "detail": "AD split 1651852800 (sample-based, 60% of samples) vs first held-out case 1651858208 (case-based, 60% of cases): AD boundary is 5408 s earlier; FT/RCL use cases only, AD uses samples"
     }
   ],
-  "content_sha256": "9abc69afa971ddec54a8751360b7cff17b4f9dac94132dc7c607d27c09846eef"
+  "approval": {
+    "decision": "101 train / 25 validation / 84 test",
+    "approved_by": "project owner (Khushi Donda)",
+    "recorded": "2026-10-25",
+    "basis": "nearest boundary to the proposed 100 with a positive safe gap and no cut incident group (see boundary_scan.json)"
+  },
+  "scope": {
+    "this_manifest": "Model 1 case-level split: which injection cases are used for training, validation and testing.",
+    "sample_level_ad_timeline": "ARMOR's anomaly-detection split is sample-based (60% of the 7,200 samples = the AD split time) and is unchanged; the validation|test sample boundary here is aligned to it, so every post-AD-boundary sample belongs to the test period.",
+    "official_armor_protocol": "official_armor_v1 (126 / 84 by case order) is preserved unchanged for reproduction; the 84 test cases are identical in both.",
+    "detection_evaluation": "reported as two separate event-level populations (98 official AD events, 84 documented injection cases); never averaged"
+  },
+  "statistical_limitations": [
+    "Validation contains a single Node Memory case: Node Memory validation metrics (recall, F1, macro-F1 contribution) are statistically unstable and must not be used to tune hyper-parameters or thresholds on their own.",
+    "Node Memory has only 4 training and 4 test cases; per-class test estimates for it have very wide uncertainty.",
+    "Validation Node CPU has 3 cases; treat per-class validation numbers as indicative only.",
+    "No incident end times exist: this split assigns cases, it does not define sample-level detection labels."
+  ],
+  "content_sha256": "32ff03fcffca09f3d3953777a020514b4af9c882bc85e3dc1693e282607638ac"
 }

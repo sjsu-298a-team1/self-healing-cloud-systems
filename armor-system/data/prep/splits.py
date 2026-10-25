@@ -87,7 +87,7 @@ def _period_of(ts, boundary_list, names):
     return names[k]
 
 
-def build(name, status, description, cases, categories, ranges, sample_ts, test_segs, ad_split_ts, ad_aligned=True):
+def build(name, status, description, cases, categories, ranges, sample_ts, test_segs, ad_split_ts, ad_aligned=True, extra=None):
     """Return (manifest, per-case assignment rows). `ranges`: {split: [start_idx, end_idx_exclusive]}."""
     case_ts = [c["timestamp"] for c in cases]
     gid = incident_groups(case_ts, test_segs)
@@ -184,6 +184,8 @@ def build(name, status, description, cases, categories, ranges, sample_ts, test_
         "incident_groups": {"n_groups": len(set(gid)), "groups_with_multiple_cases": sum(1 for g in set(gid) if gid.count(g) > 1)},
         "checks": checks,
     }
+    if extra:
+        manifest.update(extra)
     manifest["content_sha256"] = content_hash(manifest)
     rows = [{"case_index": i, "split": split_of[i], "group_id": gid[i]} for i in range(len(cases))]
     return manifest, rows

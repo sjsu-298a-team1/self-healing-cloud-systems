@@ -2,10 +2,10 @@
   "summary": {
     "stages_passed": 9,
     "stages_total": 9,
-    "checks_passed": 44,
-    "checks_total": 44,
-    "corruptions_detected": 14,
-    "corruption_tests": 14
+    "checks_passed": 52,
+    "checks_total": 52,
+    "corruptions_detected": 16,
+    "corruption_tests": 16
   },
   "stages": [
     {
@@ -119,12 +119,12 @@
         {
           "name": "rebuild_identical_model1_candidate_100_26_84_v1",
           "status": "PASS",
-          "detail": "rebuilt sha256 f85913a11842... == committed f85913a11842..."
+          "detail": "rebuilt sha256 120afadbf54b... == committed 120afadbf54b..."
         },
         {
-          "name": "rebuild_identical_model1_alternative_v1",
+          "name": "rebuild_identical_model1_split_101_25_84_v1",
           "status": "PASS",
-          "detail": "rebuilt sha256 9abc69afa971... == committed 9abc69afa971..."
+          "detail": "rebuilt sha256 32ff03fcffca... == committed 32ff03fcffca..."
         },
         {
           "name": "official_split_is_126_84",
@@ -139,19 +139,29 @@
       "status": "PASS",
       "checks": [
         {
-          "name": "refit_matches_stored_scaler",
+          "name": "model1_refit_matches_stored_scaler",
           "status": "PASS",
-          "detail": "refit on the official train period equals scaler_official_train_period_v1.npz"
+          "detail": "refit on the approved Model 1 train period equals scaler_model1_train_period_v1.npz"
         },
         {
-          "name": "scaler_ignores_non_fit_samples",
+          "name": "model1_scaler_ignores_validation_and_test",
           "status": "PASS",
-          "detail": "perturbing 2879 held-out samples leaves every fitted parameter unchanged"
+          "detail": "perturbing 3755 validation/test/other samples leaves every fitted parameter unchanged"
         },
         {
-          "name": "fit_set_has_no_heldout_case",
+          "name": "model1_fit_set_excludes_validation_and_test",
           "status": "PASS",
-          "detail": "latest fit sample 1651852800 < first held-out case 1651858208"
+          "detail": "latest fit sample 1651713840 < first validation case 1651715252; 3445 fit samples"
+        },
+        {
+          "name": "official_refit_matches_stored_scaler",
+          "status": "PASS",
+          "detail": "official-protocol reference scaler (samples <= AD boundary) reproduces"
+        },
+        {
+          "name": "official_fit_set_has_no_heldout_case",
+          "status": "PASS",
+          "detail": "latest official fit sample 1651852800 < first official test case 1651858208"
         },
         {
           "name": "control_scaler_fit_on_all_differs",
@@ -171,14 +181,34 @@
           "detail": "S1 PASS; S2 PASS; S4 PASS; S5 PASS; S6 PASS; S7 PASS; S8 PASS"
         },
         {
-          "name": "hard_split_checks_model1_alternative_v1",
+          "name": "hard_split_checks_model1_split_101_25_84_v1",
           "status": "PASS",
           "detail": "S1 PASS; S2 PASS; S4 PASS; S5 PASS; S6 PASS; S7 PASS; S8 PASS"
         },
         {
-          "name": "proposed_100_26_84_failure_detected",
+          "name": "approved_split_status_and_sizes",
           "status": "PASS",
-          "detail": "detector flags the proposed split as unusable (failed: ['S4', 'S5', 'S6'])"
+          "detail": "status approved; cases per split [101, 25, 84]"
+        },
+        {
+          "name": "approved_class_counts_match_decision",
+          "status": "PASS",
+          "detail": "class counts per split equal the approved table"
+        },
+        {
+          "name": "validation_node_memory_instability_documented",
+          "status": "PASS",
+          "detail": "validation holds one Node Memory case and the manifest says its metrics are unstable"
+        },
+        {
+          "name": "official_test_cases_preserved",
+          "status": "PASS",
+          "detail": "the 84 test cases are identical in the official and Model 1 protocols"
+        },
+        {
+          "name": "rejected_100_26_84_failure_detected",
+          "status": "PASS",
+          "detail": "detector flags the rejected split as unusable (failed: ['S4', 'S5', 'S6'])"
         },
         {
           "name": "ad_vs_ft_boundary_documented",
@@ -288,6 +318,16 @@
           "name": "cases cut by a boundary inside an incident group",
           "status": "PASS",
           "detail": "detected: ['S4_incident_group_isolation']"
+        },
+        {
+          "name": "scaler fit set includes validation samples (leak)",
+          "status": "PASS",
+          "detail": "detected: ['scaler fit set contains 875 samples after the training boundary']"
+        },
+        {
+          "name": "approved class counts altered",
+          "status": "PASS",
+          "detail": "detected: ['validation/Node Memory: 2 != approved 1']"
         }
       ]
     }
