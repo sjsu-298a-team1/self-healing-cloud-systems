@@ -238,3 +238,50 @@ data/**/raw/
 *.h5
 *.onnx
 checkpoints/
+
+# ---- ARMOR migration additions (2026-10-28) ----
+# Raw downloaded datasets
+armor-system/data/raw/
+armor-system/data/downloads/
+*.zip
+*.tar.gz
+*.parquet
+# Model checkpoints and weights (also covered above for *.pt/*.pth/*.ckpt)
+*.safetensors
+*.bin
+*.onnx
+*.h5
+# Generated experiment outputs
+armor-system/experiments/
+armor-system/outputs/
+armor-system/runs/
+mlruns/
+wandb/
+lightning_logs/
+# Local Python environments
+.venv/
+venv/
+env/
+.python-version
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+service-account*.json
+# macOS / editor noise
+.DS_Store
+**/.DS_Store
+# Temporary inspection / generated demo output
+isa_demo_raw_inspection/
+isa_demo_work/
+isa_eda_rerun/
+/experiments/
+/app/
+tmp/
+*.tmp
+# Airflow local runtime state
+armor-system/airflow/logs/
+armor-system/airflow/airflow.db
