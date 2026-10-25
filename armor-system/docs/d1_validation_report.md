@@ -68,7 +68,9 @@ pickles reference `dgl` and `torch` classes; they were parsed structurally only.
 - **Incident ground truth:** injection timestamps only (210 in `cases.csv`, 224 in `ad_cases.pkl`). There is no end
   time or duration. Any sample-level or interval label is **derived** (ARMOR scores AD with a +/-300 s tolerance).
 - **`ad_cases.pkl` differs from `cases.csv`:** 21 AD timestamps have no case record (nearest case 463-2,246 s away) and
-  7 cases are absent from the AD list (nearest AD event 463-2,468 s away). The meaning of the 21 extra events is UNKNOWN.
+  7 cases are absent from the AD list (nearest AD event 463-2,468 s away). The cause is UNKNOWN. The files are
+  byte-identical to the ones in the original ART release (section 9.2), so the discrepancy originated there and is
+  not an ARMOR modification. Full record in section 9.
 - **Fault type:** 15 fine-grained types map to **5 categories**, so the five-class target is reconstructable:
   Container Hardware (id 0), Container Network (1), Node CPU (3), Node Disk (4), Node Memory (5). Id 2 is unused.
   No case lacks a mapping.
@@ -103,8 +105,11 @@ Fine-grained minima in the test split: Packet Duplication 1, Node CPU Spiking 2,
      contains a train sample, so there is no labelled-incident leakage, but test-period normal telemetry is used for pretraining.
   2. **Normalization statistics include test data (INFERRED).** Features are mean-centred only over the full
      timeline, so scaling used held-out samples. Raw D1 telemetry that would allow refitting was not verified to be available.
-  3. **The "normal" pool may be contaminated (VERIFIED).** 161 train samples lie within 300 s of the 21 AD events that
-     have no case record; none lie near a `cases.csv` case.
+  3. **The "normal" pool may be contaminated (VERIFIED count, UNKNOWN cause).** 161 train samples lie within 300 s of the
+     21 AD events that have no case record; none lie near a `cases.csv` case. All 161 are later than the AD split
+     time, so they belong only to the post-split part of the pretraining set and never to ARMOR's AD initialisation
+     set (train samples at or before the split). They are suspect only if the 21 events are real incidents (UNKNOWN),
+     so they are marked uncertain, not removed on evidence.
   4. **Event-level detection is supported only in ARMOR's definition:** a hit is an alert interval within +/-300 s of a
      timestamp; there are no true intervals.
   5. **Macro-F1 is supported** by the 5-class labels but is noisy (Node Memory has 4 test cases).
@@ -117,7 +122,7 @@ Fine-grained minima in the test split: Packet Duplication 1, Node CPU Spiking 2,
 | A. Feature-level multimodal Transformer can consume D1? | **Yes.** Dense float32 46x130 tensors, no NaN, separable channel groups. Windows must stay inside contiguous runs: 6-step capacity is 2,785 windows in train (47 of 203 runs shorter than 6) and 2,496 in test; ARMOR's own 7-sample series (6 inputs + next-step target) gives 2,629 and 2,298. |
 | B. Supervised detection target? | **Only derived.** Injection timestamps exist; end times do not. A labelling rule must be fixed and the 21/7 event discrepancy resolved. |
 | C. Five-class failure target? | **Yes**, from `type_hash`/`type_dict`; counts above. |
-| D. Normal periods support self-supervised pretraining? | **Yes, with a protocol:** 3,714 minutes (about 62 h), but restrict to samples before the cutoff and exclude the 161 suspect samples. |
+| D. Normal periods support self-supervised pretraining? | **Yes, with a protocol:** 3,714 minutes (about 62 h). The leakage-controlled primary experiment restricts pretraining to samples at or before the AD split (2,269), which also excludes all 161 uncertain samples; the ARMOR-compatible whole pool is a separate sensitivity run (section 9.4). |
 | E. Meaningful 10/25/50/100% label budgets? | **Only partly.** 126 train cases give 13/32/63/126 labelled cases. Node Memory has 0.5/1.2/2.5/5 expected cases, so low budgets need stratified minimum-per-class draws, repeated seeds and variance reporting. |
 | F. Safe modality masking? | **Yes** for group-level masking. Natural absence is already zero-filled, and zero equals the post-scaling mean, so add explicit missing indicators. |
 | G. Preprocessing required | Decide the split protocol; build 6-step windows within runs; fix node order from `node_hash`; decide handling of 38 constant channels, the graph (optional) and the contaminated normals. |
@@ -125,8 +130,11 @@ Fine-grained minima in the test split: Packet Duplication 1, Node CPU Spiking 2,
 
 ## 7. UNKNOWN or unverified
 
-Whole-archive md5; the D1 raw-data MEGA link; the meaning of `ad_cases.pkl` extras; the scaling recipe; whether the
-shipped encoder's pretraining used exactly `train_samples` (the config says so); ARMOR's runnable behaviour (not run).
+Whole-archive md5; the D1 raw-data MEGA link (its API returned error `-16` when queried for metadata on 2026-10-24;
+nothing was downloaded); the origin of `ad_cases.pkl` and the meaning of its 21 extra and 7 missing events; the scaling
+recipe; whether the shipped encoder's pretraining used exactly `train_samples` (the config says so); ARMOR's runnable
+behaviour (not run). The raw ground-truth CSVs (`groundtruth-all.csv`) named in the original raw-data README were not
+accessible, so the label discrepancy could not be checked against them.
 
 ## 8. Reproduce
 
@@ -134,5 +142,141 @@ shipped encoder's pretraining used exactly `train_samples` (the config says so);
 python3 -I armor-system/data/tools/fetch_d1.py                         # stdlib only
 .venv/bin/python -I armor-system/data/tools/inspect_d1.py              # needs numpy
 python3 -I armor-system/data/tools/validate_d1.py --raw armor-system/data/raw/armor_zenodo_21744694/extracted/D1
+python3 -I armor-system/data/tools/reconcile_labels.py                 # stdlib only; label_reconciliation.{csv,json}
 .venv/bin/python -I -m unittest discover -s armor-system/tests/data -p 'test_*.py'
 ```
+
+## 9. Final D1 labeling decisions and label reconciliation
+
+Status: **this section records approved decisions and evidence. No training labels, incident durations or intervals
+were created, no model was trained or run, and Model 1 is not ready for training.** Labels used below: VERIFIED
+(measured or read from a file), ASSUMPTION (a choice we made), UNKNOWN.
+
+### 9.1 Approved decisions (ASSUMPTIONS, approved by the project owner)
+
+1. D1 remains our primary benchmark. Raw telemetry and D2 downloads are deferred. The authors have not been contacted.
+2. `cases.csv` is the authoritative source for supervised training labels (injection time, level, root cause, fine type,
+   five-class category). Basis: it is documented as the fault-injection record in ART's README and the raw-data README.
+3. The 21 AD-only events stay **uncertain**: neither confirmed positives nor clean negatives. The 161 train samples within
+   300 s of them are likewise uncertain.
+4. The official `ad_cases.pkl` is preserved unchanged for faithful ARMOR reproduction (Protocol A). The published ARMOR
+   protocol (splits, scoring, pretraining on the whole pool) is not altered.
+5. Future Model 1 detection evaluation reports **two separate event-level F1 scores** with the same interval-matching
+   protocol (ARMOR's `eval_AD`: alert intervals merged with `delay=600`, zero-length intervals dropped, a label is hit
+   when an alert interval overlaps [t-300, t+300]; TP and FN count labels, FP counts alert intervals):
+   - official post-split AD-label population: **98** events;
+   - post-split injection-case population: **84** events.
+   The two F1 scores are **not averaged or merged**. Each report also lists the number of false-alarm intervals and
+   alert coverage (total alert time, and the share of post-split sample minutes inside padded alert intervals).
+6. Primary Model 1 pretraining is strict chronological (samples at or before the AD split, 2,269); ARMOR-compatible
+   whole-pool pretraining (3,714) is a separate sensitivity experiment.
+
+### 9.2 Where the discrepancy comes from (VERIFIED), and what is unexplained (UNKNOWN)
+
+- ARMOR's `D1.zip` is byte-identical to `data/D1.zip` in the original ART repository
+  (github.com/bbyldebb/ART, commit `2ec09f6735d7457c413c857dd81c08aa2ddd2343` "upload D1", 2024-06-06): same size
+  62,606,253 B and same git blob SHA-1 `1a477e0811f0830399079ab5b9690633416bd1ff` (compared with ART's tree listing, so
+  nothing was downloaded). `cases.csv` and `ad_cases.pkl` were therefore not changed by ARMOR.
+- ART's README says `cases.csv` holds the "failure injection time, failure level, root cause of the failure, and failure
+  type" and `ad_cases.pkl` is "the list of failure timestamps", without saying how it was produced. The raw-data README
+  (anonymous.4open.science/r/Aiops-Dataset-1E0E) lists `groundtruth/*.csv` as "fault injection records"; those files are
+  only inside a MEGA bundle that could not be accessed. **The origin of `ad_cases.pkl` and the reason for the 21 extra and
+  7 missing events remain UNKNOWN.** Nothing in ART's README, the ARMOR paper or the released code explains it.
+- No gap is explained by sampling resolution (60 s), timezone or the 300 s tolerance: the smallest cross-file gap is
+  463 s and no gap is a multiple of an hour. No tolerance up to 300 s changes any match.
+- Descriptive observations (not explanations): 13 of the 21 AD-only events fall exactly on :00 seconds, while only 6 of
+  210 cases do (all six are in both files); 3 of the 4 held-out Node Memory cases are among the 7 case-only events.
+  On ART's released alert intervals, all 4 post-split cases they miss are case-only events, and both systems' released
+  intervals hit all 21 AD-only events. These are exploratory, post-hoc counts. They are consistent with `ad_cases.pkl`
+  listing telemetry-visible anomalies, and also with it having been shaped by a detector's output; the evidence cannot
+  tell these apart. Hence `ad_cases.pkl` is not treated as clean ground truth for Model 1.
+
+### 9.3 Reconciliation record (VERIFIED; full list in `label_reconciliation.csv`)
+
+Exact timestamp equality only; no tolerance is used to force matches. Produced by `reconcile_labels.py`.
+
+| Item | Count |
+|---|---:|
+| `cases.csv` timestamps | 210 |
+| `ad_cases.pkl` timestamps (all unique; list not sorted, one inversion at index 177) | 224 |
+| Matching in both files | **203** (`category = shared` in the CSV) |
+| AD-only | **21** |
+| Case-only | **7** |
+| First 126 AD events (at or before the split) equal the first 126 cases, in order | yes |
+| AD-only / case-only events after the split | 21 / 7 (all 28) |
+| Smallest cross-file gap | 463 s |
+
+Post-split evaluation populations (AD split rule): official AD labels 98 (= 77 shared + 21 AD-only); injection cases 84
+(= 77 shared + 7 case-only); intersection 77; union 105.
+
+**The 21 AD-only timestamps** (UTC; epoch s; nearest case minus AD event, in s):
+`2022-05-06T17:16:00Z` 1651857360 (+848); `05-06T19:34:00Z` 1651865640 (-1783); `05-06T23:10:00Z` 1651878600 (-1267);
+`05-07T01:46:00Z` 1651887960 (+1606); `05-07T06:07:00Z` 1651903620 (+584); `05-07T08:21:00Z` 1651911660 (-1527);
+`05-07T09:04:03Z` 1651914243 (-1033); `05-07T11:59:05Z` 1651924745 (+2122); `05-08T18:19:00Z` 1652033940 (+918);
+`05-08T18:59:30Z` 1652036370 (-654); `05-08T20:37:00Z` 1652042220 (+2246); `05-08T21:01:04Z` 1652043664 (+802);
+`05-08T21:59:00Z` 1652047140 (+489); `05-09T01:19:52Z` 1652059192 (+1141); `05-09T03:04:00Z` 1652065440 (-463);
+`05-09T07:39:20Z` 1652081960 (-1638); `05-09T07:52:40Z` 1652082760 (+1106); `05-09T08:00:00Z` 1652083200 (+666);
+`05-09T08:48:55Z` 1652086135 (+1243); `05-09T08:57:00Z` 1652086620 (+758); `05-09T13:47:00Z` 1652104020 (-609).
+
+**The 7 case-only timestamps** (`cases.csv` row index, 0-based; nearest AD event minus case, in s):
+
+| Case timestamp (UTC) | Epoch | Row | cmdb_id | Failure type | Nearest AD delta |
+|---|---:|---:|---|---|---:|
+| 2022-05-06T21:22:15Z | 1651872135 | 133 | node-5 | Node Memory Consumption | -1741 |
+| 2022-05-07T05:20:39Z | 1651900839 | 147 | node-5 | Node Memory Consumption | -1472 |
+| 2022-05-08T17:10:02Z | 1652029802 | 168 | frontend-2 | Kubernetes Container Network Packet Loss | -1151 |
+| 2022-05-09T00:14:39Z | 1652055279 | 180 | shippingservice-0 | Kubernetes Container Network Resource Packet Duplication | -2162 |
+| 2022-05-09T00:32:37Z | 1652056357 | 181 | node-3 | Node CPU Failure | +1666 |
+| 2022-05-09T02:56:17Z | 1652064977 | 186 | node-4 | Node Memory Consumption | +463 |
+| 2022-05-09T15:37:25Z | 1652110645 | 209 | recommendationservice-0 | Kubernetes Container Memory Load | -2468 |
+
+### 9.4 Split definitions, the paper-versus-code discrepancy, and leakage risks
+
+- **Actual AD split (VERIFIED, ARMOR `anomaly_detector.py:68-75`):** `split_ts = sorted(train+test)[int(0.6*7200)]` =
+  **2022-05-06T16:00:00Z** (epoch 1651852800). AD threshold fitting uses train samples at or before it (2,269); AD scoring
+  uses all 2,879 samples after it; AD labels are filtered to those after it (98 of 224).
+- **FT and RCL split (VERIFIED):** by case order in `cases.csv`, first 126 train and last 84 test. The first held-out case
+  is 2022-05-06T17:30:08Z. FT and RCL use `cases.csv` only and never `ad_cases.pkl`.
+- **Paper versus code (VERIFIED):** the paper (arXiv 2603.25538, section 5.1.1) says the cutoff is "the first timestamp
+  in the last 40% of failure cases" (17:30:08Z); the AD code uses the 60% sample timestamp (16:00:00Z), 5,408 s earlier
+  (90 samples). One AD-only event (2022-05-06T17:16:00Z) lies between the two. This is documented, not corrected; the
+  published protocol is preserved as released.
+- **Pretraining reaches past the split (VERIFIED, `main.py:120,133`, `D1.yaml:7`):** the shipped protocol pretrains on all
+  3,714 train samples; 1,445 are after 16:00Z (1,365 after 17:30:08Z). No evaluation-period labels are used in
+  pretraining and the AD threshold uses only samples at or before the split. This is chronological/transductive exposure,
+  a documented property of the published method, not label leakage.
+- **Normal-pool contamination risk (VERIFIED count, UNKNOWN truth):** the 161 samples near the AD-only events (4.3% of
+  the pool, 11.1% of the post-split part) may contain incident behaviour. None of them is within 300 s of any
+  `cases.csv` event.
+- **Feature scaling (INFERRED):** feature values appear to have been normalised over the full timeline (section 5), so
+  held-out data influenced scaling; the recipe is UNKNOWN.
+- **Two protocols, not to be confused.** *Protocol A (published ARMOR reproduction):* the released files, splits, scoring
+  and whole-pool pretraining, unchanged. *Protocol B (our future supervised Model 1):* `cases.csv` labels, uncertain
+  AD-only events masked from training negatives, strict chronological pretraining as primary and whole-pool as a
+  sensitivity run, and the two-population evaluation of 9.1. Protocol B has not been implemented.
+
+### 9.5 Published scores under each label population (computed, not re-run)
+
+The authors' released alert intervals were scored with a plain-Python copy of `eval_AD` (no model, no ARMOR code run).
+Sources: Zenodo record 21744694, `ARMOR/res/D1/20260113_101332/scenarios/full/tmp/pre_interval.json` (sha256
+`c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7`) and ART commit `5e177025e1b2` `res/D1/tmp/pre_interval.json`
+(sha256 `31692d38ddda1a25d2d2455619995910efdbd0f1fbf1fb95320949e56f9a0789`). These small files were fetched during earlier
+read-only research, are outside the D1 acquisition manifest and are not committed.
+
+| System | Population | Labels | FP intervals | Precision | Recall | F1 |
+|---|---|---:|---:|---:|---:|---:|
+| ARMOR | official AD labels (reproduces published `res.json`) | 98 | 8 | 0.9245 | 1.0 | 0.9608 |
+| ARMOR | injection cases | 84 | 10 | 0.8936 | 1.0 | 0.9438 |
+| ART | official AD labels (reproduces published `res.json`) | 98 | 11 | 0.8991 | 1.0 | 0.9469 |
+| ART | injection cases | 84 | 20 | 0.8000 | 0.9524 | 0.8696 |
+
+Alert intervals: ARMOR 50, ART 74. Share of the 2,879 post-split sample minutes inside alert intervals: ARMOR 70.3% raw,
+87.4% padded by 300 s; ART 50.7% raw, 75.9% padded. Because the padded alerts cover most of the period, recall is
+close to saturated and F1 is mainly driven by the false-alarm interval count, which is why FP intervals and coverage
+are reported with every F1.
+
+### 9.6 Remaining unresolved questions
+
+Origin of `ad_cases.pkl` and of the 21 AD-only and 7 case-only events; whether the 161 samples are anomalous; incident
+durations or end times (not released); exact scaling recipe; raw telemetry and original ground-truth CSVs (not
+accessible); the reason for the paper-versus-code split difference; behaviour of ARMOR when actually run (not run).
