@@ -1,0 +1,99 @@
+{
+  "findings": [
+    {
+      "id": "F1_class_imbalance",
+      "finding": "Fault classes are imbalanced: Container Hardware has 83 cases and Node Memory only 9 (ratio 9.2:1).",
+      "evidence": {
+        "category_counts": {
+          "Node CPU": 21,
+          "Container Hardware": 83,
+          "Node Disk": 37,
+          "Container Network": 60,
+          "Node Memory": 9
+        },
+        "ratio": 9.22
+      }
+    },
+    {
+      "id": "F2_structural_zeros",
+      "finding": "6 nodes have no trace features and 16 have no log features in any training sample (structural absence, not missing values); overall 81% of metric entries are exactly 0 (zero equals the series mean after ARMOR's scaling - inferred, so a zero is not a missing value).",
+      "evidence": {
+        "structural_absent_blocks": 22,
+        "node_modality_blocks_with_some_all_zero_rows": 0
+      }
+    },
+    {
+      "id": "F3_correlation",
+      "finding": "12 channel pairs have |r| >= 0.95 on system-level training series (38 channels are constant and excluded); mean |r| within metrics is 0.15.",
+      "evidence": {
+        "pairs_ge_0.95": 12,
+        "mean_abs_corr": [
+          [
+            0.1517462410902621,
+            0.08532135876474232,
+            0.1371905414502003
+          ],
+          [
+            0.08532135876474232,
+            0.2664650710285497,
+            0.18882023436493875
+          ],
+          [
+            0.1371905414502003,
+            0.18882023436493872,
+            0.3651871884597327
+          ]
+        ]
+      }
+    },
+    {
+      "id": "F4_incident_alignment",
+      "finding": "Root-cause-node deviation relative to other nodes (mean |value| ratio, training cases): metric 1.45 before vs 3.56 after injection; trace 0.92 before vs 1.94 after injection; log 1.04 before vs 1.70 after injection. Service-level cases average over all replicas of the named service.",
+      "evidence": {
+        "ratios": {
+          "metric": {
+            "pre_mean_ratio": 1.4532996644859475,
+            "post_mean_ratio": 3.555069899134989
+          },
+          "trace": {
+            "pre_mean_ratio": 0.9210740761549201,
+            "post_mean_ratio": 1.9435952432312174
+          },
+          "log": {
+            "pre_mean_ratio": 1.0422775357199476,
+            "post_mean_ratio": 1.6962813056040988
+          }
+        },
+        "aligned_cases": 210
+      }
+    },
+    {
+      "id": "F5_outliers",
+      "finding": "37 channels are constant in the training partition. Heaviest tails: transport_closing_warning (3.3% of values beyond |3|), kpi_container_network_receive_MB (2.9% of values beyond |3|), duration (1.5% of values beyond |3|).",
+      "evidence": {
+        "top": [
+          "transport_closing_warning",
+          "kpi_container_network_receive_MB",
+          "duration"
+        ]
+      }
+    },
+    {
+      "id": "F6_train_vs_validation",
+      "finding": "On the approved Model 1 split, 0 of 130 channels differ between training and validation by KS >= 0.2 (largest: kpi_container_memory_cache, KS 0.13). Diagnostic only: nothing is tuned on validation, and KS on pooled entries is sensitive to the large zero mass.",
+      "evidence": {
+        "flagged": 0,
+        "max_ks": 0.13045871257781982,
+        "max_channel": "kpi_container_memory_cache",
+        "train_samples": 3445,
+        "validation_samples": 875
+      }
+    },
+    {
+      "id": "F7_scope",
+      "finding": "Model-development statistics (scaler, structural masks, histograms, correlations, outliers, incident ratios on train cases) use only the approved Model 1 train period; the validation period appears only in the diagnostic train-vs-validation comparison; temporal trends, descriptive stats and held-out-case rows are full-dataset descriptive views and are labelled as such.",
+      "evidence": {}
+    }
+  ],
+  "ks_flag_threshold": 0.2
+}

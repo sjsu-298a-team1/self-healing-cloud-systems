@@ -123,7 +123,7 @@ Fine-grained minima in the test split: Packet Duplication 1, Node CPU Spiking 2,
 | B. Supervised detection target? | **Only derived.** Injection timestamps exist; end times do not. A labelling rule must be fixed and the 21/7 event discrepancy resolved. |
 | C. Five-class failure target? | **Yes**, from `type_hash`/`type_dict`; counts above. |
 | D. Normal periods support self-supervised pretraining? | **Yes, with a protocol:** 3,714 minutes (about 62 h). The leakage-controlled primary experiment restricts pretraining to samples at or before the AD split (2,269), which also excludes all 161 uncertain samples; the ARMOR-compatible whole pool is a separate sensitivity run (section 9.4). |
-| E. Meaningful 10/25/50/100% label budgets? | **Only partly.** 126 train cases give 13/32/63/126 labelled cases. Node Memory has 0.5/1.2/2.5/5 expected cases, so low budgets need stratified minimum-per-class draws, repeated seeds and variance reporting. |
+| E. Meaningful 10/25/50/100% label budgets? (298-43 figures use the official 126 train cases; **under the approved Model 1 split of 101 train cases they are 10/25/51/101 cases, expected Node Memory 0.4/1.0/2.0/4.0**) | **Only partly.** 126 train cases give 13/32/63/126 labelled cases. Node Memory has 0.5/1.2/2.5/5 expected cases, so low budgets need stratified minimum-per-class draws, repeated seeds and variance reporting. |
 | F. Safe modality masking? | **Yes** for group-level masking. Natural absence is already zero-filled, and zero equals the post-scaling mean, so add explicit missing indicators. |
 | G. Preprocessing required | Decide the split protocol; build 6-step windows within runs; fix node order from `node_hash`; decide handling of 38 constant channels, the graph (optional) and the contaminated normals. |
 | H. Still missing | Raw telemetry, incident durations, meaning of the 21 extra AD events, exact scaling recipe, how test slices were chosen. |
@@ -253,7 +253,7 @@ Post-split evaluation populations (AD split rule): official AD labels 98 (= 77 s
 - **Two protocols, not to be confused.** *Protocol A (published ARMOR reproduction):* the released files, splits, scoring
   and whole-pool pretraining, unchanged. *Protocol B (our future supervised Model 1):* `cases.csv` labels, uncertain
   AD-only events masked from training negatives, strict chronological pretraining as primary and whole-pool as a
-  sensitivity run, and the two-population evaluation of 9.1. Protocol B has not been implemented.
+  sensitivity run, and the two-population evaluation of 9.1. Protocol B has not been implemented as a model; its approved case split (101 / 25 / 84) and train-only preprocessing are implemented and documented in `d1_data_preparation_runbook.md` (Linear 298-44).
 
 ### 9.5 Published scores under each label population (computed, not re-run)
 

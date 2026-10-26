@@ -1,0 +1,21 @@
+level,name,count,share
+category,Container Hardware,83,0.3952380952380952
+category,Container Network,60,0.2857142857142857
+category,Node Disk,37,0.1761904761904762
+category,Node CPU,21,0.1
+category,Node Memory,9,0.04285714285714286
+fine_type,Kubernetes Container Network Packet Loss,23,0.10952380952380952
+fine_type,Kubernetes Container Read I/O Load,21,0.1
+fine_type,Kubernetes Container CPU Load,20,0.09523809523809523
+fine_type,Kubernetes Container Memory Load,18,0.08571428571428572
+fine_type,Kubernetes Container Network Resource Packet Corruption,18,0.08571428571428572
+fine_type,Node CPU Failure,14,0.06666666666666667
+fine_type,Node Disk Space Consumption,14,0.06666666666666667
+fine_type,Kubernetes Container Write I/O Load,14,0.06666666666666667
+fine_type,Kubernetes Container Network Latency,13,0.06190476190476191
+fine_type,Node Disk Read I/O Consumption,12,0.05714285714285714
+fine_type,Node Disk Write I/O Consumption,11,0.05238095238095238
+fine_type,Kubernetes Container Process Termination,10,0.047619047619047616
+fine_type,Node Memory Consumption,9,0.04285714285714286
+fine_type,Node CPU Spiking,7,0.03333333333333333
+fine_type,Kubernetes Container Network Resource Packet Duplication,6,0.02857142857142857

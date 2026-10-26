@@ -1,0 +1,175 @@
+{
+  "manifest_version": "1.0",
+  "name": "model1_split_101_25_84_v1",
+  "status": "approved",
+  "description": "Approved Model 1 case split: first 101 cases train, next 25 validation, last 84 (official test) test. Chronological and incident-group-aware.",
+  "verdict": "PASS_WITH_WARNINGS",
+  "usable": true,
+  "ordering": "cases.csv file order (strictly ascending timestamp); chronological, no random assignment",
+  "window_parameters": {
+    "before_s": 59,
+    "after_s": 300,
+    "history_s": 360,
+    "required_span_s": 719
+  },
+  "case_ranges": {
+    "train": {
+      "start_index": 0,
+      "end_index_exclusive": 101,
+      "n_cases": 101,
+      "first_case_ts": 1651338400,
+      "last_case_ts": 1651712583,
+      "class_counts": {
+        "Container Hardware": 37,
+        "Container Network": 32,
+        "Node CPU": 10,
+        "Node Disk": 18,
+        "Node Memory": 4
+      }
+    },
+    "validation": {
+      "start_index": 101,
+      "end_index_exclusive": 126,
+      "n_cases": 25,
+      "first_case_ts": 1651715252,
+      "last_case_ts": 1651762517,
+      "class_counts": {
+        "Container Hardware": 10,
+        "Container Network": 6,
+        "Node CPU": 3,
+        "Node Disk": 5,
+        "Node Memory": 1
+      }
+    },
+    "test": {
+      "start_index": 126,
+      "end_index_exclusive": 210,
+      "n_cases": 84,
+      "first_case_ts": 1651858208,
+      "last_case_ts": 1652110645,
+      "class_counts": {
+        "Container Hardware": 36,
+        "Container Network": 22,
+        "Node CPU": 8,
+        "Node Disk": 14,
+        "Node Memory": 4
+      }
+    }
+  },
+  "ad_split": {
+    "timestamp": 1651852800,
+    "utc": "2022-05-06T16:00:00Z",
+    "first_heldout_case_ts": 1651858208,
+    "seconds_before_first_heldout_case": 5408
+  },
+  "sample_time_boundaries": [
+    {
+      "between": [
+        "train",
+        "validation"
+      ],
+      "boundary_ts": 1651713858,
+      "rule": "midpoint of the safe gap",
+      "last_case_extent_end": 1651712883,
+      "first_case_extent_start": 1651714833,
+      "safe_gap_seconds": 1950,
+      "case_to_case_seconds": 2669
+    },
+    {
+      "between": [
+        "validation",
+        "test"
+      ],
+      "boundary_ts": 1651852800,
+      "rule": "AD split time (lies inside the safe gap)",
+      "last_case_extent_end": 1651762817,
+      "first_case_extent_start": 1651857789,
+      "safe_gap_seconds": 94972,
+      "case_to_case_seconds": 95691
+    }
+  ],
+  "sample_partition": {
+    "train": 3445,
+    "validation": 875,
+    "test": 2880
+  },
+  "incident_groups": {
+    "n_groups": 175,
+    "groups_with_multiple_cases": 32
+  },
+  "checks": [
+    {
+      "id": "S1_chronological_order",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "case timestamps strictly increase in file order; splits are contiguous index ranges in that order"
+    },
+    {
+      "id": "S2_class_coverage",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "every class appears in every split"
+    },
+    {
+      "id": "S3_minimum_class_support",
+      "severity": "advisory",
+      "status": "WARN",
+      "detail": "split-classes below 3 cases (per-class metrics unstable): {'validation': {'Node Memory': 1}}"
+    },
+    {
+      "id": "S4_incident_group_isolation",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "175 incident groups, none spans two splits"
+    },
+    {
+      "id": "S5_boundary_window_gap",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "every boundary has a positive safe gap (>= 1950 s after allowing 719 s of window reach)"
+    },
+    {
+      "id": "S6_case_extent_inside_period",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "every case's history + window lies inside its split's time period"
+    },
+    {
+      "id": "S7_sample_partition_complete_disjoint",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "7200 samples assigned once each: {'train': 3445, 'validation': 875, 'test': 2880}"
+    },
+    {
+      "id": "S8_official_test_cases_unchanged",
+      "severity": "hard",
+      "status": "PASS",
+      "detail": "held-out set equals ARMOR's last 84 cases; no official test case moved"
+    },
+    {
+      "id": "S9_ad_vs_ft_boundary_difference",
+      "severity": "info",
+      "status": "PASS",
+      "detail": "AD split 1651852800 (sample-based, 60% of samples) vs first held-out case 1651858208 (case-based, 60% of cases): AD boundary is 5408 s earlier; FT/RCL use cases only, AD uses samples"
+    }
+  ],
+  "approval": {
+    "decision": "101 train / 25 validation / 84 test",
+    "approved_by": "project owner (Khushi Donda)",
+    "recorded": "2026-10-25",
+    "basis": "nearest boundary to the proposed 100 with a positive safe gap and no cut incident group (see boundary_scan.json)"
+  },
+  "scope": {
+    "this_manifest": "Model 1 case-level split: which injection cases are used for training, validation and testing.",
+    "sample_level_ad_timeline": "ARMOR's anomaly-detection split is sample-based (60% of the 7,200 samples = the AD split time) and is unchanged; the validation|test sample boundary here is aligned to it, so every post-AD-boundary sample belongs to the test period.",
+    "official_armor_protocol": "official_armor_v1 (126 / 84 by case order) is preserved unchanged for reproduction; the 84 test cases are identical in both.",
+    "detection_evaluation": "reported as two separate event-level populations (98 official AD events, 84 documented injection cases); never averaged"
+  },
+  "statistical_limitations": [
+    "Validation contains a single Node Memory case: Node Memory validation metrics (recall, F1, macro-F1 contribution) are statistically unstable and must not be used to tune hyper-parameters or thresholds on their own.",
+    "Node Memory has only 4 training and 4 test cases; per-class test estimates for it have very wide uncertainty.",
+    "Validation Node CPU has 3 cases; treat per-class validation numbers as indicative only.",
+    "No incident end times exist: this split assigns cases, it does not define sample-level detection labels."
+  ],
+  "content_sha256": "32ff03fcffca09f3d3953777a020514b4af9c882bc85e3dc1693e282607638ac"
+}

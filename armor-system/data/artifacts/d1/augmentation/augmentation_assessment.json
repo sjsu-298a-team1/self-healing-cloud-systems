@@ -1,0 +1,85 @@
+{
+  "recommendation": "Do not adopt augmentation now. Keep the official benchmark and the data-preparation pipeline free of synthetic data. Revisit only as a labelled, train-only sensitivity experiment after a Model 1 baseline exists, limited to masking and jitter on live non-constant entries.",
+  "decision": "not_adopted",
+  "utility_implemented": false,
+  "calculations": {
+    "median_series_std_live_nonconstant_train": 0.9995836019515991,
+    "jitter_sigmas_considered": [
+      0.01,
+      0.05,
+      0.1
+    ],
+    "jitter_relative_to_median_std": {
+      "0.01": 0.010004165715079638,
+      "0.05": 0.05002082857539819,
+      "0.1": 0.10004165715079638
+    },
+    "zero_fraction_train_all_entries": 0.8047516394755619,
+    "structural_zero_entries": 230,
+    "constant_entries_train": 4206,
+    "lag1_autocorrelation_median": 0.6394116247544368,
+    "lag1_autocorrelation_p10": 0.23147280476396645,
+    "channels_in_lag1_estimate": 92,
+    "metric_root_node_mean_abs_before": 0.16112987727493253,
+    "metric_root_node_mean_abs_after": 0.4359374475264432,
+    "train_case_class_counts_model1": {
+      "Container Hardware": 37,
+      "Container Network": 32,
+      "Node CPU": 10,
+      "Node Disk": 18,
+      "Node Memory": 4
+    },
+    "min_train_class_cases": 4,
+    "armor_existing_augmentation_config": {
+      "noise_rate": 0.2,
+      "missing_loss_scale": 0.2,
+      "missing_prob": 1.0,
+      "aug_multiple": 3.0,
+      "node_mask_rate": 0.0
+    }
+  },
+  "methods": [
+    {
+      "method": "Gaussian jitter on live, non-constant entries",
+      "advantage": "cheap; mild regulariser for the 130-d numeric vectors",
+      "risk": "80% of entries are exact zeros that carry meaning (series mean / absent block); adding noise to them invents signal. Incident deviations are brief spikes, so noise comparable to them can erase or fake a fault signature.",
+      "verdict": "possible later, train-only, never on zero/absent entries"
+    },
+    {
+      "method": "Time warping / window slicing",
+      "advantage": "more window variety",
+      "risk": "features are one-minute aggregates with lag-1 autocorrelation median 0.64; warping changes the onset timing that defines the injection response, and windows crossing a split boundary would leak.",
+      "verdict": "not recommended"
+    },
+    {
+      "method": "Mixup / interpolation between samples",
+      "advantage": "smooths decision regions",
+      "risk": "blends different fault classes or an incident with normal minutes into states that never occurred; labels become ill-defined (no incident durations exist).",
+      "verdict": "not recommended"
+    },
+    {
+      "method": "Synthetic incident generation (SMOTE-like, generative)",
+      "advantage": "addresses the minority class",
+      "risk": "the rarest class has 4 training cases; synthetic incidents would be fabricated ground truth and are prohibited in the benchmark.",
+      "verdict": "rejected"
+    },
+    {
+      "method": "Modality masking / dropout",
+      "advantage": "matches the missing-modality robustness goal and uses the real data unchanged",
+      "risk": "must keep structural absence separate from simulated absence (indicators); ARMOR already applies it in its own pretraining.",
+      "verdict": "already part of ARMOR; evaluate in Model 1 only with indicators"
+    },
+    {
+      "method": "Normal-period oversampling for pretraining",
+      "advantage": "none needed: 3,714 normal samples exist",
+      "risk": "temporal leakage if it draws on samples after the training boundary.",
+      "verdict": "not needed"
+    }
+  ],
+  "leakage_rules_if_revisited": [
+    "fit and draw only from the training period of an approved split",
+    "never augment validation or test",
+    "windows must not cross a split boundary",
+    "keep structural-absence indicators fixed"
+  ]
+}

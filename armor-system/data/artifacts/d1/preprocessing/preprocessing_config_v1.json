@@ -1,0 +1,47 @@
+{
+  "config_version": "1.1",
+  "input": {
+    "tensor_shape": [
+      46,
+      130
+    ],
+    "dtype": "float32",
+    "channel_order_sha256": "f52cdb36af71bdaa83b8b57ac5a645c2d5b07022a6a5582328ee9d8f59b1dd08",
+    "node_order_sha256": "772b8ff641fb446e6f528d880c4cc0066c3f803aa6f82d5e7a8e3f4cf9813ae8"
+  },
+  "zero_policy": "zero is not missing; only node-modality blocks that are zero in every fit sample are structurally absent",
+  "scaler": {
+    "type": "per node-channel standardisation",
+    "std_floor": 1e-08,
+    "constant_scale": 1.0,
+    "structurally_absent_entries": "mean 0, scale 1, output forced to 0",
+    "clipping": "none",
+    "model1_fit_set": "model1_train_period",
+    "feature_selection": "none (all 130 channels kept; nothing selected on validation or test)"
+  },
+  "missing_modality_indicators": [
+    "structural_absent (46x3, from the fit set)",
+    "observed_all_zero_not_structural (N x 46 x 3, unverified possible dropout)"
+  ],
+  "windowing": {
+    "window": 6,
+    "horizon": 1,
+    "step_seconds": 60,
+    "bridges_gaps": false,
+    "boundary_protected": true
+  },
+  "fit_sets": {
+    "official_train_period": {
+      "status": "approved_reproduction",
+      "definition": "samples with timestamp <= the ARMOR AD split (2022-05-06T16:00:00Z); reference for the unchanged official protocol; contains no held-out case",
+      "n_fit_samples": 4321
+    },
+    "model1_train_period": {
+      "status": "approved",
+      "definition": "samples before the approved train|validation boundary 2022-05-05T01:24:18Z; the only fit set for Model 1 (no validation or test sample)",
+      "n_fit_samples": 3445
+    }
+  },
+  "armor_scaling_note": "ARMOR features are pre-scaled by an unknown recipe that used the full timeline; a train-only second stage cannot undo that.",
+  "config_sha256": "e9aa3ccc776a8bc9940d151ba3feea3c79f502eff58e12c9946babe0aaefeb8c"
+}

@@ -1,0 +1,211 @@
+case_index,timestamp,utc,category,failure_type,level,cmdb_id,group_id,official_split,model1_split,rejected_100_26_84_split
+0,1651338400,2022-04-30T17:06:40Z,Node CPU,Node CPU Failure,node,node-6,0,train,train,train
+1,1651339370,2022-04-30T17:22:50Z,Node CPU,Node CPU Failure,node,node-6,1,train,train,train
+2,1651340937,2022-04-30T17:48:57Z,Container Hardware,Kubernetes Container Read I/O Load,pod,recommendationservice-0,2,train,train,train
+3,1651342931,2022-04-30T18:22:11Z,Node Disk,Node Disk Read I/O Consumption,node,node-5,3,train,train,train
+4,1651347456,2022-04-30T19:37:36Z,Container Hardware,Kubernetes Container Memory Load,pod,frontend-2,4,train,train,train
+5,1651353978,2022-04-30T21:26:18Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,5,train,train,train
+6,1651355555,2022-04-30T21:52:35Z,Container Network,Kubernetes Container Network Packet Loss,pod,shippingservice-2,6,train,train,train
+7,1651358169,2022-04-30T22:36:09Z,Container Network,Kubernetes Container Network Resource Packet Duplication,service,paymentservice,7,train,train,train
+8,1651361221,2022-04-30T23:27:01Z,Node Disk,Node Disk Read I/O Consumption,node,node-3,8,train,train,train
+9,1651362327,2022-04-30T23:45:27Z,Container Network,Kubernetes Container Network Packet Loss,service,currencyservice,9,train,train,train
+10,1651365415,2022-05-01T00:36:55Z,Container Network,Kubernetes Container Network Packet Loss,service,emailservice,10,train,train,train
+11,1651366271,2022-05-01T00:51:11Z,Container Hardware,Kubernetes Container CPU Load,pod,checkoutservice-0,10,train,train,train
+12,1651367122,2022-05-01T01:05:22Z,Container Network,Kubernetes Container Network Resource Packet Duplication,service,cartservice,10,train,train,train
+13,1651369063,2022-05-01T01:37:43Z,Container Hardware,Kubernetes Container CPU Load,service,checkoutservice,11,train,train,train
+14,1651371142,2022-05-01T02:12:22Z,Node Memory,Node Memory Consumption,node,node-4,12,train,train,train
+15,1651373643,2022-05-01T02:54:03Z,Node Disk,Node Disk Space Consumption,node,node-1,13,train,train,train
+16,1651374560,2022-05-01T03:09:20Z,Node Disk,Node Disk Space Consumption,node,node-5,13,train,train,train
+17,1651377586,2022-05-01T03:59:46Z,Container Network,Kubernetes Container Network Latency,pod,frontend-1,14,train,train,train
+18,1651379795,2022-05-01T04:36:35Z,Container Hardware,Kubernetes Container Process Termination,pod,productcatalogservice-2,15,train,train,train
+19,1651380417,2022-05-01T04:46:57Z,Container Hardware,Kubernetes Container CPU Load,service,emailservice,15,train,train,train
+20,1651382580,2022-05-01T05:23:00Z,Container Hardware,Kubernetes Container Write I/O Load,pod,frontend-0,16,train,train,train
+21,1651383819,2022-05-01T05:43:39Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,productcatalogservice-0,17,train,train,train
+22,1651385173,2022-05-01T06:06:13Z,Container Hardware,Kubernetes Container Process Termination,pod,checkoutservice2-0,18,train,train,train
+23,1651386533,2022-05-01T06:28:53Z,Container Hardware,Kubernetes Container CPU Load,service,paymentservice,19,train,train,train
+24,1651388079,2022-05-01T06:54:39Z,Node Disk,Node Disk Write I/O Consumption,node,node-5,20,train,train,train
+25,1651389043,2022-05-01T07:10:43Z,Container Network,Kubernetes Container Network Latency,service,checkoutservice,21,train,train,train
+26,1651392196,2022-05-01T08:03:16Z,Container Hardware,Kubernetes Container Write I/O Load,pod,recommendationservice-0,22,train,train,train
+27,1651393380,2022-05-01T08:23:00Z,Container Hardware,Kubernetes Container Read I/O Load,pod,emailservice-1,23,train,train,train
+28,1651394766,2022-05-01T08:46:06Z,Node Disk,Node Disk Write I/O Consumption,node,node-3,24,train,train,train
+29,1651395543,2022-05-01T08:59:03Z,Node CPU,Node CPU Spiking,node,node-4,24,train,train,train
+30,1651396610,2022-05-01T09:16:50Z,Node Disk,Node Disk Read I/O Consumption,node,node-6,25,train,train,train
+31,1651398576,2022-05-01T09:49:36Z,Container Hardware,Kubernetes Container CPU Load,pod,frontend-0,26,train,train,train
+32,1651398958,2022-05-01T09:55:58Z,Container Hardware,Kubernetes Container Read I/O Load,service,emailservice,26,train,train,train
+33,1651401140,2022-05-01T10:32:20Z,Container Hardware,Kubernetes Container CPU Load,service,paymentservice,27,train,train,train
+34,1651402680,2022-05-01T10:58:00Z,Container Hardware,Kubernetes Container Read I/O Load,service,frontend,28,train,train,train
+35,1651403338,2022-05-01T11:08:58Z,Container Network,Kubernetes Container Network Latency,service,shippingservice,28,train,train,train
+36,1651404706,2022-05-01T11:31:46Z,Node CPU,Node CPU Failure,node,node-5,29,train,train,train
+37,1651406879,2022-05-01T12:07:59Z,Node CPU,Node CPU Failure,node,node-1,30,train,train,train
+38,1651407633,2022-05-01T12:20:33Z,Container Hardware,Kubernetes Container CPU Load,pod,shippingservice-0,30,train,train,train
+39,1651409804,2022-05-01T12:56:44Z,Node Disk,Node Disk Write I/O Consumption,node,node-6,31,train,train,train
+40,1651410232,2022-05-01T13:03:52Z,Container Network,Kubernetes Container Network Packet Loss,pod,cartservice-2,31,train,train,train
+41,1651414976,2022-05-01T14:22:56Z,Container Network,Kubernetes Container Network Resource Packet Duplication,service,emailservice,32,train,train,train
+42,1651415840,2022-05-01T14:37:20Z,Container Network,Kubernetes Container Network Resource Packet Duplication,service,frontend,32,train,train,train
+43,1651417166,2022-05-01T14:59:26Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,recommendationservice-2,33,train,train,train
+44,1651419605,2022-05-01T15:40:05Z,Container Hardware,Kubernetes Container Read I/O Load,pod,currencyservice-2,34,train,train,train
+45,1651510238,2022-05-02T16:50:38Z,Container Hardware,Kubernetes Container Memory Load,pod,shippingservice2-0,35,train,train,train
+46,1651511197,2022-05-02T17:06:37Z,Node Memory,Node Memory Consumption,node,node-2,36,train,train,train
+47,1651512508,2022-05-02T17:28:28Z,Node Disk,Node Disk Space Consumption,node,node-2,37,train,train,train
+48,1651514529,2022-05-02T18:02:09Z,Container Network,Kubernetes Container Network Latency,service,adservice,38,train,train,train
+49,1651515718,2022-05-02T18:21:58Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,adservice2-0,39,train,train,train
+50,1651518109,2022-05-02T19:01:49Z,Container Network,Kubernetes Container Network Packet Loss,pod,paymentservice-1,40,train,train,train
+51,1651519906,2022-05-02T19:31:46Z,Container Network,Kubernetes Container Network Resource Packet Duplication,service,productcatalogservice,41,train,train,train
+52,1651520967,2022-05-02T19:49:27Z,Container Hardware,Kubernetes Container Write I/O Load,pod,productcatalogservice-2,42,train,train,train
+53,1651522628,2022-05-02T20:17:08Z,Node Disk,Node Disk Space Consumption,node,node-1,43,train,train,train
+54,1651523554,2022-05-02T20:32:34Z,Container Hardware,Kubernetes Container Read I/O Load,service,recommendationservice,43,train,train,train
+55,1651526238,2022-05-02T21:17:18Z,Container Hardware,Kubernetes Container Process Termination,service,recommendationservice,44,train,train,train
+56,1651527361,2022-05-02T21:36:01Z,Container Network,Kubernetes Container Network Packet Loss,pod,currencyservice-0,45,train,train,train
+57,1651532212,2022-05-02T22:56:52Z,Container Network,Kubernetes Container Network Packet Loss,pod,recommendationservice-1,46,train,train,train
+58,1651533257,2022-05-02T23:14:17Z,Container Network,Kubernetes Container Network Packet Loss,service,recommendationservice,47,train,train,train
+59,1651535538,2022-05-02T23:52:18Z,Container Network,Kubernetes Container Network Packet Loss,service,cartservice,48,train,train,train
+60,1651537524,2022-05-03T00:25:24Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,emailservice-2,49,train,train,train
+61,1651538629,2022-05-03T00:43:49Z,Container Hardware,Kubernetes Container Write I/O Load,service,emailservice,50,train,train,train
+62,1651539483,2022-05-03T00:58:03Z,Node CPU,Node CPU Spiking,node,node-3,50,train,train,train
+63,1651542023,2022-05-03T01:40:23Z,Container Hardware,Kubernetes Container Process Termination,pod,checkoutservice-0,51,train,train,train
+64,1651544319,2022-05-03T02:18:39Z,Container Hardware,Kubernetes Container Write I/O Load,service,frontend,52,train,train,train
+65,1651545391,2022-05-03T02:36:31Z,Container Hardware,Kubernetes Container Read I/O Load,service,adservice,53,train,train,train
+66,1651547094,2022-05-03T03:04:54Z,Node Memory,Node Memory Consumption,node,node-2,54,train,train,train
+67,1651551592,2022-05-03T04:19:52Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,currencyservice,55,train,train,train
+68,1651553048,2022-05-03T04:44:08Z,Container Hardware,Kubernetes Container CPU Load,service,checkoutservice,56,train,train,train
+69,1651555148,2022-05-03T05:19:08Z,Container Network,Kubernetes Container Network Latency,pod,adservice-2,57,train,train,train
+70,1651557284,2022-05-03T05:54:44Z,Container Network,Kubernetes Container Network Packet Loss,service,currencyservice,58,train,train,train
+71,1651559992,2022-05-03T06:39:52Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,checkoutservice,59,train,train,train
+72,1651562022,2022-05-03T07:13:42Z,Container Network,Kubernetes Container Network Packet Loss,service,productcatalogservice,60,train,train,train
+73,1651564006,2022-05-03T07:46:46Z,Container Hardware,Kubernetes Container Memory Load,pod,shippingservice-1,61,train,train,train
+74,1651567977,2022-05-03T08:52:57Z,Node CPU,Node CPU Spiking,node,node-4,62,train,train,train
+75,1651568969,2022-05-03T09:09:29Z,Node Memory,Node Memory Consumption,node,node-2,63,train,train,train
+76,1651570759,2022-05-03T09:39:19Z,Container Hardware,Kubernetes Container Read I/O Load,pod,paymentservice-1,64,train,train,train
+77,1651571935,2022-05-03T09:58:55Z,Container Network,Kubernetes Container Network Latency,pod,productcatalogservice2-0,65,train,train,train
+78,1651573816,2022-05-03T10:30:16Z,Node Disk,Node Disk Space Consumption,node,node-3,66,train,train,train
+79,1651574154,2022-05-03T10:35:54Z,Container Hardware,Kubernetes Container Read I/O Load,service,emailservice,66,train,train,train
+80,1651575912,2022-05-03T11:05:12Z,Container Hardware,Kubernetes Container Memory Load,pod,shippingservice-2,67,train,train,train
+81,1651577016,2022-05-03T11:23:36Z,Node CPU,Node CPU Spiking,node,node-6,68,train,train,train
+82,1651578454,2022-05-03T11:47:34Z,Container Hardware,Kubernetes Container Memory Load,service,productcatalogservice,69,train,train,train
+83,1651579656,2022-05-03T12:07:36Z,Node CPU,Node CPU Failure,node,node-6,70,train,train,train
+84,1651585999,2022-05-03T13:53:19Z,Node Disk,Node Disk Write I/O Consumption,node,node-5,71,train,train,train
+85,1651588509,2022-05-03T14:35:09Z,Container Hardware,Kubernetes Container Memory Load,service,recommendationservice,72,train,train,train
+86,1651589596,2022-05-03T14:53:16Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,frontend,73,train,train,train
+87,1651592393,2022-05-03T15:39:53Z,Container Hardware,Kubernetes Container Read I/O Load,pod,checkoutservice-2,74,train,train,train
+88,1651682649,2022-05-04T16:44:09Z,Node Disk,Node Disk Write I/O Consumption,node,node-5,75,train,train,train
+89,1651688141,2022-05-04T18:15:41Z,Container Hardware,Kubernetes Container Read I/O Load,pod,emailservice-2,76,train,train,train
+90,1651688909,2022-05-04T18:28:29Z,Container Hardware,Kubernetes Container Memory Load,pod,shippingservice2-0,76,train,train,train
+91,1651690183,2022-05-04T18:49:43Z,Node Disk,Node Disk Space Consumption,node,node-3,77,train,train,train
+92,1651692556,2022-05-04T19:29:16Z,Container Hardware,Kubernetes Container Write I/O Load,pod,productcatalogservice-0,78,train,train,train
+93,1651694960,2022-05-04T20:09:20Z,Container Network,Kubernetes Container Network Latency,service,cartservice,79,train,train,train
+94,1651696337,2022-05-04T20:32:17Z,Node Disk,Node Disk Write I/O Consumption,node,node-3,80,train,train,train
+95,1651699208,2022-05-04T21:20:08Z,Container Hardware,Kubernetes Container CPU Load,pod,recommendationservice-1,81,train,train,train
+96,1651701553,2022-05-04T21:59:13Z,Node CPU,Node CPU Failure,node,node-4,82,train,train,train
+97,1651703269,2022-05-04T22:27:49Z,Container Network,Kubernetes Container Network Packet Loss,pod,recommendationservice2-0,83,train,train,train
+98,1651710862,2022-05-05T00:34:22Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,84,train,train,train
+99,1651712135,2022-05-05T00:55:35Z,Container Network,Kubernetes Container Network Latency,service,checkoutservice,85,train,train,train
+100,1651712583,2022-05-05T01:03:03Z,Node Disk,Node Disk Space Consumption,node,node-1,85,train,train,validation
+101,1651715252,2022-05-05T01:47:32Z,Node Disk,Node Disk Read I/O Consumption,node,node-4,86,train,validation,validation
+102,1651716458,2022-05-05T02:07:38Z,Container Hardware,Kubernetes Container Read I/O Load,pod,recommendationservice-2,87,train,validation,validation
+103,1651717501,2022-05-05T02:25:01Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,88,train,validation,validation
+104,1651719510,2022-05-05T02:58:30Z,Node CPU,Node CPU Spiking,node,node-3,89,train,validation,validation
+105,1651721971,2022-05-05T03:39:31Z,Node Disk,Node Disk Read I/O Consumption,node,node-1,90,train,validation,validation
+106,1651723658,2022-05-05T04:07:38Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,cartservice,91,train,validation,validation
+107,1651728277,2022-05-05T05:24:37Z,Container Hardware,Kubernetes Container Memory Load,pod,cartservice-0,92,train,validation,validation
+108,1651729272,2022-05-05T05:41:12Z,Node Disk,Node Disk Write I/O Consumption,node,node-3,93,train,validation,validation
+109,1651734682,2022-05-05T07:11:22Z,Container Hardware,Kubernetes Container Memory Load,pod,paymentservice-0,94,train,validation,validation
+110,1651736646,2022-05-05T07:44:06Z,Container Network,Kubernetes Container Network Packet Loss,service,recommendationservice,95,train,validation,validation
+111,1651738176,2022-05-05T08:09:36Z,Container Hardware,Kubernetes Container CPU Load,service,recommendationservice,96,train,validation,validation
+112,1651739324,2022-05-05T08:28:44Z,Node Disk,Node Disk Write I/O Consumption,node,node-3,97,train,validation,validation
+113,1651740365,2022-05-05T08:46:05Z,Container Hardware,Kubernetes Container Read I/O Load,service,recommendationservice,98,train,validation,validation
+114,1651742838,2022-05-05T09:27:18Z,Container Hardware,Kubernetes Container Process Termination,service,productcatalogservice,99,train,validation,validation
+115,1651744078,2022-05-05T09:47:58Z,Container Hardware,Kubernetes Container Process Termination,pod,checkoutservice-2,100,train,validation,validation
+116,1651746090,2022-05-05T10:21:30Z,Container Hardware,Kubernetes Container Process Termination,pod,cartservice-0,101,train,validation,validation
+117,1651746729,2022-05-05T10:32:09Z,Node CPU,Node CPU Failure,node,node-6,101,train,validation,validation
+118,1651751150,2022-05-05T11:45:50Z,Node CPU,Node CPU Failure,node,node-4,102,train,validation,validation
+119,1651753127,2022-05-05T12:18:47Z,Container Hardware,Kubernetes Container CPU Load,pod,currencyservice-2,103,train,validation,validation
+120,1651755177,2022-05-05T12:52:57Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,cartservice,104,train,validation,validation
+121,1651757106,2022-05-05T13:25:06Z,Container Network,Kubernetes Container Network Packet Loss,pod,adservice2-0,105,train,validation,validation
+122,1651758487,2022-05-05T13:48:07Z,Container Hardware,Kubernetes Container CPU Load,service,checkoutservice,106,train,validation,validation
+123,1651760033,2022-05-05T14:13:53Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,cartservice,107,train,validation,validation
+124,1651761708,2022-05-05T14:41:48Z,Node Memory,Node Memory Consumption,node,node-4,108,train,validation,validation
+125,1651762517,2022-05-05T14:55:17Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,frontend-1,108,train,validation,validation
+126,1651858208,2022-05-06T17:30:08Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,productcatalogservice,109,test,test,test
+127,1651859583,2022-05-06T17:53:03Z,Container Hardware,Kubernetes Container Write I/O Load,pod,frontend-2,110,test,test,test
+128,1651860249,2022-05-06T18:04:09Z,Node Disk,Node Disk Space Consumption,node,node-2,110,test,test,test
+129,1651863211,2022-05-06T18:53:31Z,Container Network,Kubernetes Container Network Packet Loss,service,emailservice,111,test,test,test
+130,1651863857,2022-05-06T19:04:17Z,Node Disk,Node Disk Write I/O Consumption,node,node-6,111,test,test,test
+131,1651867434,2022-05-06T20:03:54Z,Node Disk,Node Disk Space Consumption,node,node-5,112,test,test,test
+132,1651870394,2022-05-06T20:53:14Z,Container Network,Kubernetes Container Network Latency,pod,productcatalogservice-2,113,test,test,test
+133,1651872135,2022-05-06T21:22:15Z,Node Memory,Node Memory Consumption,node,node-5,114,test,test,test
+134,1651875390,2022-05-06T22:16:30Z,Node Disk,Node Disk Space Consumption,node,node-1,115,test,test,test
+135,1651876445,2022-05-06T22:34:05Z,Container Hardware,Kubernetes Container Read I/O Load,service,frontend,116,test,test,test
+136,1651877333,2022-05-06T22:48:53Z,Container Hardware,Kubernetes Container CPU Load,pod,currencyservice-0,116,test,test,test
+137,1651880837,2022-05-06T23:47:17Z,Container Network,Kubernetes Container Network Latency,service,productcatalogservice,117,test,test,test
+138,1651884469,2022-05-07T00:47:49Z,Container Network,Kubernetes Container Network Packet Loss,pod,emailservice-1,118,test,test,test
+139,1651885258,2022-05-07T01:00:58Z,Node Disk,Node Disk Space Consumption,node,node-6,118,test,test,test
+140,1651885771,2022-05-07T01:09:31Z,Container Network,Kubernetes Container Network Latency,service,cartservice,118,test,test,test
+141,1651889566,2022-05-07T02:12:46Z,Container Hardware,Kubernetes Container Memory Load,service,recommendationservice,119,test,test,test
+142,1651891523,2022-05-07T02:45:23Z,Container Hardware,Kubernetes Container Write I/O Load,service,recommendationservice,120,test,test,test
+143,1651891895,2022-05-07T02:51:35Z,Node CPU,Node CPU Spiking,node,node-4,120,test,test,test
+144,1651896807,2022-05-07T04:13:27Z,Node Disk,Node Disk Read I/O Consumption,node,node-6,121,test,test,test
+145,1651897275,2022-05-07T04:21:15Z,Container Hardware,Kubernetes Container Memory Load,service,currencyservice,121,test,test,test
+146,1651899367,2022-05-07T04:56:07Z,Container Hardware,Kubernetes Container CPU Load,pod,recommendationservice-1,122,test,test,test
+147,1651900839,2022-05-07T05:20:39Z,Node Memory,Node Memory Consumption,node,node-5,123,test,test,test
+148,1651904204,2022-05-07T06:16:44Z,Node CPU,Node CPU Spiking,node,node-3,124,test,test,test
+149,1651904895,2022-05-07T06:28:15Z,Container Hardware,Kubernetes Container Process Termination,service,productcatalogservice,124,test,test,test
+150,1651906320,2022-05-07T06:52:00Z,Container Hardware,Kubernetes Container Read I/O Load,service,recommendationservice,125,test,test,test
+151,1651908253,2022-05-07T07:24:13Z,Container Hardware,Kubernetes Container Memory Load,service,adservice,126,test,test,test
+152,1651909424,2022-05-07T07:43:44Z,Container Hardware,Kubernetes Container Read I/O Load,service,adservice,127,test,test,test
+153,1651910133,2022-05-07T07:55:33Z,Container Network,Kubernetes Container Network Packet Loss,service,frontend,127,test,test,test
+154,1651913210,2022-05-07T08:46:50Z,Node Disk,Node Disk Read I/O Consumption,node,node-6,128,test,test,test
+155,1651915992,2022-05-07T09:33:12Z,Container Hardware,Kubernetes Container Memory Load,service,adservice,129,test,test,test
+156,1651918114,2022-05-07T10:08:34Z,Node Disk,Node Disk Write I/O Consumption,node,node-1,130,test,test,test
+157,1651919818,2022-05-07T10:36:58Z,Container Network,Kubernetes Container Network Latency,service,frontend,131,test,test,test
+158,1651920562,2022-05-07T10:49:22Z,Container Hardware,Kubernetes Container Write I/O Load,pod,adservice-0,131,test,test,test
+159,1651922476,2022-05-07T11:21:16Z,Node Disk,Node Disk Space Consumption,node,node-2,132,test,test,test
+160,1651926867,2022-05-07T12:34:27Z,Node Memory,Node Memory Consumption,node,node-4,133,test,test,test
+161,1651928188,2022-05-07T12:56:28Z,Node Disk,Node Disk Read I/O Consumption,node,node-5,134,test,test,test
+162,1651929878,2022-05-07T13:24:38Z,Node CPU,Node CPU Failure,node,node-1,135,test,test,test
+163,1651934221,2022-05-07T14:37:01Z,Container Hardware,Kubernetes Container Read I/O Load,pod,adservice2-0,136,test,test,test
+164,1651935446,2022-05-07T14:57:26Z,Container Network,Kubernetes Container Network Latency,service,adservice,137,test,test,test
+165,1652026980,2022-05-08T16:23:00Z,Container Hardware,Kubernetes Container Write I/O Load,pod,emailservice-0,138,test,test,test
+166,1652027890,2022-05-08T16:38:10Z,Container Hardware,Kubernetes Container Read I/O Load,pod,emailservice-1,138,test,test,test
+167,1652028651,2022-05-08T16:50:51Z,Container Hardware,Kubernetes Container CPU Load,service,checkoutservice,138,test,test,test
+168,1652029802,2022-05-08T17:10:02Z,Container Network,Kubernetes Container Network Packet Loss,pod,frontend-2,139,test,test,test
+169,1652031460,2022-05-08T17:37:40Z,Container Hardware,Kubernetes Container Read I/O Load,service,shippingservice,140,test,test,test
+170,1652032391,2022-05-08T17:53:11Z,Container Hardware,Kubernetes Container CPU Load,pod,shippingservice-1,141,test,test,test
+171,1652034858,2022-05-08T18:34:18Z,Container Network,Kubernetes Container Network Packet Loss,service,frontend,142,test,test,test
+172,1652035716,2022-05-08T18:48:36Z,Node CPU,Node CPU Failure,node,node-5,142,test,test,test
+173,1652044466,2022-05-08T21:14:26Z,Container Hardware,Kubernetes Container CPU Load,pod,shippingservice-1,143,test,test,test
+174,1652046023,2022-05-08T21:40:23Z,Container Hardware,Kubernetes Container Write I/O Load,service,emailservice,144,test,test,test
+175,1652047629,2022-05-08T22:07:09Z,Container Hardware,Kubernetes Container Memory Load,service,recommendationservice,145,test,test,test
+176,1652049367,2022-05-08T22:36:07Z,Container Network,Kubernetes Container Network Packet Loss,service,productcatalogservice,146,test,test,test
+177,1652051200,2022-05-08T23:06:40Z,Container Hardware,Kubernetes Container Memory Load,pod,recommendationservice-2,147,test,test,test
+178,1652052222,2022-05-08T23:23:42Z,Container Hardware,Kubernetes Container Memory Load,service,emailservice,148,test,test,test
+179,1652053117,2022-05-08T23:38:37Z,Node Disk,Node Disk Space Consumption,node,node-3,148,test,test,test
+180,1652055279,2022-05-09T00:14:39Z,Container Network,Kubernetes Container Network Resource Packet Duplication,pod,shippingservice-0,149,test,test,test
+181,1652056357,2022-05-09T00:32:37Z,Node CPU,Node CPU Failure,node,node-3,150,test,test,test
+182,1652058023,2022-05-09T01:00:23Z,Node Disk,Node Disk Space Consumption,node,node-1,151,test,test,test
+183,1652060333,2022-05-09T01:38:53Z,Container Hardware,Kubernetes Container Write I/O Load,pod,recommendationservice2-0,152,test,test,test
+184,1652061480,2022-05-09T01:58:00Z,Container Hardware,Kubernetes Container CPU Load,service,currencyservice,153,test,test,test
+185,1652063842,2022-05-09T02:37:22Z,Container Hardware,Kubernetes Container Write I/O Load,service,recommendationservice,154,test,test,test
+186,1652064977,2022-05-09T02:56:17Z,Node Memory,Node Memory Consumption,node,node-4,155,test,test,test
+187,1652066468,2022-05-09T03:21:08Z,Container Hardware,Kubernetes Container Memory Load,service,paymentservice,156,test,test,test
+188,1652069584,2022-05-09T04:13:04Z,Container Hardware,Kubernetes Container Read I/O Load,pod,adservice-1,157,test,test,test
+189,1652072251,2022-05-09T04:57:31Z,Container Hardware,Kubernetes Container Process Termination,service,adservice,158,test,test,test
+190,1652075078,2022-05-09T05:44:38Z,Container Network,Kubernetes Container Network Packet Loss,pod,checkoutservice2-0,159,test,test,test
+191,1652077083,2022-05-09T06:18:03Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,cartservice,160,test,test,test
+192,1652078717,2022-05-09T06:45:17Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,productcatalogservice,161,test,test,test
+193,1652080322,2022-05-09T07:12:02Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,frontend,162,test,test,test
+194,1652083866,2022-05-09T08:11:06Z,Node CPU,Node CPU Failure,node,node-5,163,test,test,test
+195,1652087378,2022-05-09T09:09:38Z,Node Disk,Node Disk Write I/O Consumption,node,node-3,164,test,test,test
+196,1652088630,2022-05-09T09:30:30Z,Container Hardware,Kubernetes Container CPU Load,pod,frontend-1,165,test,test,test
+197,1652089514,2022-05-09T09:45:14Z,Container Hardware,Kubernetes Container Read I/O Load,pod,adservice-1,165,test,test,test
+198,1652090619,2022-05-09T10:03:39Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,frontend-2,166,test,test,test
+199,1652092703,2022-05-09T10:38:23Z,Container Network,Kubernetes Container Network Packet Loss,pod,productcatalogservice-0,167,test,test,test
+200,1652093544,2022-05-09T10:52:24Z,Container Hardware,Kubernetes Container Process Termination,pod,paymentservice-2,167,test,test,test
+201,1652097055,2022-05-09T11:50:55Z,Container Network,Kubernetes Container Network Packet Loss,pod,emailservice-2,168,test,test,test
+202,1652099503,2022-05-09T12:31:43Z,Container Hardware,Kubernetes Container Write I/O Load,service,emailservice,169,test,test,test
+203,1652101150,2022-05-09T12:59:10Z,Node CPU,Node CPU Failure,node,node-4,170,test,test,test
+204,1652102061,2022-05-09T13:14:21Z,Container Network,Kubernetes Container Network Resource Packet Corruption,pod,cartservice-2,170,test,test,test
+205,1652103411,2022-05-09T13:36:51Z,Node CPU,Node CPU Failure,node,node-2,171,test,test,test
+206,1652104717,2022-05-09T13:58:37Z,Container Hardware,Kubernetes Container CPU Load,pod,currencyservice-2,172,test,test,test
+207,1652105625,2022-05-09T14:13:45Z,Node Disk,Node Disk Read I/O Consumption,node,node-6,172,test,test,test
+208,1652108177,2022-05-09T14:56:17Z,Container Network,Kubernetes Container Network Resource Packet Corruption,service,productcatalogservice,173,test,test,test
+209,1652110645,2022-05-09T15:37:25Z,Container Hardware,Kubernetes Container Memory Load,pod,recommendationservice-0,174,test,test,test

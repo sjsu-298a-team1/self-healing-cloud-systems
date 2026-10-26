@@ -1,0 +1,335 @@
+{
+  "summary": {
+    "stages_passed": 9,
+    "stages_total": 9,
+    "checks_passed": 52,
+    "checks_total": 52,
+    "corruptions_detected": 16,
+    "corruption_tests": 16
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "name": "Dataset integrity",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "extracted_files_match_inventory",
+          "status": "PASS",
+          "detail": "9 files re-hashed against file_inventory.csv; problems: none"
+        },
+        {
+          "name": "d1_zip_sha256_matches_manifest",
+          "status": "PASS",
+          "detail": "D1.zip sha256 vs checksums.json (ef11fd2aed75...)"
+        },
+        {
+          "name": "ground_truth_provenance_documented",
+          "status": "PASS",
+          "detail": "provenance.json from Linear 298-43 present"
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "name": "Schema consistency",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "tensor_schema_valid",
+          "status": "PASS",
+          "detail": "shape (7200, 46, 130), dtype float32; issues: none"
+        },
+        {
+          "name": "node_and_channel_order_stable",
+          "status": "PASS",
+          "detail": "46 nodes, 130 channels match schema.json hashes"
+        },
+        {
+          "name": "modality_groups_partition_channels",
+          "status": "PASS",
+          "detail": "{'metric': 110, 'trace': 9, 'log': 11}"
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "name": "Timestamp validity",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "strictly_increasing_unique",
+          "status": "PASS",
+          "detail": "7200 timestamps"
+        },
+        {
+          "name": "sampling_step_60s_within_days",
+          "status": "PASS",
+          "detail": "7195 steps of exactly 60 s; 4 other steps, all > 1 h (boundaries between the 5 collection days)"
+        },
+        {
+          "name": "train_test_files_disjoint",
+          "status": "PASS",
+          "detail": "3714 train-file and 3486 test-file timestamps share 0"
+        },
+        {
+          "name": "case_timestamps_in_sample_range",
+          "status": "PASS",
+          "detail": "cases span 1651338400..1652110645"
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "name": "Class-label consistency",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "every_failure_type_mapped",
+          "status": "PASS",
+          "detail": "15 fine types"
+        },
+        {
+          "name": "five_categories",
+          "status": "PASS",
+          "detail": "categories: ['Container Hardware', 'Container Network', 'Node CPU', 'Node Disk', 'Node Memory']"
+        },
+        {
+          "name": "cases_in_chronological_order",
+          "status": "PASS",
+          "detail": "210 cases"
+        },
+        {
+          "name": "case_count_matches_documentation",
+          "status": "PASS",
+          "detail": "210 cases (ARMOR paper: 210)"
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "name": "Split reproducibility",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "rebuild_identical_official_armor_v1",
+          "status": "PASS",
+          "detail": "rebuilt sha256 5376656ae5fc... == committed 5376656ae5fc..."
+        },
+        {
+          "name": "rebuild_identical_model1_candidate_100_26_84_v1",
+          "status": "PASS",
+          "detail": "rebuilt sha256 120afadbf54b... == committed 120afadbf54b..."
+        },
+        {
+          "name": "rebuild_identical_model1_split_101_25_84_v1",
+          "status": "PASS",
+          "detail": "rebuilt sha256 32ff03fcffca... == committed 32ff03fcffca..."
+        },
+        {
+          "name": "official_split_is_126_84",
+          "status": "PASS",
+          "detail": "ARMOR reproduction split preserved"
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "name": "Training-only scaler fitting",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "model1_refit_matches_stored_scaler",
+          "status": "PASS",
+          "detail": "refit on the approved Model 1 train period equals scaler_model1_train_period_v1.npz"
+        },
+        {
+          "name": "model1_scaler_ignores_validation_and_test",
+          "status": "PASS",
+          "detail": "perturbing 3755 validation/test/other samples leaves every fitted parameter unchanged"
+        },
+        {
+          "name": "model1_fit_set_excludes_validation_and_test",
+          "status": "PASS",
+          "detail": "latest fit sample 1651713840 < first validation case 1651715252; 3445 fit samples"
+        },
+        {
+          "name": "official_refit_matches_stored_scaler",
+          "status": "PASS",
+          "detail": "official-protocol reference scaler (samples <= AD boundary) reproduces"
+        },
+        {
+          "name": "official_fit_set_has_no_heldout_case",
+          "status": "PASS",
+          "detail": "latest official fit sample 1651852800 < first official test case 1651858208"
+        },
+        {
+          "name": "control_scaler_fit_on_all_differs",
+          "status": "PASS",
+          "detail": "a scaler fit on all samples differs, so the check can detect leakage"
+        }
+      ]
+    },
+    {
+      "stage": 7,
+      "name": "Temporal leakage",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "hard_split_checks_official_armor_v1",
+          "status": "PASS",
+          "detail": "S1 PASS; S2 PASS; S4 PASS; S5 PASS; S6 PASS; S7 PASS; S8 PASS"
+        },
+        {
+          "name": "hard_split_checks_model1_split_101_25_84_v1",
+          "status": "PASS",
+          "detail": "S1 PASS; S2 PASS; S4 PASS; S5 PASS; S6 PASS; S7 PASS; S8 PASS"
+        },
+        {
+          "name": "approved_split_status_and_sizes",
+          "status": "PASS",
+          "detail": "status approved; cases per split [101, 25, 84]"
+        },
+        {
+          "name": "approved_class_counts_match_decision",
+          "status": "PASS",
+          "detail": "class counts per split equal the approved table"
+        },
+        {
+          "name": "validation_node_memory_instability_documented",
+          "status": "PASS",
+          "detail": "validation holds one Node Memory case and the manifest says its metrics are unstable"
+        },
+        {
+          "name": "official_test_cases_preserved",
+          "status": "PASS",
+          "detail": "the 84 test cases are identical in the official and Model 1 protocols"
+        },
+        {
+          "name": "rejected_100_26_84_failure_detected",
+          "status": "PASS",
+          "detail": "detector flags the rejected split as unusable (failed: ['S4', 'S5', 'S6'])"
+        },
+        {
+          "name": "ad_vs_ft_boundary_documented",
+          "status": "PASS",
+          "detail": "AD split 1651852800 is 5408 s before the first held-out case"
+        }
+      ]
+    },
+    {
+      "stage": 8,
+      "name": "Missing values and invalid numerics",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "no_nan_inf",
+          "status": "PASS",
+          "detail": "NaN 0, Inf 0"
+        },
+        {
+          "name": "values_within_armor_bound",
+          "status": "PASS",
+          "detail": "max |value| 13.3791 <= 13.3801"
+        },
+        {
+          "name": "structural_absence_matches_298_43_evidence",
+          "status": "PASS",
+          "detail": "absent node-modality blocks found here (trace 6, log 16, metric 0) equal the independently derived 298-43 lists"
+        },
+        {
+          "name": "zeros_not_imputed",
+          "status": "PASS",
+          "detail": "81% of metric entries are zero and are left as they are; only whole absent blocks are masked"
+        }
+      ]
+    },
+    {
+      "stage": 9,
+      "name": "Deliberately corrupted inputs",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "clean_control (no corruption)",
+          "status": "PASS",
+          "detail": "no false alarm: clean"
+        },
+        {
+          "name": "NaN injected",
+          "status": "PASS",
+          "detail": "detected: ['1 non-finite values (NaN/Inf)']"
+        },
+        {
+          "name": "Inf injected",
+          "status": "PASS",
+          "detail": "detected: ['1 non-finite values (NaN/Inf)']"
+        },
+        {
+          "name": "float64 dtype",
+          "status": "PASS",
+          "detail": "detected: ['dtype float64 != float32']"
+        },
+        {
+          "name": "wrong node dimension (45 nodes)",
+          "status": "PASS",
+          "detail": "detected: ['shape (64, 45, 130) != (N, 46, 130)']"
+        },
+        {
+          "name": "value beyond ARMOR bound",
+          "status": "PASS",
+          "detail": "detected: [\"max |value| 1000.0000 exceeds ARMOR's observed bound 13.3801\"]"
+        },
+        {
+          "name": "swapped channel order",
+          "status": "PASS",
+          "detail": "detected: ['channel order differs from the schema']"
+        },
+        {
+          "name": "duplicate timestamp",
+          "status": "PASS",
+          "detail": "detected: ['duplicate timestamps']"
+        },
+        {
+          "name": "out-of-order timestamps",
+          "status": "PASS",
+          "detail": "detected: ['timestamps out of order']"
+        },
+        {
+          "name": "unknown failure type label",
+          "status": "PASS",
+          "detail": "detected: ['unmapped failure type: Imaginary Fault']"
+        },
+        {
+          "name": "official test case moved into training",
+          "status": "PASS",
+          "detail": "detected: ['S8_official_test_cases_unchanged']"
+        },
+        {
+          "name": "scaler fit on all data (leak)",
+          "status": "PASS",
+          "detail": "detected: ['scaler fit set contains 2879 samples after the training boundary']"
+        },
+        {
+          "name": "train/validation sample overlap",
+          "status": "PASS",
+          "detail": "detected: ['1 samples shared by train and validation']"
+        },
+        {
+          "name": "cases cut by a boundary inside an incident group",
+          "status": "PASS",
+          "detail": "detected: ['S4_incident_group_isolation']"
+        },
+        {
+          "name": "scaler fit set includes validation samples (leak)",
+          "status": "PASS",
+          "detail": "detected: ['scaler fit set contains 875 samples after the training boundary']"
+        },
+        {
+          "name": "approved class counts altered",
+          "status": "PASS",
+          "detail": "detected: ['validation/Node Memory: 2 != approved 1']"
+        }
+      ]
+    }
+  ]
+}

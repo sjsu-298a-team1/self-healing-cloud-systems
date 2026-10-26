@@ -1,0 +1,59 @@
+{
+  "manifest_version": "1.0",
+  "status": "proposed_not_approved",
+  "description": "Forward-chaining folds over the first 126 cases. NOT part of the approved protocol; kept as an optional idea only.",
+  "folds": [
+    {
+      "fold": 1,
+      "train": [
+        0,
+        43
+      ],
+      "validation": [
+        43,
+        84
+      ],
+      "boundary_moved_from": 42,
+      "train_class_counts": {
+        "Container Hardware": 16,
+        "Container Network": 12,
+        "Node CPU": 5,
+        "Node Disk": 9,
+        "Node Memory": 1
+      },
+      "validation_class_counts": {
+        "Container Hardware": 15,
+        "Container Network": 16,
+        "Node CPU": 4,
+        "Node Disk": 3,
+        "Node Memory": 3
+      }
+    },
+    {
+      "fold": 2,
+      "train": [
+        0,
+        84
+      ],
+      "validation": [
+        84,
+        126
+      ],
+      "boundary_moved_from": null,
+      "train_class_counts": {
+        "Container Hardware": 31,
+        "Container Network": 28,
+        "Node CPU": 9,
+        "Node Disk": 12,
+        "Node Memory": 4
+      },
+      "validation_class_counts": {
+        "Container Hardware": 16,
+        "Container Network": 10,
+        "Node CPU": 4,
+        "Node Disk": 11,
+        "Node Memory": 1
+      }
+    }
+  ]
+}
