@@ -4,7 +4,7 @@ Spatio-Temporal Multimodal Transformer for cloud incident detection and fault-ty
 
 | | |
 |---|---|
-| Status | **Design v0 frozen on 2026-10-26; calibration protocol added the same day (section 5.6, provisional until the project owner approves it). No model code exists.** Nothing here is a result. |
+| Status | **Design v0 frozen on 2026-10-26; calibration protocol added the same day (section 5.6, **approved for Model 1 v0** by the project owner on 2026-10-27 after review). No model code exists.** Nothing here is a result. |
 | Task | M1-02 (no Linear issue exists yet for it; see section 10). Implementation requirements for the next task, M1-03, are in section 12 |
 | Based on | `origin/main` at `b156d55` (PR #35 merged) |
 | Authority | The approved split and preprocessing documented in `armor-system/docs/d1_validation_report.md` and `armor-system/docs/d1_data_preparation_runbook.md` win over this note. If they disagree, this note is wrong. |
@@ -210,7 +210,7 @@ All numbers in this section are **[D]** initial engineering defaults: chosen to 
 ### 4.3 Losses
 
 - **Next-step loss**: mean squared error between prediction and `target`, **only over `effective` entries**, averaged over those entries.
-- **Fault loss**: cross-entropy on 5 classes with class weights proportional to the inverse of the number of **fitting-region cases** per class (33/29/9/13/4 for the five classes under the provisional split of section 5.6 [V]), because windows per case are nearly equal (5 or more per case).
+- **Fault loss**: cross-entropy on 5 classes with class weights proportional to the inverse of the number of **fitting-region cases** per class (33/29/9/13/4 for the five classes under the approved split of section 5.6 [V]), because windows per case are nearly equal (5 or more per case).
 
 ### 4.4 Training-time robustness (optional switch)
 
@@ -298,11 +298,11 @@ Counts of 7-step windows. Train has 3,427 windows from 101 cases, validation has
 - **Sensitivity runs (validation only, report all)**: A (naive), B0 (isolates the effect of excluding the final two minutes before injection: B versus B0 differ only in that), C (wide), D (known-normal only), E (strict event association). If conclusions change between policies, report that as a finding; do not select the policy that scores best on validation without writing the amendment (section 10).
 - **Test partition**: used only for fixed integrity checks. Under B the test period has 2,868 windows, 501 EA windows and **84 of 84** cases covered. These numbers were not used to choose anything.
 
-### 5.6 Calibration split inside the training period (provisional, feasible)
+### 5.6 Calibration split inside the training period (approved for v0, feasible)
 
 **Why it exists.** A detection threshold must come from telemetry that the model never learned from. The first version of this note took the threshold from the same windows the model was trained on, which is optimistic (a model scores data it has memorised as "very normal"). This section carves a held-out **calibration-reference** block out of the approved train period. The approved outer split 101 / 25 / 84 and its manifest are **not changed**; validation and test play no part in designing this block.
 
-**Status: provisional.** It is feasible and passes every leakage check below, but it becomes approved only when the project owner approves it. Until then M1-03 must treat the cutoff as a configuration value.
+**Status: APPROVED for Model 1 v0** (project owner, 2026-10-27, after review): 88 fitting cases / 13 calibration cases / 25 validation cases / 84 test cases, cut point `Tc = 1651637521`, `EMBARGO = 360 s`. The approval covers this split only. It does not approve any threshold value, any model result, or the open evaluation definitions of section 7.5, and every limitation in section 9 still applies. Changing `Tc` or the embargo later requires a written amendment (section 7.4 item 5).
 
 **Rules (all enforced by a check, none by convention):**
 
@@ -407,7 +407,7 @@ The validation|test boundary of Protocol B equals ARMOR's AD split, so the 84 Mo
 | E-4 | Model selection rule given 25 validation cases (Node Memory n = 1) | **Open.** Needs a minimum-difference convention that has not been agreed |
 | E-5 | Does per-node normalisation help? | **Resolved as a planned comparison:** M1 (raw) versus M2 and M3 (normalised) are all reported with their own thresholds; M2 stays primary unless an amendment says otherwise |
 | E-6 | Alert-triggered (not incident-conditioned) fault classification | **Open.** Needs a defined alert-to-window rule and a live data path |
-| E-7 | Approval of the provisional calibration split (section 5.6) and of its cutoff | **Needs the project owner** |
+| E-7 | Approval of the calibration split (section 5.6) and of its cutoff | **Resolved:** approved for v0 on 2026-10-27; amendments still require a written note |
 
 ---
 
@@ -461,13 +461,13 @@ Status: **the Online Boutique testbed does not exist yet** [V: nothing in the re
 | F8 | Primary fault metric macro-F1; case-level mean-probability aggregation |
 | F9 | Detection: next-step error; median / IQR normalisation with `epsilon = max(1e-6, 0.01 * median(IQR))`; methods M1 raw max, **M2 max normalised (primary)**, M3 top-3 mean; threshold = 99th percentile on calibration-reference windows (v0); validation-only sensitivity at 95 / 97 / 99 / 99.5; S1 checkpoint for detection; ARMOR matching rule; 98 and 84 populations separate |
 | F10 | Test used once per frozen configuration; official ARMOR split and scoring never changed |
-| F11 | Calibration split of section 5.6 (provisional until approved): rules 1-6, `EMBARGO = 360 s`, cutoff chosen from the train period only; calibration windows never touch weights, scalers or masks |
+| F11 | Calibration split of section 5.6 (**approved for v0**, 2026-10-27): rules 1-6, `EMBARGO = 360 s`, cutoff chosen from the train period only; calibration windows never touch weights, scalers or masks |
 
 ### Unresolved
 
 | ID | Decision | Owner suggestion |
 |---|---|---|
-| U1 | E-1 to E-4 and E-6 in section 7.5 (E-5 resolved, E-7 needs approval) | Khushi + Bhoomika, then team |
+| U1 | E-1 to E-4 and E-6 in section 7.5 (E-5 and E-7 resolved) | Khushi + Bhoomika, then team |
 | U2 | Call graph or node-ID features (v0 uses neither) | after v0 results |
 | U3 | Longer history than 6 minutes | validation ablation |
 | U4 | Whether baseline teammates fetch ARMOR's released checkpoint, and whether the released alert-interval files (needed by section 7.3 item 7) are re-fetched | team lead / user |
@@ -495,7 +495,7 @@ Status: **the Online Boutique testbed does not exist yet** [V: nothing in the re
 
 M1-03 must not change the approved split, the existing scaler artifacts, `old/`, the ARMOR baseline, or Airflow. It writes **new** files only. Requirements:
 
-1. **Calibration-split artifact.** A new manifest (for example `splits/model1_calibration_split_v1.json`) recording `Tc`, `EMBARGO`, Policy B parameters, window start indices per role (fitting / calibration), case ids per role, counts, a content hash, and `status: provisional` until approved. Built by code (a function in `armor-system/data/prep/`, with unit tests), not by hand. The expected counts are those of section 5.6; any difference is a failure.
+1. **Calibration-split artifact.** A new manifest (for example `splits/model1_calibration_split_v1.json`) recording `Tc`, `EMBARGO`, Policy B parameters, window start indices per role (fitting / calibration), case ids per role, counts, a content hash, and `status: approved` (v0, 2026-10-27). Built by code (a function in `armor-system/data/prep/`, with unit tests), not by hand. The expected counts are those of section 5.6; any difference is a failure.
 2. **Fit-only scaler artifact.** A new file (for example `preprocessing/scaler_model1_fit_only_v1.npz`) fit with the existing `fit_scaler` on exactly the fitting samples (`ts < Tc - EMBARGO`, 2,880 samples). Do **not** overwrite `scaler_model1_train_period_v1.npz`. All calibration, validation, test and live data use the fit-only scaler. Record its hash in the manifest. Expected: `absent_block` identical to the existing one.
 3. **Declared mask.** A function that builds `applicable_entry` (3,152 entries) from `schema.json` channel names and node names, configured per dataset, plus `observed_entry` (all True for D1). Test MI-6 on every period; a violation raises.
 4. **Dataset / DataLoader** over `d1_features_v1.npz` using `prepare_window`-equivalent logic with the fit-only scaler, yielding the fields of section 2.1 plus the window category, the region (fitting / calibration / validation / test) and the case index. It must refuse to yield windows that are not wholly inside their region.
