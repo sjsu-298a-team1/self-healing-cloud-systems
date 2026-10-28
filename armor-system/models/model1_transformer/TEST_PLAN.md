@@ -8,7 +8,7 @@ Branch `khushidonda/298-51-model-1-two-stage-training-and-validation`. Protocol:
 
 1. The test period is evaluated **once**, for Model 1 v1, v0 and the XGBoost control **together**, with the frozen artefacts in section 2. Nothing is re-run, re-selected or re-thresholded after any test number is seen. A crash before any number is written may be fixed only if the fix cannot depend on outputs, and the fix is recorded.
 2. Every row below is reported, including the ones that look bad, in this order. Rows not listed here are exploratory, labelled so, and are not results.
-3. Test labels and official ARMOR files are opened only by the evaluation step after the freeze commit (section 6), never by training, calibration or any threshold code. Calibration stays the same 329 `normal_reference` windows for every row; thresholds are recomputed from them deterministically, not from test data.
+3. Test labels and official ARMOR files are opened only by the evaluation step after the freeze commit (section 7), never by training, calibration or any threshold code. Calibration stays the same 329 `normal_reference` windows for every row; thresholds are recomputed from them deterministically, not from test data.
 4. Test-period numbers are never used to change the primary detector, a threshold rule, the ensemble definition, a checkpoint or an architecture. Validation numbers and test numbers are never pooled.
 
 ## 2. What is frozen (hashes)
@@ -46,7 +46,7 @@ Commits: protocol (Phase 1) `3f9b4da4d7152782d217a17a950612cf90cd2299`, implemen
 
 Which checkpoint is used where: v1 primary, D1, D2 and the ensemble use the v1 **S2** checkpoints; D3 uses the v1 **S1** checkpoints; D4 uses the v0 **S1** checkpoints (as in `detection_v0`); v0 fault type uses the v0 **S2** checkpoints; the v0 S2 and v1 S1 files are not otherwise used. State-dict hashes are empty where a stage does not record one.
 
-**XGBoost control** (no checkpoint; five seeds retrained deterministically on the 88 fitting cases from the frozen config, byte-identical across reruns on validation): `config_v1.json` file sha256 `8075f0ebc21a05285946ea3b97d6efd5ba63a3857b588ce791680d727752dc79`, canonical config sha256 `407c55b669bfee4be61712caa6c0e2d477c7af4b5345b76863974599ec5b97e1`, source-set sha256 `f60e088efa7cfdb29bcbf9eb1293c023c7d46beae9548eb97fba636ed9c2561b`. It stays in the same configuration; it is not refitted on validation. `FinalTestLocked` and `RoleLocked` are lifted only in the freeze commit, by a change that does not alter the model, features or config.
+**XGBoost control** (no checkpoint; five seeds retrained deterministically on the 88 fitting cases from the frozen config, byte-identical across reruns on validation): `config_v1.json` file sha256 `8075f0ebc21a05285946ea3b97d6efd5ba63a3857b588ce791680d727752dc79`, canonical config sha256 `407c55b669bfee4be61712caa6c0e2d477c7af4b5345b76863974599ec5b97e1`, source-set sha256 `f60e088efa7cfdb29bcbf9eb1293c023c7d46beae9548eb97fba636ed9c2561b`. It stays in the same configuration; it is not refitted on validation. The locks (`xgb_control.final_test` / `FinalTestLocked`, `m1_case_features` `RoleLocked`, `window_errors.SCORABLE_ROLES`, `case_eval` `RoleLocked`) stay in their files unchanged, because those files are bound into earlier evidence whose verification hashes the live files. The test role is opened only by `test_freeze.unlocked(token)` for a token that `test_freeze.claim_test_run()` issues after the freeze verified and the one-shot marker was written; the model, features and config do not change.
 
 **Code** (sha256 of files at the moment of this plan; the evaluation code that still has to be written, section 7, is added and hashed in the freeze commit):
 
@@ -118,16 +118,29 @@ Reported per seed 0-4 and mean +/- sample SD: precision, recall, F1, false-posit
 - **Random missingness:** rates 0, 10, 20, 30, 40%, the same 10 deterministic masks per rate and the same Philox keys as in validation; per rate mean +/- SD over masks and seeds.
 - **Calibration:** primary = recalibrated on the same masked calibration windows; secondary = clean thresholds from unmasked calibration.
 - **Models:** v1 primary; D3 at the 90th (matching the primary) and at the 99th percentile; v0 (D4, M2 at the 99th). Metrics: F1, recall, precision, false-positive intervals, alert coverage, relative to the clean row.
-- **Scoring:** our scoring (section 4) for all conditions. For the six ARMOR scenarios also the official labels (section 5) using ARMOR's released per-scenario intervals as reference only if the released tree contains them; if it does not, that is reported and nothing is substituted.
+- **Scoring:** our scoring (section 4) for every condition. For the clean condition and the six ARMOR scenarios also the official labels (section 5), for our models only. Random-rate masks are scored with our scoring only.
+- **ARMOR's released tree has no missing-data results** (listed before any test access, file names and hashes only; the full Zenodo archive listing is `armor-system/data/manifests/armor_d1/outer_archive_listing.csv`):
+
+  | Released file (D1) | Size | sha256 / CRC32 |
+  |---|---|---|
+  | `ARMOR/res/D1/20260113_101332/scenarios/full/res.json` | 193 B | sha256 `7bfca3f5a0bf3dd1a5cc2d70f400fa52f20164cd1dbdce0b35f9cda36eae9748` |
+  | `ARMOR/res/D1/20260113_101332/scenarios/full/tmp/pre_interval.json` | 1,300 B | sha256 `c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7` |
+  | `ARMOR/res/D1/20260113_101332/scenarios/full/tmp/pre_types.json` (not fetched) | 252 B | CRC32 `729656f5` |
+  | `ARMOR/res/D1/20260113_101332/scenarios/full/tmp/rank_df.csv` (not fetched) | 143,951 B | CRC32 `42f19ba7` |
+  | `ARMOR/res/D1/20260113_101332/model.pkl` (not fetched) | 15,016,756 B | CRC32 `82aebfc7` |
+
+  `scenarios/` contains only `full` (D2 likewise). There is no directory, interval file or `res.json` for any drop scenario.
+- **ARMOR missing-data comparisons that will be made:** none against ARMOR outputs. Our models under ARMOR's six scenarios are scored against ARMOR's official labels and shown beside ARMOR's released **full-scenario** reference row, labelled as a clean reference, not as ARMOR under missing data.
+- **ARMOR missing-data comparisons that will not be made:** (a) no ARMOR-under-missing-data row, because no scenario intervals or results were released; (b) ARMOR is not re-run to create them (its released `model.pkl` is a baseline-team artefact, needs an unrestricted pickle load and is out of scope); (c) any missing-data numbers printed in ARMOR's paper are not reproducible from the release and are not tabulated beside ours; (d) the random-rate experiment has no ARMOR counterpart.
 - Validation comparison for context: `results/experiment_v1/missing_summary.json`, `missing_d3_p90_summary.json`.
 
-## 7. To be built and committed before the test run (none of it needs test data)
+## 7. Test-run machinery (built, tested on validation and synthetic data, part of the freeze)
 
-1. Ensemble scorer (fault type and detection) and its unit tests on synthetic data, plus one dry run on **validation** only to prove it runs (the numbers are reported as validation, not used to change it).
-2. One-shot test runner for v1, v0 and XGBoost with a single entry point, writing predictions and metrics for every row above plus the paired bootstrap; refuses to run twice into the same output directory.
-3. Test-period scoring-set builder with the same rules as validation, plus the official-label scorer wrapper that reads `ad_cases.pkl` and the released intervals only inside the evaluation step.
-4. Lifting of the XGBoost and Model 1 test locks (README "Future frozen-test pathway", step 1-2), a frozen-config file recording the section 2 hashes plus the evaluation-code hashes, and a Linear note for the decision (made by a person, not by this plan).
-5. A freeze commit that contains only items 2-4. The test is then run from that commit, and the run records its commit SHA, so a later reader can check that it matches this plan.
+1. `ensemble.py`: five-seed ensemble (protocol section 11.3). Validation row: `results/ensemble_validation_v1/` (secondary; never chosen from).
+2. `run_test.py`: one-shot runner for v1, v0 and XGBoost (`--mode test`), writing every row above and the paired bootstraps to `results/test_v1/`. It verifies the freeze record (`results/test_freeze/evidence_test_freeze.json`) against disk and refuses on any difference, then writes two markers by exclusive create (`results/test_v1/TEST_RUN_MARKER.json` and `~/298A_project/checkpoints/model1_test_run_marker.json`) before reading any test window; an existing marker refuses every later run. Its `--mode validation` dry run reproduced every committed validation result byte for byte (v1 and v0 predictions, v1 detection and thresholds, D3, D4, XGBoost predictions, 48 seed-0 missing-data cells).
+3. `scoring_sets.py` (period scoring sets with the validation rules; test needs the run token) and `official_scoring.py` (official labels and released intervals, pinned, token required; Model 1 alerts scored with the validation construction).
+4. `test_freeze.py`: freeze record, verification, markers and the gated unlock (section 2).
+5. The test is run from the freeze commit; the run records HEAD in its marker. Deciding to run it is a person's decision, recorded in Linear by them.
 
 ## 8. Limits stated in advance
 
