@@ -180,9 +180,10 @@ class ProtocolFactsTests(unittest.TestCase):
             self.assertNotIn(w, d, w)
         self.assertIn("simulated missing", d)
 
-    def test_no_training_or_test_artifacts_were_created_by_this_audit(self):
-        for f in ("v1_checkpoint", "v1_train", "run_v1"):
-            self.assertFalse(any(f in n for n in os.listdir(MODELS)))
+    def test_no_checkpoint_files_live_inside_the_repository(self):
+        root = os.path.abspath(os.path.join(MODELS, "..", ".."))
+        found = [os.path.join(dp, f) for dp, _, fs in os.walk(root) for f in fs if f.endswith((".pt", ".pth", ".ckpt"))]
+        self.assertEqual(found, [])                                                    # checkpoints stay outside Git
 
 
 if __name__ == "__main__":
