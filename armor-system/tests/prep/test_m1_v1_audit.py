@@ -157,10 +157,21 @@ class ProtocolFactsTests(unittest.TestCase):
         pc = lambda mod: sum(p.numel() for p in mod.parameters())          # noqa: E731
         self.assertEqual((pc(m.input_adapter) + pc(m.core), pc(m.fault_head), pc(m.next_step_head)), (151169, 8581, 8450))
 
-    def test_predeclaration_and_extensions_are_recorded_and_distinguished(self):
+    def test_predeclaration_decisions_and_extensions_are_recorded_and_distinguished(self):
         self.assertIn("Model 1 v0 uses no simulated-missing training and is reported as the ablation. Model 1 v1 uses simulated-missing training and is the predeclared final model for held-out test evaluation, regardless of validation performance.", self.doc)
-        for s in ("Explicit v1 extension", "amendment A-2", "extension A-3", "extension A-4", "B1", "[S]", "0.20", "q = 0.1", "level = 0.95", "binary detection head", "Not executed", "D1:", "D2:", "D3:", "D4:"):
+        for s in ("Explicit v1 extension", "amendment A-2", "extension A-3", "extension A-4", "binary detection head", "0.20", "q = 0.1", "level = 0.95", "D1:", "D2:", "D3:", "D4:",
+                  "approved by the project lead", "B1 (resolved)", "empirical 90th percentile", "Option (c)", "rejected", "7-window moving-block bootstrap", "paired batch", "L_fault + L_det",
+                  "Targets are never hidden", "Philox", "causal", "Dropping `metric` hides all six VMs", "clean thresholds", "two rows"):
             self.assertIn(s.lower(), self.doc.lower(), s)
+        self.assertNotIn("[S]", self.doc)                                              # every former specified-by-audit item is now a confirmed decision
+        self.assertNotIn("provisional", self.doc.lower().replace("not provisional", ""))
+
+    def test_the_ranks_quoted_for_the_90th_percentile_are_right(self):
+        from model1_transformer import threshold_diagnostics as tdg
+        r = tdg.percentile_ranks(329, 90.0)
+        self.assertEqual((r["lower_rank_ascending"], r["upper_rank_ascending"], r["lower_rank_from_top"], r["upper_rank_from_top"]), (296, 297, 34, 33))
+        self.assertAlmostEqual(r["weight_on_upper"], 0.2, places=9)
+        self.assertIn("ascending ranks 296 and 297, 34th and 33rd from the top, weight 0.2", self.doc)
 
     def test_the_design_note_really_has_no_binary_head_spot_or_rolling_maximum(self):
         with open(os.path.join(MODELS, "MODEL1_V0_DESIGN.md")) as fh:
