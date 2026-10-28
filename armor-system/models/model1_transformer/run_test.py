@@ -5,8 +5,14 @@
 
 --mode test verifies the freeze record against disk (test_freeze.verify: tracked files, checkpoints, feature cache, ARMOR inputs, plan,
 protocol, clean tree), writes the one-shot markers (exclusive create; an existing marker refuses the run) and only then reads a test
-window or label, through test_freeze.unlocked(token). Output goes to results/test_v1/ only. Worker processes (missing data per seed,
-XGBoost features, XGBoost training: torch and xgboost cannot share a macOS process) re-verify the freeze and the marker's run id.
+window or label, through test_freeze.unlocked(token). Output goes to results/test_v1/ and its subfolders only. Worker processes
+(missing data per seed, XGBoost features, XGBoost training: torch and xgboost cannot share a macOS process) re-verify the freeze and
+the marker's run id.
+
+Attempt 2 (TEST_INCIDENT_attempt1.md): attempt 1 stopped after core seeds 0-3 when its session ended, and its XGBoost-features worker
+had been refused by the output check (which then accepted results/test_v1/ itself only, not its subfolders). Attempt 2 uses its own
+marker names (MARKERS; refused if either exists), starts only on an empty results/test_v1/, and after completion compares seeds 0-3
+byte for byte with results/test_v1_attempt1_aborted/ and records the outcome in results/test_v1/attempt1_consistency.json.
 
 --mode validation runs the identical code on the validation period (no freeze, no marker, no official labels, which are all
 test-period) into DIR, and checks it against the committed validation results: v1 predictions and detection, v0 predictions,
@@ -40,6 +46,9 @@ XGB_RES = os.path.join(REPO, "armor-system", "models", "model1_xgboost_control",
 D3_P = ("90.0", "99.0")
 D4_P = "99.0"
 M2 = "m2_max_normalised"
+MARKERS = (os.path.join(tf.TEST_OUT, "TEST_RUN_MARKER_attempt2.json"), os.path.join(tf.CKPT_ROOT, "model1_test_run_marker_attempt2.json"))
+ATTEMPT1_DIR = os.path.join(HERE, "results", "test_v1_attempt1_aborted")
+ATTEMPT1_FILES = ("result.json", "predictions_v1.csv", "predictions_v0.csv")
 
 
 def say(*a):
@@ -447,17 +456,50 @@ def _wait(procs):
         raise RuntimeError(f"worker(s) failed: {bad}")
 
 
+def out_ok(mode, path):
+    """Test output must be results/test_v1/ or a subfolder of it; validation output must not be there."""
+    p = os.path.abspath(path)
+    inside = p == tf.TEST_OUT or p.startswith(tf.TEST_OUT + os.sep)
+    return inside if mode == "test" else not inside
+
+
+def worker_specs(period, out_dir, masks, missing_seeds):
+    """Arguments of every worker process the orchestrator launches, by name."""
+    feat = os.path.join(out_dir, "xgb_features")
+    specs = {f"missing_{s}": ["--worker", "missing", "--mode", period, "--seed", str(s), "--out", out_dir, "--masks", str(masks)] for s in missing_seeds}
+    specs["xgb_features"] = ["--worker", "xgb-features", "--mode", period, "--out", feat]
+    specs["xgb_train"] = ["--worker", "xgb-train", "--mode", period, "--features", feat, "--out", out_dir]
+    return specs
+
+
+def start_test_run(markers=None):
+    """Attempt 2: refuse if an attempt-2 marker exists or results/test_v1/ is not empty, then verify the freeze and write the markers."""
+    markers = markers or MARKERS
+    if os.path.isdir(tf.TEST_OUT) and os.listdir(tf.TEST_OUT):
+        raise tf.FreezeError(f"{tf.TEST_OUT} is not empty; a test run starts only on an empty output directory")
+    return tf.claim_test_run(markers=markers)
+
+
+def compare_attempt1(out_dir, archive=ATTEMPT1_DIR, seeds=(0, 1, 2, 3)):
+    """Byte-for-byte comparison of this run's seed files with the aborted attempt 1 (recorded, never used to change anything)."""
+    files = {}
+    for s in seeds:
+        for f in ATTEMPT1_FILES:
+            a, b = os.path.join(out_dir, f"seed_{s}", f), os.path.join(archive, f"seed_{s}", f)
+            files[f"seed_{s}/{f}"] = {"identical": os.path.isfile(a) and os.path.isfile(b) and rbytes(a) == rbytes(b),
+                                      "sha256_this_run": tf.sha(a) if os.path.isfile(a) else None, "sha256_attempt1": tf.sha(b) if os.path.isfile(b) else None}
+    return {"archive": os.path.relpath(archive, REPO), "files": files, "all_identical": all(v["identical"] for v in files.values())}
+
+
 def orchestrate(period, out_dir, run_id, token, masks, missing, missing_seeds):
     os.makedirs(os.path.join(out_dir, "logs"), exist_ok=True)
+    specs = worker_specs(period, out_dir, masks, missing_seeds if missing else ())
     feat = os.path.join(out_dir, "xgb_features")
-    procs = {}
-    if missing:
-        for s in missing_seeds:
-            procs[f"missing_{s}"] = _worker(["--worker", "missing", "--mode", period, "--seed", str(s), "--out", out_dir, "--masks", str(masks)], run_id, os.path.join(out_dir, "logs", f"missing_{s}.log"))
-    procs["xgb_features"] = _worker(["--worker", "xgb-features", "--mode", period, "--out", feat], run_id, os.path.join(out_dir, "logs", "xgb_features.log"))
+    procs = {name: _worker(specs[name], run_id, os.path.join(out_dir, "logs", f"{name}.log")) for name in specs if name.startswith("missing_")}
+    procs["xgb_features"] = _worker(specs["xgb_features"], run_id, os.path.join(out_dir, "logs", "xgb_features.log"))
     run_core(period, token, out_dir)
     _wait({"xgb_features": procs.pop("xgb_features")})
-    _wait({"xgb_train": _worker(["--worker", "xgb-train", "--mode", period, "--features", feat, "--out", out_dir], run_id, os.path.join(out_dir, "logs", "xgb_train.log"))})
+    _wait({"xgb_train": _worker(specs["xgb_train"], run_id, os.path.join(out_dir, "logs", "xgb_train.log"))})
     v1_unions = jload(os.path.join(out_dir, "seed_0", "result.json"))["case_minute_unions"]
     if jload(os.path.join(feat, "unions.json")) != v1_unions:
         raise RuntimeError("XGBoost and Model 1 classified different case windows")
@@ -477,12 +519,11 @@ def main(argv=None):
     ap.add_argument("--no-missing", action="store_true")
     ap.add_argument("--missing-check", action="store_true", help="validation only: missing-data run for seed 0 with one mask per rate, compared with the committed cells")
     a = ap.parse_args(argv)
-    if a.mode == "test" and a.out and os.path.abspath(a.out) != tf.TEST_OUT:
-        ap.error(f"test output goes to {tf.TEST_OUT} only")
-    if a.mode == "validation" and a.out and os.path.abspath(a.out).startswith(tf.TEST_OUT):
-        ap.error("the test output directory is reserved for the test run")
+    for path in (a.out, a.features):
+        if path and not out_ok(a.mode, path):
+            ap.error(f"test output goes to {tf.TEST_OUT} or its subfolders only" if a.mode == "test" else "the test output directory is reserved for the test run")
     if a.worker:
-        token = tf.resume_token(a.run_id) if a.mode == "test" else None
+        token = tf.resume_token(a.run_id, markers=MARKERS) if a.mode == "test" else None
         if a.worker == "missing":
             with tf.unlocked(token) if token else _null():
                 run_missing_seed(a.mode, token, a.seed, a.out, a.masks)
@@ -492,10 +533,13 @@ def main(argv=None):
             xgb_train(a.features, a.out)
         return 0
     if a.mode == "test":
-        token = tf.claim_test_run()                       # verifies the freeze and writes the one-shot markers BEFORE any test window is read
+        token = start_test_run()                          # verifies the freeze and writes the attempt-2 markers BEFORE any test window is read
         out_dir = tf.TEST_OUT
         with tf.unlocked(token):
             orchestrate("test", out_dir, token.run_id, token, 10, True, SEEDS)
+        cons = compare_attempt1(out_dir)
+        dump(os.path.join(out_dir, "attempt1_consistency.json"), cons)
+        say("seeds 0-3 identical to attempt 1:", cons["all_identical"])
         say("test run complete:", out_dir)
         return 0
     if not a.out:
