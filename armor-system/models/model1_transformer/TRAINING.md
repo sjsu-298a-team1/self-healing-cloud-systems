@@ -1,6 +1,6 @@
 # Model 1 two-stage training and validation interface (Linear 298-51, infrastructure only)
 
-**Status: infrastructure implemented and tested. No full training run, no validation run.** The tests do at most three optimizer steps per stage, on real *fitting* windows, to prove the wiring. The 84 test cases stay locked.
+**Status: infrastructure implemented and tested (298-51); v0 decisions frozen by the amendment in section 7; first fixed five-seed experiment run by `run_experiment.py`.** The 84 test cases stay locked.
 
 ## 1. Case-balanced classification weighting (S2)
 
@@ -58,3 +58,17 @@ See the test files `test_m1_training_weights.py`, `test_m1_training_loop.py`, `t
 3. **S2 early-stopping metric** (design 6 says "S1/S2 validation metric"; E-4 is open). Candidates: validation case-level macro-F1 (noisy: 25 cases, Node Memory n = 1) or a validation loss on the 150 windows. The `EarlyStopper` is generic; the callback is not wired for S2 on purpose.
 4. **S1 early stopping** uses validation `normal_reference` masked MSE (non-gradient, allowed by the design); `evaluate_masked_mse` exists and is tested on synthetic data only.
 5. Weight decay is applied to every parameter (AdamW default), including biases and LayerNorm; excluding them is a possible later ablation.
+
+## 7. Amendment A-1 and frozen v0 decisions (2026-10-28)
+
+Approved by the project lead and recorded in `training_config_v1.json` (new config hash in every checkpoint). These are fixed; no hyper-parameter search is run.
+
+1. **Case-balanced per-window weights are approved** (amendment to design 4.3): `window_weight = case-derived class weight / eligible window count of the case`, normalised as in section 1. Reason: windows of one case are strongly overlapping, so a case should count once; this also matches the XGBoost control's one-row-per-case weighting.
+2. **Stage 1:** AdamW, lr 1e-3, cosine scheduler (T_max = 100 epochs, stepped per epoch), max 100 epochs, batch 64, gradient clipping 1.0, weight decay 0.01. **Early stopping:** validation `normal_reference` masked MSE, patience 10. The epoch with the lowest value is the selected S1 checkpoint.
+3. **Stage 2:** initialised from that seed's selected S1 checkpoint, fresh AdamW state, lr 1e-4 constant, max 100 epochs, batch 64, clipping 1.0, weight decay 0.01. **Early stopping:** validation **case-level negative log-likelihood** after averaging the window probabilities of each case (mean over the 25 cases of `-log(mean probability of the true class)`), patience 10, lowest value selected.
+4. **Primary reported metric:** five-class validation macro-F1 (case level). It is reported, never used for selection.
+5. **Seeds:** 0, 1, 2, 3, 4.
+6. **Validation is used only for checkpoint selection (early stopping) and metrics; it never produces a gradient update.** Calibration (13 cases) and test (84 cases) are not touched: no calibration fitting, no test prediction, no test metric.
+7. Weight decay applies to all parameters (AdamW default).
+
+Consequence to keep in mind: because validation picks the stopping epoch, validation metrics are slightly optimistic for the selected checkpoint (selection effect over at most 100 epochs on 25 cases / 411 + 150 windows). The held-out test partition is the unbiased estimate and stays locked.

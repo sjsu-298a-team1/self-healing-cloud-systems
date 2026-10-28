@@ -5,6 +5,7 @@ cross-entropy on fitting `event_associated` windows, encoder initialised from th
 Gradient steps are only possible on batches from `training_loader` (fitting windows); `check_batch` refuses anything else.
 """
 import hashlib
+import itertools
 import json
 import math
 import os
@@ -128,6 +129,16 @@ class EarlyStopper:
         return self.bad >= self.patience
 
 
+class _Limited:
+    """First `n` batches of every epoch (only used by short smoke runs and tests)."""
+
+    def __init__(self, loader, n):
+        self.loader, self.n = loader, n
+
+    def __iter__(self):
+        return itertools.islice(iter(self.loader), self.n)
+
+
 def _to_device(batch, device):
     return {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in batch.items()}
 
@@ -222,7 +233,7 @@ def build_model(spec, seed, device):
     return Model1.build(spec, ModelConfig(), seed=seed).to(device)
 
 
-def train_stage1(data, cfg, seed, *, spec=None, device="cpu", max_steps=None, on_epoch_end=None, epochs=None):
+def train_stage1(data, cfg, seed, *, spec=None, device="cpu", max_steps=None, on_epoch_end=None, epochs=None, max_batches_per_epoch=None):
     """S1 from a fresh seeded model. Returns (model, history). Uses only the fitting `normal_reference` windows."""
     from prep import m1_dataset as md
     dev = torch.device(device)
@@ -230,13 +241,14 @@ def train_stage1(data, cfg, seed, *, spec=None, device="cpu", max_steps=None, on
     sc = cfg.s1
     model = build_model(spec, seed, dev)
     loader = md.training_loader(md.training_dataset(data, "s1_pretrain"), batch_size=sc.batch_size, seed=seed)
+    loader = _Limited(loader, max_batches_per_epoch) if max_batches_per_epoch else loader
     opt = make_optimizer(model, sc)
     hist = train_epochs(model, loader, s1_loss_fn, opt, epochs=epochs or sc.epochs, clip_norm=sc.clip_norm, device=dev, stage="s1",
                         scheduler=make_scheduler(opt, sc), max_steps=max_steps, on_epoch_end=on_epoch_end)
     return model, hist
 
 
-def train_stage2(model, data, cfg, seed, *, device="cpu", max_steps=None, on_epoch_end=None, epochs=None, weights=None):
+def train_stage2(model, data, cfg, seed, *, device="cpu", max_steps=None, on_epoch_end=None, epochs=None, weights=None, max_batches_per_epoch=None):
     """S2 fine-tuning of `model` (normally loaded from the S1 checkpoint of the same seed). All weights trainable, fresh AdamW."""
     from prep import m1_dataset as md
     dev = torch.device(device)
@@ -244,6 +256,7 @@ def train_stage2(model, data, cfg, seed, *, device="cpu", max_steps=None, on_epo
     weights = weights or CaseBalancedWeights.from_model1_data(data)
     torch.manual_seed(validate_seed(seed))                                # dropout stream of S2 depends on the seed only
     loader = md.training_loader(md.training_dataset(data, "s2_fault_finetune"), batch_size=sc.batch_size, seed=seed)
+    loader = _Limited(loader, max_batches_per_epoch) if max_batches_per_epoch else loader
     opt = make_optimizer(model, sc)
     hist = train_epochs(model, loader, make_s2_loss_fn(weights), opt, epochs=epochs or sc.epochs, clip_norm=sc.clip_norm, device=dev, stage="s2",
                         scheduler=make_scheduler(opt, sc), max_steps=max_steps, on_epoch_end=on_epoch_end)
