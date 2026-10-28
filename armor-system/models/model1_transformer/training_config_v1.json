@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "status": "proposed: values marked design come from MODEL1_V0_DESIGN.md section 6; values marked proposed are NOT in the approved design and need approval before the five-seed run",
+  "seeds": [0, 1, 2, 3, 4],
+  "optimizer": "AdamW (torch defaults: betas 0.9/0.999, eps 1e-8; weight decay on every parameter)",
+  "s1": {"lr": 0.001, "weight_decay": 0.01, "batch_size": 64, "clip_norm": 1.0, "schedule": "cosine", "epochs": 100, "patience": 10,
+         "source": {"lr": "design", "weight_decay": "design", "batch_size": "design", "clip_norm": "design", "schedule": "design (cosine decay)", "epochs": "proposed", "patience": "design"}},
+  "s2": {"lr": 0.0001, "weight_decay": 0.01, "batch_size": 64, "clip_norm": 1.0, "schedule": "constant", "epochs": 100, "patience": 10,
+         "source": {"lr": "design", "weight_decay": "design", "batch_size": "design", "clip_norm": "design", "schedule": "proposed (design gives no S2 schedule)", "epochs": "proposed", "patience": "design (metric undefined, see TRAINING.md)"}}
+}
