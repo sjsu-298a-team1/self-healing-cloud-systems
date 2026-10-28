@@ -152,7 +152,15 @@ def run_seed(D, cfg, seed, ckpt_root=DEFAULT_CKPT, out_dir=None, device="cpu", e
     return {"metrics": s, "run": run, "histories": {"s1": h1, "s2": h2}}
 
 
-def aggregate(root=RESULTS, seeds=T.SEEDS):
+def compare_rerun(root, rerun_dir, seed=0):
+    """Byte-compare a clean rerun of one seed with the recorded results (results files, selected epochs, checkpoint hashes)."""
+    same = {n: open(os.path.join(root, f"seed_{seed}", n), "rb").read() == open(os.path.join(rerun_dir, n), "rb").read() for n in ("metrics.json", "histories.json", "predictions.csv")}
+    a, b = (json.load(open(os.path.join(d, "run_meta.json"))) for d in (os.path.join(root, f"seed_{seed}"), rerun_dir))
+    same.update({"selected_epochs": a["selected"] == b["selected"], **{k: a["checkpoints"][k] == b["checkpoints"][k] for k in ("s1_pt_sha256", "s2_pt_sha256", "s2_state_sha256")}})
+    return {"seed": seed, "identical": same, "all_identical": all(same.values()), "s2_state_sha256": a["checkpoints"]["s2_state_sha256"]}
+
+
+def aggregate(root=RESULTS, seeds=T.SEEDS, rerun_dir=None):
     per = {}
     for sd in seeds:
         d = os.path.join(root, f"seed_{sd}")
@@ -185,6 +193,7 @@ def aggregate(root=RESULTS, seeds=T.SEEDS):
                                 "predictions_csv_sha256": per[s]["run_meta"]["predictions_csv_sha256"], "elapsed_seconds": per[s]["run_meta"]["elapsed_seconds"],
                                 "git_head": per[s]["run_meta"]["provenance"]["git_head"]} for s in seeds},
           "hardware": per[seeds[0]]["run_meta"]["hardware"], "objectives_used": list(OBJECTIVES_USED),
+          "reproducibility": compare_rerun(root, rerun_dir) if rerun_dir else "not checked in this invocation",
           "results_file_sha256": {f"seed_{s}/{n}": _sha(os.path.join(root, f"seed_{s}", n)) for s in seeds for n in ("metrics.json", "histories.json", "predictions.csv")} | {"validation_summary.json": _sha(os.path.join(root, "validation_summary.json"))},
           "commit_reference": {"scheme": "no self-referential hash; source_set_sha256 covers the code and config that produced the results", "source_set_sha256": set_hash, "source_files": rows,
                                "git_head_at_run": per[seeds[0]]["run_meta"]["provenance"]["git_head"]}}
@@ -200,9 +209,10 @@ def main(argv=None):
     ap.add_argument("--aggregate", action="store_true")
     ap.add_argument("--ckpt-dir", default=DEFAULT_CKPT)
     ap.add_argument("--out-dir")
+    ap.add_argument("--rerun-dir", help="with --aggregate: a clean rerun of seed 0 to byte-compare")
     a = ap.parse_args(argv)
     if a.aggregate:
-        out, ev = aggregate()
+        out, ev = aggregate(rerun_dir=a.rerun_dir)
         print(json.dumps({k: out["mean_sd_across_seeds"][k] for k in ("macro_f1", "weighted_f1", "accuracy")}, indent=1)[:1500])
         print("source_set_sha256", ev["commit_reference"]["source_set_sha256"])
         return 0
