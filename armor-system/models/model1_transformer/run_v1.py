@@ -44,8 +44,8 @@ SOURCE_FILES = tuple(f"armor-system/models/model1_transformer/{f}" for f in (
     "V1_PROTOCOL.md", "model_v1.py", "sim_missing.py", "paired.py", "rolling.py", "training_v1.py", "detection_v1.py", "missing_eval.py", "run_v1.py", "bootstrap_v1.py",
     "training_config_v1.json", "weighting.py", "case_eval.py", "checkpoint.py", "window_errors.py", "threshold_diagnostics.py", "run_detection_v0.py", "training.py")) + (
     "armor-system/evaluation/detection/armor_scoring.py", "armor-system/evaluation/detection/interval_diagnostics.py",
-    "armor-system/tests/prep/test_m1_v1_components.py", "armor-system/tests/prep/test_m1_v1_detection.py", "armor-system/tests/prep/test_m1_v1_runner.py")
-TEST_FILES = ("test_m1_v1_components.py", "test_m1_v1_detection.py", "test_m1_v1_runner.py")
+    "armor-system/tests/prep/test_m1_v1_components.py", "armor-system/tests/prep/test_m1_v1_detection.py", "armor-system/tests/prep/test_m1_v1_runner.py", "armor-system/tests/prep/test_m1_v1_results.py")
+TEST_FILES = ("test_m1_v1_components.py", "test_m1_v1_detection.py", "test_m1_v1_runner.py", "test_m1_v1_results.py")
 HISTORICAL = ("armor-system/data/artifacts/d1/evidence/evidence.json", "armor-system/data/artifacts/d1/evidence/evidence_m1_03.json",
               "armor-system/models/model1_xgboost_control/results/xgb_control_v1/evidence_xgb_control_v1.json", "armor-system/models/model1_transformer/results/core_v0/evidence_model1_core_v0.json",
               "armor-system/models/model1_transformer/results/experiment_v0/evidence_model1_experiment_v0.json", "armor-system/models/model1_transformer/results/detection_v0/evidence_model1_detection_v0.json",
@@ -372,6 +372,7 @@ def write_evidence(rerun_dir=None):
           "v0_stage1_checkpoint_hashes_unchanged": {str(s): sha(os.path.join(rd.DEFAULT_CKPT, f"seed_{s}", "s1_best.pt")) == v0_ck[s] for s in SEEDS},
           "hardware": per[0]["hardware"], "objectives_used": list(OBJECTIVES_USED), "test_data_accessed": False, "official_armor_labels_or_intervals_accessed": False,
           "results_file_sha256": {os.path.relpath(os.path.join(dp, f), RESULTS): sha(os.path.join(dp, f)) for dp, _, fs in os.walk(RESULTS) for f in sorted(fs) if f.endswith((".json", ".csv")) and f != os.path.basename(EVIDENCE)},
+          "bootstrap_vs_xgboost_file_sha256": sha(os.path.join(HERE, "results", "comparison_v1", "bootstrap_validation_v1_vs_xgboost.json")),
           "reproducibility_rerun": compare_rerun(RESULTS, rerun_dir) if rerun_dir else "not provided",
           "tests": {"files": tests, "m1_integration": {"tests_ran": int(m[2]), "skipped": int(m[3]), "failures": int(m[4]), "errors": int(m[5]), "suites": suites, "evidence_m1_03_verified": True}},
           "historical_evidence_unchanged": hist,
