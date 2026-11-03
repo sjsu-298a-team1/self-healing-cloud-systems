@@ -1,0 +1,118 @@
+{
+ "AD_alert_coverage": {
+  "coverage_padded_300s": 0.8739145536644668,
+  "coverage_raw": 0.7030218825981244,
+  "minutes": 2879,
+  "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+ },
+ "AD_cases_84": {
+  "FN": 0,
+  "FP": 10,
+  "TP": 84,
+  "density": 2.1,
+  "f1": 0.9438,
+  "n_intervals": 50,
+  "n_labels": 84,
+  "precision": 0.8936,
+  "recall": 1.0
+ },
+ "AD_official_98": {
+  "counts": {
+   "FN": 0,
+   "FP": 8,
+   "TP": 98
+  },
+  "f1": 0.9608,
+  "n_intervals": 50,
+  "n_labels": 98,
+  "precision": 0.9245,
+  "recall": 1.0
+ },
+ "FT_cases_84": {
+  "accuracy": 0.9404761904761905,
+  "class_names": {
+   "0": "Container Hardware",
+   "1": "Container Network",
+   "3": "Node CPU",
+   "4": "Node Disk",
+   "5": "Node Memory"
+  },
+  "macro_f1": 0.8968944099378883,
+  "per_class_f1": {
+   "0": 0.9714285714285714,
+   "1": 0.9130434782608695,
+   "3": 1.0,
+   "4": 0.9333333333333333,
+   "5": 0.6666666666666666
+  },
+  "support": {
+   "0": 36,
+   "1": 22,
+   "3": 8,
+   "4": 14,
+   "5": 4
+  },
+  "weighted": {
+   "f1": 0.938,
+   "precision": 0.9464,
+   "recall": 0.9405
+  }
+ },
+ "RCL_cases_84": {
+  "avgK": 0.9095,
+  "topK": [
+   0.8214,
+   0.8929,
+   0.9405,
+   0.9405,
+   0.9524
+  ]
+ },
+ "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+ "inputs_sha256": {
+  "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+  "pre_types": "a5edc6089a92e38d268d5b38406eac3d990ab0a71f7992df346721178decc1c9",
+  "rank_df": "f75a08e85e54967825a85875ede170d04c4982ed7b309b604bfebf3692da64f6",
+  "res_json": "7bfca3f5a0bf3dd1a5cc2d70f400fa52f20164cd1dbdce0b35f9cda36eae9748"
+ },
+ "matches_published": {
+  "AD": {
+   "f1": true,
+   "precision": true,
+   "recall": true
+  },
+  "FT": {
+   "f1": true,
+   "precision": true,
+   "recall": true
+  },
+  "RCL": {
+   "avgK": true,
+   "topK": true
+  }
+ },
+ "run_dir": "data/raw/armor_zenodo_21744694/ARMOR/res/D1/20260113_101332",
+ "run_res_json": {
+  "AD": {
+   "f1": 0.9608,
+   "precision": 0.9245,
+   "recall": 1.0
+  },
+  "FT": {
+   "f1": 0.938,
+   "precision": 0.9464,
+   "recall": 0.9405
+  },
+  "RCL": {
+   "avgK": 0.9095,
+   "topK": [
+    0.8214,
+    0.8929,
+    0.9405,
+    0.9405,
+    0.9524
+   ]
+  }
+ },
+ "split_ts": 1651852800
+}
