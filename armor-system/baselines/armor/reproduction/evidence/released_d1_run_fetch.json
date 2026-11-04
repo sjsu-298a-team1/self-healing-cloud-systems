@@ -1,0 +1,46 @@
+{
+ "source": "https://zenodo.org/api/records/21744694/files/ARMOR.zip/content",
+ "fetched_at_utc": "2026-11-03T05:39:26+00:00",
+ "listing": "data/manifests/armor_d1/outer_archive_listing.csv",
+ "total_compressed_bytes_requested": 13946026,
+ "members": [
+  {
+   "member": "ARMOR/res/D1/20260113_101332/model.pkl",
+   "compressed_bytes_fetched": 13888864,
+   "size": 15016756,
+   "crc32": "82aebfc7",
+   "sha256": "8a96045366b848dcc5ac96b97ede9db9358d62f0f6a39a24cb04722217e78fab"
+  },
+  {
+   "member": "ARMOR/res/D1/20260113_101332/scenarios/full/res.json",
+   "compressed_bytes_fetched": 0,
+   "size": 193,
+   "crc32": "6c910556",
+   "note": "already present",
+   "sha256": "7bfca3f5a0bf3dd1a5cc2d70f400fa52f20164cd1dbdce0b35f9cda36eae9748"
+  },
+  {
+   "member": "ARMOR/res/D1/20260113_101332/scenarios/full/tmp/pre_interval.json",
+   "compressed_bytes_fetched": 0,
+   "size": 1300,
+   "crc32": "05c9ff84",
+   "note": "already present",
+   "sha256": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7"
+  },
+  {
+   "member": "ARMOR/res/D1/20260113_101332/scenarios/full/tmp/pre_types.json",
+   "compressed_bytes_fetched": 76,
+   "size": 252,
+   "crc32": "729656f5",
+   "sha256": "a5edc6089a92e38d268d5b38406eac3d990ab0a71f7992df346721178decc1c9"
+  },
+  {
+   "member": "ARMOR/res/D1/20260113_101332/scenarios/full/tmp/rank_df.csv",
+   "compressed_bytes_fetched": 45021,
+   "size": 143951,
+   "crc32": "42f19ba7",
+   "sha256": "f75a08e85e54967825a85875ede170d04c4982ed7b309b604bfebf3692da64f6"
+  }
+ ],
+ "not_fetched": "ARMOR/data/D2.zip and ARMOR/res/D2/ (D2 excluded by project decision)"
+}
