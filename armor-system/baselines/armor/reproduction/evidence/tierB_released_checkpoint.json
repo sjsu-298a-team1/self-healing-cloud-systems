@@ -1,0 +1,655 @@
+{
+ "xgboost_1.6.2": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    17,
+    54,
+    60,
+    72
+   ],
+   "RCL_max_abs_score_difference": 1.195258786390596e-07,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_alert_coverage": {
+    "coverage_padded_300s": 0.8739145536644668,
+    "coverage_raw": 0.7030218825981244,
+    "minutes": 2879,
+    "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+   },
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.8928571428571429,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.7929887106357694,
+    "per_class_f1": {
+     "0": 0.9444444444444444,
+     "1": 0.8636363636363636,
+     "3": 0.823529411764706,
+     "4": 0.9333333333333333,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "93f8e8f97da345a93ff74221e282b81bfdf8edae08c3083737baae46b421ddf8",
+    "rank_df": "65ed4ef2d459dcb1224aba07e65c341903d51579d4cb7cf762b282626c203cdd",
+    "res_json": "a89ca76bcae377d76e057976a5c5fa5a67133f746dcf75957f5ecfcec4ba351e"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/armor_runs/xgb_1.6.2/res/D1/20260113_101332",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ },
+ "xgboost_1.7.6": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    17,
+    54,
+    60,
+    72
+   ],
+   "RCL_max_abs_score_difference": 1.195258786390596e-07,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_alert_coverage": {
+    "coverage_padded_300s": 0.8739145536644668,
+    "coverage_raw": 0.7030218825981244,
+    "minutes": 2879,
+    "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+   },
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.8928571428571429,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.7929887106357694,
+    "per_class_f1": {
+     "0": 0.9444444444444444,
+     "1": 0.8636363636363636,
+     "3": 0.823529411764706,
+     "4": 0.9333333333333333,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "93f8e8f97da345a93ff74221e282b81bfdf8edae08c3083737baae46b421ddf8",
+    "rank_df": "65ed4ef2d459dcb1224aba07e65c341903d51579d4cb7cf762b282626c203cdd",
+    "res_json": "a89ca76bcae377d76e057976a5c5fa5a67133f746dcf75957f5ecfcec4ba351e"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/tierB_released_ckpt/ARMOR/res/D1/20260113_101332",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ },
+ "xgboost_1.7.6_rerun": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    17,
+    54,
+    60,
+    72
+   ],
+   "RCL_max_abs_score_difference": 1.195258786390596e-07,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_alert_coverage": {
+    "coverage_padded_300s": 0.8739145536644668,
+    "coverage_raw": 0.7030218825981244,
+    "minutes": 2879,
+    "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+   },
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.8928571428571429,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.7929887106357694,
+    "per_class_f1": {
+     "0": 0.9444444444444444,
+     "1": 0.8636363636363636,
+     "3": 0.823529411764706,
+     "4": 0.9333333333333333,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "93f8e8f97da345a93ff74221e282b81bfdf8edae08c3083737baae46b421ddf8",
+    "rank_df": "65ed4ef2d459dcb1224aba07e65c341903d51579d4cb7cf762b282626c203cdd",
+    "res_json": "a89ca76bcae377d76e057976a5c5fa5a67133f746dcf75957f5ecfcec4ba351e"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/tierB_confirm/ARMOR/res/D1/20260113_101332",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.884,
+     "precision": 0.8985,
+     "recall": 0.8929
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ },
+ "xgboost_2.0.3": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    54,
+    60,
+    72
+   ],
+   "RCL_max_abs_score_difference": 1.195258786390596e-07,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_alert_coverage": {
+    "coverage_padded_300s": 0.8739145536644668,
+    "coverage_raw": 0.7030218825981244,
+    "minutes": 2879,
+    "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+   },
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.9047619047619048,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.8054359260810875,
+    "per_class_f1": {
+     "0": 0.9714285714285714,
+     "1": 0.8636363636363636,
+     "3": 0.888888888888889,
+     "4": 0.9032258064516129,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.8968,
+     "precision": 0.9158,
+     "recall": 0.9048
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "8123af204da20fd52bbaeff758c1f40626303754207d4ea966ef806fc296072d",
+    "rank_df": "65ed4ef2d459dcb1224aba07e65c341903d51579d4cb7cf762b282626c203cdd",
+    "res_json": "7e4ba13ac413fc0581e732e47ecef71a1310740e6cd87d559d5bf685d5c5ca46"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/armor_runs/xgb_2.0.3/res/D1/20260113_101332",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.8968,
+     "precision": 0.9158,
+     "recall": 0.9048
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ },
+ "xgboost_2.1.4": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    54,
+    60,
+    72
+   ],
+   "RCL_max_abs_score_difference": 1.195258786390596e-07,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_alert_coverage": {
+    "coverage_padded_300s": 0.8739145536644668,
+    "coverage_raw": 0.7030218825981244,
+    "minutes": 2879,
+    "note": "share of the post-split sample minutes inside an interval (raw, and padded by 300 s)"
+   },
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.9047619047619048,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.8054359260810875,
+    "per_class_f1": {
+     "0": 0.9714285714285714,
+     "1": 0.8636363636363636,
+     "3": 0.888888888888889,
+     "4": 0.9032258064516129,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.8968,
+     "precision": 0.9158,
+     "recall": 0.9048
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "8123af204da20fd52bbaeff758c1f40626303754207d4ea966ef806fc296072d",
+    "rank_df": "65ed4ef2d459dcb1224aba07e65c341903d51579d4cb7cf762b282626c203cdd",
+    "res_json": "7e4ba13ac413fc0581e732e47ecef71a1310740e6cd87d559d5bf685d5c5ca46"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/armor_runs/xgb_2.1.4/res/D1/20260113_101332",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.8968,
+     "precision": 0.9158,
+     "recall": 0.9048
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ }
+}
