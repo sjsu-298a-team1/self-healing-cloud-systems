@@ -72,13 +72,13 @@ For context only, the documented released-prediction targets are AD F1 0.9608, F
 
 ### Nikhil Kanaparthi — first-person contribution statement
 
-I configured the ARMOR reproduction environment on a Colab Tesla T4 and resolved DGL download/CUDA-runtime and Matplotlib backend issues. I verified PyTorch/DGL GPU execution and XGBoost's basic training functionality, while documenting the package-metadata warning. I completed a two-epoch training probe and started independent ARMOR D1 training from scratch using the released configuration. I am recording execution logs and reproduction evidence in Drive and preparing the dataset, environment and methodology handoff for Workbook 2.
+I configured the ARMOR reproduction environment on a Colab Tesla T4 and resolved DGL download/CUDA-runtime and Matplotlib backend issues. I verified PyTorch/DGL GPU execution and XGBoost's basic training functionality, while documenting the package-metadata warning. I completed released-checkpoint evaluation, verified the comparison report against my prediction file, and identified two additional fault-type errors relative to the released predictions. I also completed a two-epoch training probe and started independent ARMOR D1 training from scratch using the released configuration. I am recording execution logs and reproduction evidence in Drive and preparing the dataset, environment and methodology handoff for Workbook 2.
 
 The probe completed two epochs in 218.4 seconds (approximately 109.2 seconds per epoch). In the latest shared full-run log, 9 of a maximum 1,000 epochs had completed in approximately 15 minutes 47 seconds. The initial printed loss was 0.1781759435. This shows training progress, not final diagnostic accuracy. Early stopping may terminate the run before the maximum; completion time is not guaranteed. [5]
 
 Run ID: `colab_from_scratch_20261111T202210Z_73bdda`.
 
-Current reportable status: **Independent baseline training in progress; final evaluation and results pending.** Successful GPU library tests do not by themselves measure GPU utilization throughout training. Nikhil's completed Tier A/B metric files have not been supplied for this handoff and should not be quoted as verified new results.
+Current reportable status: **Independent baseline training in progress; final evaluation and results pending.** Successful GPU library tests do not by themselves measure GPU utilization throughout training. Nikhil's Tier B comparison and fault predictions have now been supplied and checked; the verified checkpoint results are recorded below. No completed Tier C results have been supplied.
 
 ### Attribution for other team members
 
@@ -88,9 +88,56 @@ Current reportable status: **Independent baseline training in progress; final ev
 
 ## 7. Evidence for today's workbook/PPT
 
-Available now: pinned source links below, the Colab notebook, setup and GPU test output, dependency records, timing probe and current training log. Nikhil should export/upload these actual Colab outputs to the agreed GitHub documentation location; this handoff does not claim they are already pushed.
+Available in this PR: the checkpoint comparison JSON and the verified results and case analysis below. The Colab notebook, setup/GPU checks, dependency records, timing probe and training progress were shared separately; the complete exported execution bundle remains pending.
 
 Pending: final Tier C metric JSON, completed-run status, generated-output hashes and conclusions about independent reproduction. Do not wait for those to write the methodology section. Do not commit raw datasets or model pickle/checkpoint files to the public repository.
+
+
+## 8. Verified Colab checkpoint results — 11 November 2026
+
+Run: `colab_released_20261111T202210Z_73bdda`. Evidence: [tierB_comparison.json](evidence/nikhil_colab_20261111/tierB_comparison.json).
+
+| Evaluation | AD F1 (98 labels) | FT weighted F1 (84 cases) | RCL Avg@5 (84 cases) |
+|---|---:|---:|---:|
+| Published / released-prediction target | 0.9608 | 0.9380 | 0.9095 |
+| Prior team CPU checkpoint, XGBoost 1.6.2 / 1.7.6 [3] | 0.9608 | 0.8840 | 0.9095 |
+| Prior team CPU checkpoint, XGBoost 2.0.3 / 2.1.4 [3] | 0.9608 | 0.8968 | 0.9095 |
+| Nikhil Colab checkpoint, XGBoost 1.7.6 | 0.9608 | 0.9075 | 0.9095 |
+| Nikhil independent training | Pending | Pending | Pending |
+
+The Colab report records identical AD intervals and identical node ordering in all RCL rankings; the maximum absolute RCL score difference is 4.353827606773386e-08. Matching rounded metrics is not a claim of byte-identical floating-point outputs. AD precision/recall are 0.9245/1.0000. FT weighted precision/recall are 0.9223/0.9167, accuracy is 77/84 (0.916667), and macro-F1 is 0.815825. RCL Top@1–5 are 0.8214, 0.8929, 0.9405, 0.9405, 0.9524.
+
+The alternative 84-case AD evaluation gives F1 0.9438 and 10 false-positive intervals; the official 98-label evaluation gives F1 0.9608 and 8 false-positive intervals. These populations must not be mixed.
+
+### Case-level FT discrepancy
+
+The two uploaded prediction arrays each contain 84 labels. The uploaded cases.csv contains 210 records. Following the pinned scorer, test index 0 maps to case record 126 (zero-based). Exactly two predictions differ:
+
+| Test index | Full case index | Timestamp | Node | Actual fault | Released prediction | Colab prediction |
+|---|---|---|---|---|---|---|
+| 17 | 143 | 1651891895 | node-4 | Node CPU Spiking | Node CPU (3) | Container Hardware (0) |
+| 60 | 186 | 1652064977 | node-4 | Node Memory Consumption | Node Memory (5) | Node CPU (3) |
+
+Both differences are additional errors in the Colab run. They are not the total error count: Colab has seven errors, versus five in the released predictions. The FT weighted-F1 gap is 0.0305. Node Memory has only four test cases and Colab per-class F1 is 0.4; small class support makes individual errors consequential.
+
+Input provenance (SHA-256):
+- Colab pre_types.json: `3fca73d40002ce3a67e57d7bf3767c64bdc309c6e4c31783007043698260324f`; matches the comparison report's recorded input hash.
+- Uploaded released pre_types (1).json: `a5edc6089a92e38d268d5b38406eac3d990ab0a71f7992df346721178decc1c9`.
+- Uploaded cases.csv: `3600f38b9ef5ba4a3e79793f10c80ddba36ce07ccf20e40d5a4395fc9967b182`.
+
+The comparison JSON is archived unchanged. Case analysis was checked directly against the uploaded arrays and case records; raw dataset files and checkpoint binaries are not included.
+
+### What this establishes and what remains open
+
+Released-checkpoint evaluation now has Linux/Colab evidence matching AD and RCL metrics, with a smaller but unresolved FT discrepancy. This is not completed independent reproduction and does not establish that GPU execution caused the improvement.
+
+The pinned reproduction guide identifies a newly fitted XGBoost classifier at evaluation time with random_state=42, and different results across XGBoost versions. It also states that ARMOR's neural training has no fixed seeds. These are distinct sources of variation. The current artifacts identify the differing cases, but cannot isolate the causal effect of XGBoost build/version, upstream floating-point features, or other environment differences.
+
+Next investigation: preserve the running environment; after training, archive the exact package/build information and run logs, then compare fixed FT input features and classifier settings in a separate controlled environment. Do not tune against the held-out labels or change the protocol to force agreement with 0.9380.
+
+### Workbook/PPT status paragraph for team adaptation
+
+Nikhil completed the Colab GPU environment setup and released-checkpoint evaluation for ARMOR D1. Anomaly detection reproduced F1 0.9608 and root-cause localization reproduced Avg@5 0.9095. Fault-type classification reached weighted F1 0.9075, compared with the released target of 0.9380. Case-level comparison identified two additional misclassifications involving CPU and memory faults on node-4. Independent training has been started; its final evaluation remains pending. The team should review and adapt this evidence into its own course submission.
 
 ## References and GitHub evidence
 
