@@ -1,0 +1,125 @@
+{
+ "colab_released": {
+  "against_released": {
+   "AD_intervals_identical": true,
+   "FT_cases_with_different_type": [
+    17,
+    60
+   ],
+   "RCL_max_abs_score_difference": 4.353827606773386e-08,
+   "RCL_rows_with_different_node_order": 0
+  },
+  "scores": {
+   "AD_cases_84": {
+    "FN": 0,
+    "FP": 10,
+    "TP": 84,
+    "density": 2.1,
+    "f1": 0.9438,
+    "n_intervals": 50,
+    "n_labels": 84,
+    "precision": 0.8936,
+    "recall": 1.0
+   },
+   "AD_official_98": {
+    "counts": {
+     "FN": 0,
+     "FP": 8,
+     "TP": 98
+    },
+    "f1": 0.9608,
+    "n_intervals": 50,
+    "n_labels": 98,
+    "precision": 0.9245,
+    "recall": 1.0
+   },
+   "FT_cases_84": {
+    "accuracy": 0.9166666666666666,
+    "class_names": {
+     "0": "Container Hardware",
+     "1": "Container Network",
+     "3": "Node CPU",
+     "4": "Node Disk",
+     "5": "Node Memory"
+    },
+    "macro_f1": 0.8158246580934886,
+    "per_class_f1": {
+     "0": 0.9577464788732395,
+     "1": 0.9130434782608695,
+     "3": 0.875,
+     "4": 0.9333333333333333,
+     "5": 0.4
+    },
+    "support": {
+     "0": 36,
+     "1": 22,
+     "3": 8,
+     "4": 14,
+     "5": 4
+    },
+    "weighted": {
+     "f1": 0.9075,
+     "precision": 0.9223,
+     "recall": 0.9167
+    }
+   },
+   "RCL_cases_84": {
+    "avgK": 0.9095,
+    "topK": [
+     0.8214,
+     0.8929,
+     0.9405,
+     0.9405,
+     0.9524
+    ]
+   },
+   "armor_task_metrics_py_sha256": "1463c8de9d32e4aaeb1279193b8c8bf50ca0fd794b1e093945406cb27219cbc6",
+   "inputs_sha256": {
+    "pre_interval": "c8da7bfa44cf18c44403739b98de8e45e98d1f628ae500c3e0ccb57f46c0e9d7",
+    "pre_types": "3fca73d40002ce3a67e57d7bf3767c64bdc309c6e4c31783007043698260324f",
+    "rank_df": "b1741487763afda3f0cc1e4df939fd00d38ff7848c5229feb66ef1979b476d72",
+    "res_json": "de8c99c4a5c0df0fad6b845889851105dd91bfa47d6aab436d4d24a3db741513"
+   },
+   "matches_published": {
+    "AD": {
+     "f1": true,
+     "precision": true,
+     "recall": true
+    },
+    "FT": {
+     "f1": false,
+     "precision": false,
+     "recall": false
+    },
+    "RCL": {
+     "avgK": true,
+     "topK": true
+    }
+   },
+   "run_dir": "<outside repo>/content/ARMOR_20261111T202210Z_73bdda/res/D1/colab_released_20261111T202210Z_73bdda",
+   "run_res_json": {
+    "AD": {
+     "f1": 0.9608,
+     "precision": 0.9245,
+     "recall": 1.0
+    },
+    "FT": {
+     "f1": 0.9075,
+     "precision": 0.9223,
+     "recall": 0.9167
+    },
+    "RCL": {
+     "avgK": 0.9095,
+     "topK": [
+      0.8214,
+      0.8929,
+      0.9405,
+      0.9405,
+      0.9524
+     ]
+    }
+   },
+   "split_ts": 1651852800
+  }
+ }
+}
