@@ -130,7 +130,10 @@ Paired case bootstrap (1,000 resamples), 95% intervals:
 | Model 1 D3 @ p90 (label-free) | 0.863 | 0.837 | 0.850 ± 0.006 |
 | v2 ensemble (**post-hoc**) | 0.833 | 0.714 | 0.769 |
 
-- **Fault type:** ARMOR's published weighted-F1 is 0.938 (not reproduced in our harness); Model 1 v1 scores 0.827.
+- **Fault type:** ARMOR's published weighted-F1 is 0.938, and Model 1 v1 scores 0.827.
+  - ARMOR's 0.938 is reproduced from its released predictions. Its released checkpoint run through ARMOR's own code gives 0.884–0.897 (`baselines/armor/reproduction/REPRODUCTION.md`).
+  - On Model 1's primary metric, macro-F1, ARMOR's released predictions score 0.897 against Model 1's 0.721.
+- **Alert coverage:** ARMOR's released intervals cover 70% of test-period minutes; Model 1 v1 covers 20% (same reproduction report).
 - **Missing data:** ARMOR released no missing-data intervals.
 - **ARMOR's calibration pool is larger and in-sample:** 2,269 training minutes, against Model 1's 329 out-of-sample windows.
 - **Recall:** every Model 1 row has lower recall than ARMOR's 1.0.
